@@ -558,7 +558,7 @@ button { background: none; border: none; cursor: pointer; padding: 0; font-famil
   .dropdown a { padding: 10px 20px; font-size: 14px; }
   .center-col { padding: 60px 24px 70px; }
   .home-main { min-height: calc(100vh - 116px - 58px); }
-  .newsletter { padding: 64px 20px 76px; }
+  .newsletter { padding: 48px 20px 76px; }
   .page-main { padding: 52px 20px 90px; }
   .blog-main { padding: 44px 20px 100px; min-height: calc(100vh - 116px - 58px); }
   .cat-pills { gap: 8px; margin: 26px 0 40px; }
