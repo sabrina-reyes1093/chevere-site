@@ -188,11 +188,18 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
   color: var(--ink);
   margin-bottom: 18px;
 }
+.page-tagline {
+  margin: -6px 0 30px;
+  font-size: 18px;
+  color: #5f5c56;
+}
 .page-body {
   font-size: 17px;
   line-height: 1.7;
   color: var(--text);
 }
+.page-body em { font-style: italic; }
+.page-body strong { color: var(--ink); }
 .page-body p + p { margin-top: 16px; }
 
 /* archive rows */
