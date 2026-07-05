@@ -30,6 +30,26 @@
     .post-body em {
       font-style: italic;
     }
+    .post-section.with-image {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-top: 32px;
+    }
+    .post-section-text { flex: 1; min-width: 0; }
+    .post-section-text strong { margin-top: 0; }
+    .post-section-img {
+      width: 160px;
+      height: auto;
+      border-radius: 8px;
+      flex-shrink: 0;
+      aspect-ratio: 3/2;
+      object-fit: cover;
+    }
+    @media (max-width: 560px) {
+      .post-section.with-image { flex-direction: column; }
+      .post-section-img { width: 100%; }
+    }
     .post-signoff {
       margin-top: 48px;
       font-size: 17px;
@@ -106,8 +126,13 @@
       <img src="../assets/my-current-obsessions.png" alt="My Current Obsessions" style="width:100%;border-radius:8px;margin-bottom:28px;aspect-ratio:3/2;object-fit:cover" />
       <p>There's something about summer that makes everything feel a little more indulgent — the shows are bigger, the books are steamier, and the snacks require a picnic blanket. Here's what's currently living in my rotation.</p>
 
-      <strong>House of the Dragon</strong>
-      <p>My current TV obsession has officially become <em>House of the Dragon</em>. If you enjoyed <em>Game of Thrones</em>, this fantasy continuation, full of morally gray characters and high-stakes political drama, is one of those shows that's impossible not to binge.</p>
+      <div class="post-section with-image">
+        <div class="post-section-text">
+          <strong>House of the Dragon</strong>
+          <p>My current TV obsession has officially become <em>House of the Dragon</em>. If you enjoyed <em>Game of Thrones</em>, this fantasy continuation, full of morally gray characters and high-stakes political drama, is one of those shows that's impossible not to binge.</p>
+        </div>
+        <img class="post-section-img" src="../assets/hotdragon.png" alt="House of the Dragon" />
+      </div>
 
       <strong>ACOTAR: Book Series</strong>
       <p>I've officially entered my fantasy era. I'm only on book two, but I'm already completely invested in this world. I'm trying to pace myself… but I now understand why everyone recommends this series.</p>
