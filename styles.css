@@ -50,7 +50,7 @@ button { background: none; border: none; cursor: pointer; padding: 0; font-famil
 }
 
 .header-logo img {
-  width: 238px;
+  width: 266px;
   max-width: 60vw;
   height: auto;
   display: block;
@@ -650,7 +650,7 @@ body.search-open::after {
 
 @media (max-width: 620px) {
   .site-header { height: 116px; }
-  .header-logo img { width: 172px; }
+  .header-logo img { width: 192px; }
   .header-actions { right: 8px; gap: 2px; }
   .header-actions button,
   .header-actions a { width: 32px; height: 32px; }
