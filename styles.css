@@ -310,24 +310,25 @@ body.search-open::after {
 /* ---------- newsletter popup ---------- */
 .newsletter-popup {
   position: fixed;
-  bottom: 24px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(120px);
+  transform: translate(-50%, calc(-50% + 12px)) scale(0.96);
   background: var(--bg);
   border: 1px solid var(--border-strong);
-  border-radius: 14px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-  padding: 28px 32px 30px;
+  border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+  padding: 36px 36px 38px;
   max-width: min(420px, calc(100vw - 32px));
+  width: 100%;
   text-align: center;
   z-index: 200;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .25s ease, transform .3s ease;
+  transition: opacity .2s ease, transform .22s ease;
 }
 .newsletter-popup--visible {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
 }
 .newsletter-popup h3 {
@@ -347,6 +348,14 @@ body.search-open::after {
   font-size: 14px;
   color: var(--gray-soft);
   font-style: italic;
+}
+body.popup-open::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 199;
+  animation: fadeIn .2s ease;
 }
 .newsletter-popup-close {
   position: absolute;

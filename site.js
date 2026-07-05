@@ -201,15 +201,29 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     var popup = document.getElementById('newsletter-popup');
     if (!popup) return;
     popup.classList.add('newsletter-popup--visible');
+    document.body.classList.add('popup-open');
     setTimeout(function () {
       popup.classList.remove('newsletter-popup--visible');
+      document.body.classList.remove('popup-open');
     }, 5000);
+  }
+
+  function hidePopup() {
+    var popup = document.getElementById('newsletter-popup');
+    if (!popup) return;
+    popup.classList.remove('newsletter-popup--visible');
+    document.body.classList.remove('popup-open');
   }
 
   var closePopup = document.getElementById('newsletter-popup-close');
   if (closePopup) {
-    closePopup.addEventListener('click', function () {
-      document.getElementById('newsletter-popup').classList.remove('newsletter-popup--visible');
-    });
+    closePopup.addEventListener('click', hidePopup);
   }
+
+  document.addEventListener('click', function (e) {
+    var popup = document.getElementById('newsletter-popup');
+    if (popup && popup.classList.contains('newsletter-popup--visible') && !popup.contains(e.target)) {
+      hidePopup();
+    }
+  });
 })();
