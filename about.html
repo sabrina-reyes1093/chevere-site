@@ -42,8 +42,20 @@
 
   <nav class="site-nav">
     <a href="index.html">Home</a>
-    <a href="notes.html">Notes</a>
-    <a href="archive.html">Archive</a>
+    <div class="nav-item has-dropdown">
+      <a href="blog.html">Blog
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </a>
+      <div class="dropdown">
+        <a href="blog.html">All posts</a>
+        <a href="blog.html?cat=books">Books</a>
+        <a href="blog.html?cat=travel">Travel</a>
+        <a href="blog.html?cat=tv-film">TV &amp; Film</a>
+        <a href="blog.html?cat=food-drink">Food &amp; Drink</a>
+        <a href="blog.html?cat=sports">Sports</a>
+        <a href="blog.html?cat=style">Style</a>
+      </div>
+    </div>
     <a href="about.html" class="active">About</a>
   </nav>
 
@@ -61,6 +73,21 @@
       <p>— <strong>The <em>Chévere</em> Team</strong></p>
     </div>
   </main>
+
+  <script>
+    document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var item = a.parentElement;
+        if (window.matchMedia('(hover: none)').matches && !item.classList.contains('open')) {
+          e.preventDefault();
+          item.classList.add('open');
+          document.addEventListener('click', function (ev) {
+            if (!item.contains(ev.target)) item.classList.remove('open');
+          }, { once: true });
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
