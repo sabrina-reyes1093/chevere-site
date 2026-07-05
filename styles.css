@@ -21,6 +21,8 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html { scroll-behavior: smooth; }
+
 html, body {
   background: var(--bg);
   font-family: var(--sans);
@@ -34,7 +36,7 @@ body.home {
 }
 
 a { text-decoration: none; color: inherit; }
-button { background: none; border: none; cursor: pointer; padding: 0; }
+button { background: none; border: none; cursor: pointer; padding: 0; font-family: var(--sans); }
 
 /* ---------- header ---------- */
 .site-header {
@@ -46,13 +48,6 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
   border-bottom: 1px solid var(--border);
   background: var(--bg);
 }
-
-.header-mini-logo {
-  position: absolute;
-  left: 48px;
-  top: 72px;
-}
-.header-mini-logo img { height: 18px; width: auto; display: block; }
 
 .header-logo img {
   width: 238px;
@@ -68,9 +63,10 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
   transform: translateY(-50%);
   display: flex;
   align-items: center;
-  gap: 42px;
+  gap: 26px;
 }
-.header-actions button {
+.header-actions button,
+.header-actions a {
   color: #4e4d4b;
   display: flex;
   align-items: center;
@@ -78,10 +74,61 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  transition: background .15s ease;
+  transition: background .15s ease, color .15s ease;
 }
-.header-actions button:hover { background: rgba(94, 68, 50, 0.08); }
-.header-actions svg { width: 23px; height: 23px; }
+.header-actions button:hover,
+.header-actions a:hover {
+  background: rgba(94, 68, 50, 0.08);
+  color: var(--brown);
+}
+.header-actions svg { width: 21px; height: 21px; }
+.header-actions .tiktok-icon { width: 19px; height: 19px; }
+
+/* search panel */
+.search-panel {
+  position: absolute;
+  top: calc(100% + 1px);
+  right: 24px;
+  width: min(430px, calc(100vw - 28px));
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  padding: 14px;
+  z-index: 60;
+}
+.search-panel input {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 15px;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--border-strong);
+  color: var(--ink);
+  outline: none;
+}
+.search-panel input:focus { border-color: var(--brown); }
+.search-results { margin-top: 4px; }
+.search-hit {
+  display: block;
+  padding: 12px 6px;
+  border-bottom: 1px solid var(--border);
+}
+.search-hit:last-child { border-bottom: none; }
+.search-hit .kicker { font-size: 11px; }
+.search-hit .hit-title {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  margin-top: 3px;
+  transition: color .15s ease;
+}
+.search-hit:hover .hit-title { color: var(--brown); }
+.search-note {
+  padding: 14px 6px 8px;
+  font-size: 14px;
+  color: #5f5c56;
+}
 
 /* ---------- nav ---------- */
 .site-nav {
@@ -225,6 +272,104 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
 }
 .post-meta .dot { font-size: 14px; line-height: 1; }
 
+.post-desc {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #5f5c56;
+  max-width: 520px;
+}
+.home-buttons {
+  margin-top: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+/* ---------- home buttons ---------- */
+.btn-primary,
+.btn-secondary {
+  display: inline-block;
+  padding: 13px 28px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.btn-primary {
+  background: var(--brown);
+  color: var(--bg);
+  border: 1px solid var(--brown);
+}
+.btn-primary:hover {
+  background: var(--brown-dark);
+  border-color: var(--brown-dark);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--brown);
+  border: 1px solid var(--brown);
+}
+.btn-secondary:hover {
+  background: var(--brown);
+  color: var(--bg);
+}
+
+/* ---------- newsletter ---------- */
+.newsletter {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 84px 24px 96px;
+}
+.newsletter h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(26px, 4vw, 36px);
+  color: var(--ink);
+  margin-top: 12px;
+}
+.newsletter .newsletter-sub {
+  margin-top: 12px;
+  font-size: 17px;
+  color: #5f5c56;
+}
+.newsletter form {
+  margin-top: 30px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.newsletter input {
+  width: min(360px, 100%);
+  padding: 13px 16px;
+  font-size: 15px;
+  font-family: var(--sans);
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--ink);
+  outline: none;
+}
+.newsletter input:focus { border-color: var(--brown); }
+.newsletter button {
+  padding: 13px 28px;
+  background: var(--brown);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background .15s ease;
+}
+.newsletter button:hover { background: var(--brown-dark); }
+.newsletter-note {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--gray-soft);
+}
+
 /* ---------- inner pages (about) ---------- */
 .page-main {
   max-width: 700px;
@@ -281,7 +426,6 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
   margin: 34px 0 54px;
 }
 .cat-pills button {
-  font-family: var(--sans);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.07em;
@@ -391,8 +535,7 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
   .home-main { grid-template-columns: 1fr; }
   .side-col { display: none; }
   .center-col { border-left: none; padding: 140px 32px 90px; }
-  .header-mini-logo { display: none; }
-  .header-actions { right: 20px; gap: 18px; }
+  .header-actions { right: 18px; gap: 12px; }
   .site-nav { gap: 26px; }
   .post-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 30px; }
   .post-card.featured { grid-template-columns: 1fr; gap: 20px; }
@@ -402,9 +545,12 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
 @media (max-width: 620px) {
   .site-header { height: 116px; }
   .header-logo img { width: 172px; }
-  .header-actions { right: 10px; gap: 6px; }
-  .header-actions button { width: 32px; height: 32px; }
-  .header-actions svg { width: 20px; height: 20px; }
+  .header-actions { right: 8px; gap: 2px; }
+  .header-actions button,
+  .header-actions a { width: 32px; height: 32px; }
+  .header-actions svg { width: 19px; height: 19px; }
+  .header-actions .tiktok-icon { width: 17px; height: 17px; }
+  .search-panel { right: 8px; }
   .site-nav { height: 58px; gap: 20px; }
   .site-nav > a,
   .site-nav .nav-item > a { font-size: 15px; }
@@ -412,6 +558,7 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
   .dropdown a { padding: 10px 20px; font-size: 14px; }
   .center-col { padding: 96px 24px 70px; }
   .home-main { min-height: calc(100vh - 116px - 58px); }
+  .newsletter { padding: 64px 20px 76px; }
   .page-main { padding: 52px 20px 90px; }
   .blog-main { padding: 44px 20px 100px; min-height: calc(100vh - 116px - 58px); }
   .cat-pills { gap: 8px; margin: 26px 0 40px; }
