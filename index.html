@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="home">
 
   <header class="site-header">
     <a class="header-mini-logo" href="index.html" aria-label="chévere home">
@@ -20,40 +20,23 @@
       <img src="assets/logo.png" alt="chévere" />
     </a>
     <div class="header-actions">
-      <button aria-label="Search" title="Search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-          <circle cx="10.5" cy="10.5" r="6.75" />
-          <line x1="15.5" y1="15.5" x2="21" y2="21" />
-        </svg>
-      </button>
-      <button aria-label="Chat" title="Chat">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12c0 4.42-4.03 8-9 8-1.02 0-2-.15-2.91-.43L4 21l1.55-3.87C4.02 15.7 3 13.95 3 12c0-4.42 4.03-8 9-8s9 3.58 9 8z" />
-        </svg>
-      </button>
-      <button aria-label="Notifications" title="Notifications">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 8.5a6 6 0 0 0-12 0c0 6-2.5 7.5-2.5 7.5h17S18 14.5 18 8.5" />
-          <path d="M13.7 19.5a2 2 0 0 1-3.4 0" />
-        </svg>
-      </button>
+      <button aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
+      <button aria-label="Chat" title="Chat"><i data-lucide="message-circle" stroke-width="1.8" aria-hidden="true"></i></button>
+      <button aria-label="Notifications" title="Notifications"><i data-lucide="bell" stroke-width="1.8" aria-hidden="true"></i></button>
     </div>
   </header>
 
   <nav class="site-nav">
     <a href="index.html" class="active">Home</a>
     <div class="nav-item has-dropdown">
-      <a href="blog.html">Blog
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-      </a>
+      <a href="blog.html">Blog<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
       <div class="dropdown">
-        <a href="blog.html">All posts</a>
+        <a href="blog.html">All Blogs</a>
         <a href="blog.html?cat=books">Books</a>
-        <a href="blog.html?cat=travel">Travel</a>
         <a href="blog.html?cat=tv-film">TV &amp; Film</a>
+        <a href="blog.html?cat=travel">Travel</a>
         <a href="blog.html?cat=food-drink">Food &amp; Drink</a>
-        <a href="blog.html?cat=sports">Sports</a>
-        <a href="blog.html?cat=style">Style</a>
+        <a href="blog.html?cat=fashion">Fashion</a>
       </div>
     </div>
     <a href="about.html">About</a>
@@ -83,7 +66,9 @@
     </aside>
   </main>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
+    lucide.createIcons();
     document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
       a.addEventListener('click', function (e) {
         var item = a.parentElement;

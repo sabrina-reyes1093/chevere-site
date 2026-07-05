@@ -1,7 +1,7 @@
 /* ============================================
    chévere — theme extracted from itschevere.substack.com
    bg #f7f3ed · brown #5e4432 · skeleton #e8e4df · border #d6d2cd
-   headings: Playfair Display · ui: system sans
+   headings: Playfair Display · ui: system sans · icons: Lucide
    ============================================ */
 
 :root {
@@ -28,6 +28,11 @@ html, body {
   min-height: 100%;
 }
 
+/* subtle editorial speckle on the homepage only */
+body.home {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cg fill='%235e4432'%3E%3Ccircle cx='27' cy='34' r='1.1' fill-opacity='0.05'/%3E%3Ccircle cx='96' cy='18' r='0.8' fill-opacity='0.04'/%3E%3Ccircle cx='163' cy='51' r='1.3' fill-opacity='0.045'/%3E%3Ccircle cx='214' cy='105' r='0.9' fill-opacity='0.05'/%3E%3Ccircle cx='58' cy='92' r='0.7' fill-opacity='0.04'/%3E%3Ccircle cx='131' cy='127' r='1.2' fill-opacity='0.05'/%3E%3Ccircle cx='22' cy='163' r='0.9' fill-opacity='0.045'/%3E%3Ccircle cx='187' cy='176' r='0.7' fill-opacity='0.04'/%3E%3Ccircle cx='87' cy='203' r='1.1' fill-opacity='0.05'/%3E%3Ccircle cx='150' cy='224' r='0.8' fill-opacity='0.04'/%3E%3Ccircle cx='236' cy='31' r='0.7' fill-opacity='0.04'/%3E%3Ccircle cx='45' cy='226' r='0.8' fill-opacity='0.045'/%3E%3C/g%3E%3C/svg%3E");
+}
+
 a { text-decoration: none; color: inherit; }
 button { background: none; border: none; cursor: pointer; padding: 0; }
 
@@ -51,6 +56,7 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
 
 .header-logo img {
   width: 238px;
+  max-width: 60vw;
   height: auto;
   display: block;
 }
@@ -110,8 +116,8 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
 /* nav dropdown */
 .nav-item { position: relative; display: flex; }
 .nav-item .chev {
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
   margin-left: 6px;
   margin-top: 2px;
   transition: transform .15s ease;
@@ -195,14 +201,14 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
 .post-title {
   font-family: var(--serif);
   font-weight: 700;
-  font-size: 46px;
+  font-size: clamp(30px, 5vw, 46px);
   line-height: 1.15;
   color: var(--ink);
   letter-spacing: -0.01em;
 }
 .post-subtitle {
   margin-top: 15px;
-  font-size: 21px;
+  font-size: clamp(17px, 2.5vw, 21px);
   font-weight: 400;
   color: #5f5c56;
 }
@@ -229,7 +235,7 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
 .page-title {
   font-family: var(--serif);
   font-weight: 700;
-  font-size: 38px;
+  font-size: clamp(30px, 5vw, 38px);
   color: var(--ink);
   margin-bottom: 18px;
 }
@@ -258,7 +264,7 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
 .blog-head h1 {
   font-family: var(--serif);
   font-weight: 700;
-  font-size: 44px;
+  font-size: clamp(32px, 5vw, 44px);
   color: var(--ink);
 }
 .blog-head p {
@@ -353,22 +359,63 @@ button { background: none; border: none; cursor: pointer; padding: 0; }
 .post-card.featured h2 { font-size: 34px; margin-top: 12px; }
 .post-card.featured .dek { font-size: 17px; margin-top: 12px; }
 
+/* blog empty state */
+.blog-empty {
+  text-align: center;
+  padding: 64px 20px 40px;
+}
+.blog-empty svg {
+  width: 30px;
+  height: 30px;
+  color: var(--brown);
+}
+.blog-empty h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 27px;
+  color: var(--ink);
+  margin-top: 16px;
+}
+.blog-empty p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #5f5c56;
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 1380px) {
   .home-main { grid-template-columns: 340px minmax(0, 1fr) 340px; }
 }
+
 @media (max-width: 980px) {
   .home-main { grid-template-columns: 1fr; }
   .side-col { display: none; }
-  .center-col { border-left: none; padding-top: 140px; }
+  .center-col { border-left: none; padding: 140px 32px 90px; }
   .header-mini-logo { display: none; }
-  .header-actions { right: 20px; gap: 20px; }
+  .header-actions { right: 20px; gap: 18px; }
   .site-nav { gap: 26px; }
   .post-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 30px; }
   .post-card.featured { grid-template-columns: 1fr; gap: 20px; }
   .post-card.featured h2 { font-size: 27px; }
 }
+
 @media (max-width: 620px) {
-  .post-grid { grid-template-columns: 1fr; }
-  .blog-main { padding: 48px 22px 100px; }
+  .site-header { height: 116px; }
+  .header-logo img { width: 172px; }
+  .header-actions { right: 10px; gap: 6px; }
+  .header-actions button { width: 32px; height: 32px; }
+  .header-actions svg { width: 20px; height: 20px; }
+  .site-nav { height: 58px; gap: 20px; }
+  .site-nav > a,
+  .site-nav .nav-item > a { font-size: 15px; }
+  .dropdown { min-width: 180px; }
+  .dropdown a { padding: 10px 20px; font-size: 14px; }
+  .center-col { padding: 96px 24px 70px; }
+  .home-main { min-height: calc(100vh - 116px - 58px); }
+  .page-main { padding: 52px 20px 90px; }
+  .blog-main { padding: 44px 20px 100px; min-height: calc(100vh - 116px - 58px); }
+  .cat-pills { gap: 8px; margin: 26px 0 40px; }
+  .cat-pills button { padding: 8px 14px; font-size: 11px; }
+  .post-grid { grid-template-columns: 1fr; gap: 40px; }
+  .post-card.featured h2 { font-size: 24px; }
 }
