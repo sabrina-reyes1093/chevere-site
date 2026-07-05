@@ -25,9 +25,12 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   if (!toggle || !panel || !input || !results) return;
 
   var index = null;
+  var loading = false;
 
   function loadIndex(cb) {
     if (index) return cb(index);
+    if (loading) { setTimeout(function () { loadIndex(cb); }, 200); return; }
+    loading = true;
     fetch('blog.html')
       .then(function (r) { return r.text(); })
       .then(function (t) {
@@ -45,13 +48,22 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
             url: c.getAttribute('href') || 'blog.html'
           };
         });
+        loading = false;
         cb(index);
       })
-      .catch(function () { index = []; cb(index); });
+      .catch(function () { index = []; loading = false; cb(index); });
   }
 
   function esc(s) {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function debounce(fn, delay) {
+    var timer;
+    return function () {
+      clearTimeout(timer);
+      timer = setTimeout(fn, delay);
+    };
   }
 
   function render(q) {
@@ -68,7 +80,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
         return terms.every(function (t) { return hay.indexOf(t) > -1; });
       }).slice(0, 8);
       if (!hits.length) {
-        results.innerHTML = '<p class="search-note">No posts found for “' + esc(q.trim()) + '”.</p>';
+        results.innerHTML = '<p class="search-note">No posts found for "' + esc(q.trim()) + '".</p>';
         return;
       }
       results.innerHTML = hits.map(function (p) {
@@ -80,25 +92,45 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     });
   }
 
+  function open() {
+    panel.classList.remove('search-panel--closing');
+    panel.classList.add('search-panel--open');
+    input.disabled = false;
+    input.focus();
+    loadIndex(function () {});
+  }
+
+  function close() {
+    panel.classList.remove('search-panel--open');
+    panel.classList.add('search-panel--closing');
+    input.disabled = true;
+    setTimeout(function () {
+      panel.classList.remove('search-panel--closing');
+    }, 200);
+  }
+
   toggle.addEventListener('click', function (e) {
     e.stopPropagation();
-    panel.hidden = !panel.hidden;
-    if (!panel.hidden) {
-      input.focus();
-      loadIndex(function () {});
+    if (panel.classList.contains('search-panel--open')) {
+      close();
+    } else {
+      open();
     }
   });
 
-  input.addEventListener('input', function () { render(input.value); });
+  input.addEventListener('input', debounce(function () {
+    render(input.value);
+  }, 250));
 
   document.addEventListener('click', function (e) {
-    if (!panel.hidden && !panel.contains(e.target) && !toggle.contains(e.target)) {
-      panel.hidden = true;
+    if (panel.classList.contains('search-panel--open') &&
+        !panel.contains(e.target) && !toggle.contains(e.target)) {
+      close();
     }
   });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') panel.hidden = true;
+    if (e.key === 'Escape') close();
   });
 })();
 
