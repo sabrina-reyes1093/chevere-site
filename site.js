@@ -175,10 +175,10 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
 
     var body = new URLSearchParams();
     body.append('email', email);
+    body.append('_captcha', 'false');
 
-    fetch('https://itschevere.substack.com/api/v1/subscribe', {
+    fetch('https://formsubmit.co/sabrrinareyes@icloud.com', {
       method: 'POST',
-      mode: 'no-cors',
       body: body
     }).then(function () {
       input.value = '';
