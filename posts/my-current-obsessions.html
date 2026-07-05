@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Current Obsessions — chévere</title>
+  <link rel="icon" type="image/png" href="../assets/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .post-body {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .post-body p {
+      margin-bottom: 16px;
+    }
+    .post-body strong {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--ink);
+      margin-top: 32px;
+      margin-bottom: 8px;
+    }
+    .post-body em {
+      font-style: italic;
+    }
+    .post-signoff {
+      margin-top: 48px;
+      font-size: 17px;
+      color: var(--gray-soft);
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--brown);
+      transition: opacity .15s ease;
+    }
+    .back-link:hover { opacity: 0.7; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="header-logo" href="../index.html" aria-label="chévere home">
+      <img src="../assets/logo.png" alt="chévere" />
+    </a>
+    <div class="header-actions">
+      <button id="search-toggle" aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
+      <a href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+      <a href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+        <svg class="tiktok-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="19" height="19"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.87.13v-3.5a6.37 6.37 0 0 0-.87-.06A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.46a8.23 8.23 0 0 0 4.77 1.48v-3.4a4.86 4.86 0 0 1-1.01.15z"/></svg>
+      </a>
+      <a href="../index.html#newsletter" aria-label="Newsletter sign-up" title="Newsletter">
+        <i data-lucide="mail" stroke-width="1.8" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
+      <div class="search-bar-wrap">
+        <i data-lucide="search" class="search-bar-icon" stroke-width="2" aria-hidden="true"></i>
+        <input id="search-input" type="text" placeholder="Search posts..." autocomplete="off" />
+        <button id="search-submit" class="search-action-btn" aria-label="Search" type="button">
+          <i data-lucide="arrow-right" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+        <button id="search-close" class="search-close-btn" aria-label="Close search" type="button">
+          <i data-lucide="x" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <a href="../index.html">Home</a>
+    <div class="nav-item has-dropdown">
+      <a href="../blog.html">Blog<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="../blog.html">All Blogs</a>
+        <a href="../blog.html?cat=books">Books</a>
+        <a href="../blog.html?cat=tv-film">TV &amp; Film</a>
+        <a href="../blog.html?cat=travel">Travel</a>
+        <a href="../blog.html?cat=food-drink">Food &amp; Drink</a>
+        <a href="../blog.html?cat=fashion">Fashion</a>
+      </div>
+    </div>
+    <a href="../about.html">About</a>
+  </nav>
+
+  <main class="page-main">
+    <a class="back-link" href="../blog.html">&larr; Back to Blog</a>
+    <span class="kicker" style="display:block;margin-bottom:8px">TV &amp; Film</span>
+    <h1 class="page-title">My Current Obsessions</h1>
+    <p class="page-tagline" style="font-size:15px;color:#8e8c88;margin-top:-4px;margin-bottom:28px">Jul 5, 2026</p>
+    <div class="post-body">
+      <p>There's something about summer that makes everything feel a little more indulgent — the shows are bigger, the books are steamier, and the snacks require a picnic blanket. Here's what's currently living in my rotation.</p>
+
+      <strong>House of the Dragon</strong>
+      <p>My current TV obsession has officially become <em>House of the Dragon</em>. If you enjoyed <em>Game of Thrones</em>, this fantasy continuation, full of morally gray characters and high-stakes political drama, is one of those shows that's impossible not to binge.</p>
+
+      <strong>ACOTAR: Book Series</strong>
+      <p>I've officially entered my fantasy era. I'm only on book two, but I'm already completely invested in this world. I'm trying to pace myself… but I now understand why everyone recommends this series.</p>
+
+      <strong>Obsession</strong>
+      <p>I went into <em>Obsession</em> knowing very little, and I'm so glad I did. If you're a fan of psychological thrillers, unexpected twists, and movies that stay with you long after the credits roll, this one is worth seeing in theaters.</p>
+
+      <strong>San Pellegrino Ciao Peach &amp; Picnics</strong>
+      <p>I've reached the point where my fridge is permanently stocked with San Pellegrino Ciao Peach, paired with a deli sandwich and a picnic in the sunshine. It's become my favorite excuse to slow down, enjoy these little moments, and just romanticize life.</p>
+
+      <strong>A House Tour That Lived in My Head Rent-Free</strong>
+      <p>Sabrina Carpenter's house tour has been on repeat this week — that mix of feminine, vintage-inspired charm with just enough personality is exactly the kind of home inspiration I didn't know I needed. It's got me rethinking my own space.</p>
+
+      <strong>Tending My Summer Garden</strong>
+      <p>Between the tomatoes finally coming in and the basil growing faster than I can use it, my summer veggie and herb garden has become my favorite form of therapy. There's nothing like stepping outside with coffee to see what's ready to pick.</p>
+
+      <strong>World Cup Season</strong>
+      <p>The FIFA World Cup has been giving me something to look forward to almost every day, and my playlists have been filled with Latin music from morning to night. It's the perfect combination for a summer full of sunshine, soccer, and good vibes. With the knockout rounds now underway, every match feels like appointment viewing.</p>
+
+      <p class="post-signoff">Until next week — stay <em>chévere</em></p>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../site.js"></script>
+</body>
+</html>
