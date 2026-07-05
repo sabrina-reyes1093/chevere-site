@@ -28,8 +28,17 @@
         <i data-lucide="mail" stroke-width="1.8" aria-hidden="true"></i>
       </a>
     </div>
-    <div id="search-panel" class="search-panel">
-      <input id="search-input" type="text" placeholder="Search posts..." />
+    <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
+      <div class="search-bar-wrap">
+        <i data-lucide="search" class="search-bar-icon" stroke-width="2" aria-hidden="true"></i>
+        <input id="search-input" type="text" placeholder="Search posts..." autocomplete="off" />
+        <button id="search-submit" class="search-action-btn" aria-label="Search" type="button">
+          <i data-lucide="arrow-right" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+        <button id="search-close" class="search-close-btn" aria-label="Close search" type="button">
+          <i data-lucide="x" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+      </div>
       <div id="search-results" class="search-results"></div>
     </div>
   </header>
@@ -66,21 +75,7 @@
   </main>
 
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    lucide.createIcons();
-    document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        var item = a.parentElement;
-        if (window.matchMedia('(hover: none)').matches && !item.classList.contains('open')) {
-          e.preventDefault();
-          item.classList.add('open');
-          document.addEventListener('click', function (ev) {
-            if (!item.contains(ev.target)) item.classList.remove('open');
-          }, { once: true });
-        }
-      });
-    });
-  </script>
+  <script src="site.js"></script>
 
 </body>
 </html>

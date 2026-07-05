@@ -1,4 +1,4 @@
-/* chévere — shared site behavior: icons, nav dropdown, search, newsletter */
+/* chevere -- shared site behavior: icons, nav dropdown, search, newsletter */
 
 lucide.createIcons();
 
@@ -16,12 +16,14 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   });
 });
 
-/* search: toggle panel, build index from blog.html post cards, live-filter */
+/* search: toggle panel, build index from blog.html post cards, live-filter with debounce */
 (function () {
   var toggle = document.getElementById('search-toggle');
   var panel = document.getElementById('search-panel');
   var input = document.getElementById('search-input');
   var results = document.getElementById('search-results');
+  var closeBtn = document.getElementById('search-close');
+  var submitBtn = document.getElementById('search-submit');
   if (!toggle || !panel || !input || !results) return;
 
   var index = null;
@@ -80,13 +82,13 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
         return terms.every(function (t) { return hay.indexOf(t) > -1; });
       }).slice(0, 8);
       if (!hits.length) {
-        results.innerHTML = '<p class="search-note">No posts found for "' + esc(q.trim()) + '".</p>';
+        results.innerHTML = '<p class="search-note">No posts found for &ldquo;' + esc(q.trim()) + '&rdquo;.</p>';
         return;
       }
       results.innerHTML = hits.map(function (p) {
         return '<a class="search-hit" href="' + esc(p.url) + '">' +
-          '<span class="kicker">' + esc(p.kicker) + '</span>' +
-          '<span class="hit-title">' + esc(p.title) + '</span>' +
+          '<span class="search-hit-kicker">' + esc(p.kicker) + '</span>' +
+          '<span class="search-hit-title">' + esc(p.title) + '</span>' +
           '</a>';
       }).join('');
     });
@@ -95,6 +97,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   function open() {
     panel.classList.remove('search-panel--closing');
     panel.classList.add('search-panel--open');
+    document.body.classList.add('search-open');
     input.disabled = false;
     input.focus();
     loadIndex(function () {});
@@ -103,6 +106,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   function close() {
     panel.classList.remove('search-panel--open');
     panel.classList.add('search-panel--closing');
+    document.body.classList.remove('search-open');
     input.disabled = true;
     setTimeout(function () {
       panel.classList.remove('search-panel--closing');
@@ -118,9 +122,29 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     }
   });
 
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      close();
+    });
+  }
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      render(input.value);
+    });
+  }
+
   input.addEventListener('input', debounce(function () {
     render(input.value);
   }, 250));
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      render(input.value);
+    }
+  });
 
   document.addEventListener('click', function (e) {
     if (panel.classList.contains('search-panel--open') &&
@@ -134,7 +158,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   });
 })();
 
-/* newsletter: hand the email to the Chévere Substack subscribe flow */
+/* newsletter: hand the email to the Chevere Substack subscribe flow */
 (function () {
   var form = document.getElementById('newsletter-form');
   if (!form) return;

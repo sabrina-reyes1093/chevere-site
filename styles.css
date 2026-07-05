@@ -84,71 +84,124 @@ button { background: none; border: none; cursor: pointer; padding: 0; font-famil
 .header-actions svg { width: 21px; height: 21px; }
 .header-actions .tiktok-icon { width: 19px; height: 19px; }
 
+/* search backdrop */
+body.search-open::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 55;
+  animation: fadeIn .2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
 /* search panel */
 .search-panel {
   position: absolute;
+  left: 50%;
   top: calc(100% + 1px);
-  right: 24px;
-  width: min(430px, calc(100vw - 28px));
+  transform: translateX(-50%) translateY(-8px);
+  width: min(580px, calc(100vw - 24px));
   background: var(--bg);
   border: 1px solid var(--border-strong);
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
-  padding: 14px;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
+  padding: 16px 16px 8px;
   z-index: 60;
   opacity: 0;
-  transform: translateY(-6px) scale(0.97);
   pointer-events: none;
-  transition: opacity .18s ease, transform .2s ease;
+  transition: opacity .2s ease, transform .22s ease;
 }
 .search-panel--open {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateX(-50%) translateY(0);
   pointer-events: auto;
 }
 .search-panel--closing {
   opacity: 0;
-  transform: translateY(-4px) scale(0.98);
+  transform: translateX(-50%) translateY(-4px);
   pointer-events: none;
 }
-.search-panel input {
-  width: 100%;
-  font-family: var(--sans);
-  font-size: 16px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.55);
+
+/* search bar input row */
+.search-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.55);
   border: 1px solid var(--border-strong);
-  border-radius: 8px;
-  color: var(--ink);
-  outline: none;
+  border-radius: 12px;
+  padding: 0 4px 0 14px;
   transition: border-color .15s ease, box-shadow .15s ease;
 }
-.search-panel input:focus {
+.search-bar-wrap:focus-within {
   border-color: var(--brown);
-  box-shadow: 0 0 0 3px rgba(94, 68, 50, 0.12);
+  box-shadow: 0 0 0 3px rgba(94, 68, 50, 0.1);
 }
-.search-panel input::-webkit-input-placeholder { color: #b0ada8; }
-.search-panel input::-moz-placeholder { color: #b0ada8; }
-.search-panel input:-ms-input-placeholder { color: #b0ada8; }
-.search-results { margin-top: 6px; max-height: 340px; overflow-y: auto; }
+.search-bar-icon {
+  flex-shrink: 0;
+  color: #b0ada8;
+  width: 20px;
+  height: 20px;
+}
+.search-bar-wrap input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--sans);
+  font-size: 16px;
+  padding: 13px 10px;
+  background: none;
+  border: none;
+  color: var(--ink);
+  outline: none;
+}
+.search-bar-wrap input::-webkit-input-placeholder { color: #b0ada8; }
+.search-bar-wrap input::-moz-placeholder { color: #b0ada8; }
+.search-bar-wrap input:-ms-input-placeholder { color: #b0ada8; }
+
+.search-action-btn,
+.search-close-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: var(--gray-soft);
+  transition: background .12s ease, color .12s ease;
+}
+.search-action-btn:hover,
+.search-close-btn:hover {
+  background: rgba(94, 68, 50, 0.08);
+  color: var(--brown);
+}
+.search-action-btn svg,
+.search-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* results */
+.search-results { margin-top: 4px; max-height: 360px; overflow-y: auto; }
 .search-hit {
   display: flex;
   flex-direction: column;
-  padding: 12px 10px;
-  border-radius: 8px;
+  padding: 12px 12px;
+  border-radius: 10px;
   transition: background .12s ease;
   text-decoration: none;
 }
 .search-hit:hover { background: rgba(94, 68, 50, 0.06); }
-.search-hit + .search-hit { margin-top: 2px; }
-.search-hit .kicker {
+.search-hit + .search-hit { margin-top: 1px; }
+.search-hit-kicker {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--gray-soft);
 }
-.search-hit .hit-title {
+.search-hit-title {
   display: block;
   font-family: var(--serif);
   font-weight: 700;
@@ -157,9 +210,9 @@ button { background: none; border: none; cursor: pointer; padding: 0; font-famil
   margin-top: 2px;
   transition: color .15s ease;
 }
-.search-hit:hover .hit-title { color: var(--brown); }
+.search-hit:hover .search-hit-title { color: var(--brown); }
 .search-note {
-  padding: 18px 10px 10px;
+  padding: 18px 12px 10px;
   font-size: 14px;
   color: #5f5c56;
 }
@@ -603,7 +656,7 @@ button { background: none; border: none; cursor: pointer; padding: 0; font-famil
   .header-actions a { width: 32px; height: 32px; }
   .header-actions svg { width: 19px; height: 19px; }
   .header-actions .tiktok-icon { width: 17px; height: 17px; }
-  .search-panel { right: 8px; }
+  .search-panel { width: min(480px, calc(100vw - 16px)); padding: 12px 12px 6px; }
   .site-nav { height: 58px; gap: 20px; }
   .site-nav > a,
   .site-nav .nav-item > a { font-size: 15px; }
