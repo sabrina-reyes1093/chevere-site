@@ -158,15 +158,41 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   });
 })();
 
-/* newsletter: hand the email to the Chevere Substack subscribe flow */
+/* newsletter: POST to Substack in the background — no redirect */
 (function () {
   var form = document.getElementById('newsletter-form');
   if (!form) return;
+  var input = document.getElementById('newsletter-email');
+  var btn = form.querySelector('button[type="submit"]');
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var email = document.getElementById('newsletter-email').value.trim();
-    var url = 'https://itschevere.substack.com/subscribe';
-    if (email) url += '?email=' + encodeURIComponent(email);
-    window.open(url, '_blank', 'noopener');
+    var email = input.value.trim();
+    if (!email) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    var body = new URLSearchParams();
+    body.append('email', email);
+
+    fetch('https://itschevere.substack.com/api/v1/subscribe', {
+      method: 'POST',
+      mode: 'no-cors',
+      body: body
+    }).then(function () {
+      input.value = '';
+      btn.textContent = 'You\'re in!';
+      setTimeout(function () {
+        btn.textContent = 'I\'m In';
+        btn.disabled = false;
+      }, 2500);
+    }).catch(function () {
+      btn.textContent = 'Something went wrong';
+      setTimeout(function () {
+        btn.textContent = 'I\'m In';
+        btn.disabled = false;
+      }, 3000);
+    });
   });
 })();
