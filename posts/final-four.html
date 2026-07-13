@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Final Four Is Here — chévere</title>
+  <link rel="icon" type="image/png" href="../assets/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .post-body {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .post-body p {
+      margin-bottom: 16px;
+    }
+    .post-body p:first-of-type::first-letter {
+      font-family: var(--serif);
+      font-size: 56px;
+      font-weight: 700;
+      float: left;
+      line-height: 1;
+      padding-right: 6px;
+      color: var(--ink);
+    }
+    .post-section.with-image {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-top: 32px;
+    }
+    .post-section-text { flex: 1; min-width: 0; }
+    .post-section-text strong { margin-top: 0; }
+    .post-section-img {
+      width: 160px;
+      height: auto;
+      border-radius: 8px;
+      flex-shrink: 0;
+      aspect-ratio: 3/2;
+      object-fit: cover;
+    }
+    @media (max-width: 560px) {
+      .post-section.with-image { flex-direction: column; }
+      .post-section-img { width: 100%; }
+    }
+    .post-signoff {
+      margin-top: 48px;
+      font-size: 17px;
+      color: var(--gray-soft);
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--brown);
+      transition: opacity .15s ease;
+    }
+    .back-link:hover { opacity: 0.7; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="header-logo" href="../index.html" aria-label="chévere home">
+      <img src="../assets/logo.png" alt="chévere" />
+    </a>
+    <div class="header-actions">
+      <button id="search-toggle" aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
+      <a href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+      <a href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+        <svg class="tiktok-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="19" height="19"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.87.13v-3.5a6.37 6.37 0 0 0-.87-.06A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.46a8.23 8.23 0 0 0 4.77 1.48v-3.4a4.86 4.86 0 0 1-1.01.15z"/></svg>
+      </a>
+      <a href="../index.html#newsletter" aria-label="Newsletter sign-up" title="Newsletter">
+        <i data-lucide="mail" stroke-width="1.8" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
+      <div class="search-bar-wrap">
+        <i data-lucide="search" class="search-bar-icon" stroke-width="2" aria-hidden="true"></i>
+        <input id="search-input" type="text" placeholder="Search posts..." autocomplete="off" />
+        <button id="search-submit" class="search-action-btn" aria-label="Search" type="button">
+          <i data-lucide="arrow-right" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+        <button id="search-close" class="search-close-btn" aria-label="Close search" type="button">
+          <i data-lucide="x" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <a href="../index.html">Home</a>
+    <div class="nav-item has-dropdown">
+      <a href="../blog.html">Blog<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="../blog.html">All Blogs</a>
+        <a href="../blog.html?cat=books">Books</a>
+        <a href="../blog.html?cat=tv-film">TV &amp; Film</a>
+        <a href="../blog.html?cat=travel">Travel</a>
+        <a href="../blog.html?cat=food-drink">Food &amp; Drink</a>
+        <a href="../blog.html?cat=fashion">Fashion</a>
+        <a href="../blog.html?cat=sports">Sports</a>
+      </div>
+    </div>
+    <a href="../about.html">About</a>
+  </nav>
+
+  <main class="page-main">
+    <a class="back-link" href="../blog.html">&larr; Back to Blog</a>
+    <span class="kicker" style="display:block;margin-bottom:8px">Sports</span>
+    <h1 class="page-title">The Final Four Is Here</h1>
+    <p class="page-tagline" style="font-size:15px;color:#8e8c88;margin-top:-4px;margin-bottom:28px">Jul 5, 2026</p>
+    <div class="post-body">
+      <p>And then there were four. France, Spain, England, and Argentina have officially reached the World Cup semifinals — and each team has taken a very different route to get here. There have been late winners, dramatic comebacks, superstar performances, and enough stressful moments to keep every group chat active.</p>
+
+      <strong style="display:block;font-family:var(--serif);font-weight:700;font-size:20px;color:var(--ink);margin-top:32px;margin-bottom:8px">France: Built for the Big Stage 🇫🇷</strong>
+      <p>France has looked like one of the tournament's most complete teams. After cruising through the earlier rounds, Les Bleus showed they could also win the difficult, less glamorous matches — squeezing past Paraguay before defeating Morocco 2–0 in the quarterfinals. Kylian Mbappé remains the face of the team and its biggest attacking threat, while Ousmane Dembélé has helped turn France's forward line into one of the most dangerous in the tournament.</p>
+
+      <strong style="display:block;font-family:var(--serif);font-weight:700;font-size:20px;color:var(--ink);margin-top:32px;margin-bottom:8px">Spain: Calm, Controlled, and Slightly Terrifying 🇪🇸</strong>
+      <p>Spain's journey has been defined by control and composure. They won Group H before eliminating Austria, Portugal, and Belgium, conceding their first goal of the tournament only in the quarterfinals. Teenage star Lamine Yamal brings speed and creativity, while Pedri controls the tempo in midfield. Mikel Merino has also become Spain's unlikely clutch hero, scoring late against Portugal and finding the winner against Belgium.</p>
+
+      <strong style="display:block;font-family:var(--serif);font-weight:700;font-size:20px;color:var(--ink);margin-top:32px;margin-bottom:8px">England: Drama Is Apparently Part of the Plan 🏴󠁧󠁢󠁥󠁮󠁧󠁿</strong>
+      <p>England topped its group after wins over Croatia and Panama and a draw against Ghana, but the knockout rounds have been anything but calm. The Three Lions survived a tense match against DR Congo, pulled off a wild 3–2 victory over Mexico, and then came from behind to defeat Norway 2–1. Jude Bellingham has been the heartbeat of the team, scoring twice against Norway after another huge performance against Mexico. Harry Kane remains England's reliable goal threat, but Bellingham has delivered the tournament's biggest main-character moments.</p>
+
+      <strong style="display:block;font-family:var(--serif);font-weight:700;font-size:20px;color:var(--ink);margin-top:32px;margin-bottom:8px">Argentina: The Champions Refuse to Leave 🇦🇷</strong>
+      <p>The defending champions are still standing, although their road has required plenty of resilience. Argentina won Group J before surviving Cabo Verde, overcoming Egypt, and outlasting Switzerland in the quarterfinals. Lionel Messi continues to rewrite World Cup history and remains one of the tournament's leading scorers, but Argentina's supporting cast has stepped up too — especially Julián Álvarez and Lautaro Martínez, whose extra-time goals finally broke Switzerland.</p>
+
+      <p>Now it comes down to France vs. Spain and England vs. Argentina. Four football giants, two completely chaotic matches, and one place in the final waiting on the other side.</p>
+      <p><strong>Who are you sending through?</strong></p>
+
+      <p class="post-signoff">Until next week — stay <em>chévere</em></p>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../site.js"></script>
+</body>
+</html>
