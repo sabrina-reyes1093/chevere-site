@@ -27,6 +27,33 @@
       padding-right: 6px;
       color: var(--ink);
     }
+    .post-section.with-image {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-top: 32px;
+    }
+    .post-section-text { flex: 1; min-width: 0; }
+    .post-section-text strong {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .post-section-img {
+      width: 160px;
+      height: 200px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      object-fit: cover;
+      object-position: center 25%;
+    }
+    @media (max-width: 560px) {
+      .post-section.with-image { flex-direction: column; }
+      .post-section-img { width: 100%; height: 240px; }
+    }
     .post-signoff {
       margin-top: 48px;
       font-size: 17px;
@@ -106,37 +133,55 @@
     </figure>
     <div class="post-body">
       <p>Zendaya has never treated the red carpet as simply a place to wear a beautiful dress. With each new project, she and longtime stylist Law Roach create a complete fashion era that reflects the world of the film. For <em>The Odyssey</em>, her wardrobe has embraced flowing white fabrics, sculptural silhouettes, metallic accents and Grecian influences inspired by her role as Athena. Rather than recreating a costume, the looks capture the power, wisdom and mythology associated with the character.</p>
-      <p>The tour began at the London photocall, where Zendaya wore a custom ivory Jacquemus gown with a low-draped back, an attached headscarf and oversized gold earrings. Minimal yet regal, the look introduced the visual language of the press tour. At the London premiere, she shifted into something more dramatic: a Schiaparelli couture gown with a porcelain-like bodice, a shimmering beaded skirt and built-in lighting that transformed her into a glowing modern goddess.</p>
-      <p>In Paris, Zendaya continued the story through both archival fashion and custom couture. She wore a dramatic 1997 Givenchy design by Alexander McQueen, pairing its structured shoulders and sweeping sleeves with a pointed gold Philip Treacy headpiece. She later changed into a custom Louis Vuitton lace gown featuring a voluminous ruffled bolero, a central cutout and a tanzanite necklace. Where the Givenchy look felt powerful and commanding, the Louis Vuitton gown offered a softer and more romantic interpretation of Athena.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin:32px 0">
-        <figure style="margin:0">
-          <img src="../assets/zendaya-london.png" alt="Zendaya in white dress at London premiere" style="width:100%;height:380px;display:block;object-fit:cover;object-position:center 30%;border-radius:8px" />
-          <figcaption style="font-size:12px;color:#8e8c88;margin-top:6px">London premiere</figcaption>
-        </figure>
-        <figure style="margin:0">
-          <img src="../assets/zendaya-paris.png" alt="Zendaya in Paris press tour look" style="width:100%;height:380px;display:block;object-fit:cover;object-position:center 30%;border-radius:8px" />
-          <figcaption style="font-size:12px;color:#8e8c88;margin-top:6px">Paris</figcaption>
-        </figure>
-        <figure style="margin:0">
-          <img src="../assets/zendaya-paris3.jfif" alt="Zendaya at Paris with Eiffel Tower" style="width:100%;height:380px;display:block;object-fit:cover;object-position:center 30%;border-radius:8px" />
-          <figcaption style="font-size:12px;color:#8e8c88;margin-top:6px">Paris press tour</figcaption>
-        </figure>
+
+      <div class="post-section with-image">
+        <div class="post-section-text">
+          <strong>London — Photocall</strong>
+          <p>The tour began at the London photocall, where Zendaya wore a custom ivory Jacquemus gown with a low-draped back, an attached headscarf and oversized gold earrings. Minimal yet regal, the look introduced the visual language of the press tour.</p>
+        </div>
+        <img class="post-section-img" src="../assets/ZENDAYA1.jfif" alt="Jacquemus gown at London photocall" />
       </div>
-      <p>The New York appearances pushed the theme even further. Zendaya revived an archival Alberta Ferretti minidress with gold fringe and knee-high gladiator sandals, transforming a nostalgic trend into something perfectly suited to the mythological world of the film. The tour's most theatrical moment came at the New York premiere, where she wore a custom white Matières Fécales gown with a feathered train and enormous sculptural wings. Paired with a long fishtail braid and restrained makeup, the look felt like the final transformation in a fashion narrative that had gradually evolved from subtle Grecian references into full mythological spectacle.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin:32px 0">
-        <figure style="margin:0">
-          <img src="../assets/zendaya-london2.png" alt="Zendaya at London event" style="width:100%;height:380px;display:block;object-fit:cover;object-position:center 30%;border-radius:8px" />
-          <figcaption style="font-size:12px;color:#8e8c88;margin-top:6px">London</figcaption>
-        </figure>
-        <figure style="margin:0">
-          <img src="../assets/zendaya-newyork3.png" alt="Zendaya in New York look" style="width:100%;height:380px;display:block;object-fit:cover;object-position:center 30%;border-radius:8px" />
-          <figcaption style="font-size:12px;color:#8e8c88;margin-top:6px">New York press tour</figcaption>
-        </figure>
+
+      <div class="post-section with-image">
+        <div class="post-section-text">
+          <strong>London — Premiere</strong>
+          <p>At the London premiere, she shifted into something more dramatic: a Schiaparelli couture gown with a porcelain-like bodice, a shimmering beaded skirt and built-in lighting that transformed her into a glowing modern goddess.</p>
+        </div>
+        <img class="post-section-img" src="../assets/zendaya-london.png" alt="Schiaparelli at London premiere" />
       </div>
-      <figure style="margin:32px 0">
-        <img src="../assets/zendaya-newyork2.png" alt="Zendaya in custom Matières Fécales gown with sculptural wings at New York premiere" style="width:100%;max-height:500px;object-fit:cover;object-position:center;border-radius:10px" />
-        <figcaption style="font-size:13px;color:#8e8c88;margin-top:8px;text-align:center">Custom Matières Fécales gown with feathered train and sculptural wings — New York premiere</figcaption>
-      </figure>
+
+      <div class="post-section with-image">
+        <div class="post-section-text">
+          <strong>Paris — Photocall</strong>
+          <p>In Paris, she wore a dramatic 1997 Givenchy design by Alexander McQueen, pairing its structured shoulders and sweeping sleeves with a pointed gold Philip Treacy headpiece.</p>
+        </div>
+        <img class="post-section-img" src="../assets/zendaya-paris.png" alt="Givenchy by McQueen at Paris photocall" />
+      </div>
+
+      <div class="post-section with-image">
+        <div class="post-section-text">
+          <strong>Paris — Premiere</strong>
+          <p>She later changed into a custom Louis Vuitton lace gown featuring a voluminous ruffled bolero, a central cutout and a tanzanite necklace. Where the Givenchy look felt powerful and commanding, the Louis Vuitton gown offered a softer and more romantic interpretation of Athena.</p>
+        </div>
+        <img class="post-section-img" src="../assets/zendaya-paris3.jfif" alt="Louis Vuitton at Paris premiere" />
+      </div>
+
+      <div class="post-section with-image">
+        <div class="post-section-text">
+          <strong>New York — Press Appearance</strong>
+          <p>The New York appearances pushed the theme even further. Zendaya revived an archival Alberta Ferretti minidress with gold fringe and knee-high gladiator sandals, transforming a nostalgic trend into something perfectly suited to the mythological world of the film.</p>
+        </div>
+        <img class="post-section-img" src="../assets/zendaya-newyork3.png" alt="Alberta Ferretti in New York" />
+      </div>
+
+      <div class="post-section with-image">
+        <div class="post-section-text">
+          <strong>New York — Premiere</strong>
+          <p>The tour's most theatrical moment came at the New York premiere, where she wore a custom white Matières Fécales gown with a feathered train and enormous sculptural wings. Paired with a long fishtail braid and restrained makeup, the look felt like the final transformation in a fashion narrative that had gradually evolved from subtle Grecian references into full mythological spectacle.</p>
+        </div>
+        <img class="post-section-img" src="../assets/zendaya-newyork2.png" alt="Matières Fécales at New York premiere" />
+      </div>
+
       <p>This approach is often called method dressing, but Zendaya and Roach take it beyond simply matching an outfit to a movie's theme. During the <em>Challengers</em> press tour, tennis-inspired pieces brought the film's athletic world onto the carpet, while the futuristic silhouettes and metallic textures of <em>Dune</em> reflected its otherworldly setting. What makes Zendaya's style so effective is her ability to fully commit to an idea without disappearing beneath the clothes. Each appearance feels intentional, building toward a larger story rather than existing as an isolated fashion moment. Her outfits introduce a character, establish a mood and create anticipation before audiences ever enter the theater. Zendaya does not simply arrive at a premiere wearing a dress — she gives the audience another scene.</p>
       <p class="post-signoff">Until next week — stay <em>chévere</em></p>
     </div>
