@@ -131,6 +131,169 @@
         max-width: 600px;
       }
     }
+
+    /* framer-motion-style carousel */
+    .fm-carousel {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      overflow: hidden;
+    }
+    .fm-carousel-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .fm-carousel-header p {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 8px;
+    }
+    .fm-carousel-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .fm-track {
+      display: flex;
+      gap: 24px;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: grab;
+      padding: 10px 0;
+    }
+    .fm-track.dragging { cursor: grabbing; transition: none; }
+    .fm-slide {
+      flex: 0 0 300px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+      transform-origin: center;
+      transition: opacity 0.3s ease;
+    }
+    .fm-slide-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .fm-slide-body {
+      padding: 18px 20px 24px;
+      position: relative;
+    }
+    .fm-slide-body .kicker {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--brown);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .fm-slide-body h3 {
+      font-family: var(--serif);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .fm-slide-body p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .fm-float-icons {
+      position: absolute;
+      top: -10px;
+      right: 14px;
+      display: flex;
+      gap: 4px;
+    }
+    .fm-float-icons svg {
+      width: 18px;
+      height: 18px;
+      animation: fmFloat 3s ease-in-out infinite;
+    }
+    .fm-float-icons svg:nth-child(1) { animation-delay: 0s; }
+    .fm-float-icons svg:nth-child(2) { animation-delay: 0.5s; }
+    .fm-float-icons svg:nth-child(3) { animation-delay: 1s; }
+    @keyframes fmFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+      50% { transform: translateY(-10px) rotate(8deg); opacity: 1; }
+    }
+    .fm-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 36px;
+    }
+    .fm-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border-strong);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      color: var(--brown);
+    }
+    .fm-btn:hover {
+      background: rgba(94, 68, 50, 0.08);
+      transform: scale(1.12);
+    }
+    .fm-btn svg { width: 20px; height: 20px; }
+    .fm-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .fm-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      transition: background 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .fm-dot.active {
+      background: var(--brown);
+      transform: scale(1.4);
+    }
+    /* background floating particles */
+    .fm-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .fm-particle {
+      position: absolute;
+      opacity: 0.08;
+    }
+    .fm-particle svg { width: 28px; height: 28px; color: var(--brown); }
+    .fm-particle:nth-child(1) { top: 15%; left: 8%; animation: fmParticle 12s ease-in-out infinite; }
+    .fm-particle:nth-child(2) { top: 60%; left: 15%; animation: fmParticle 14s ease-in-out infinite 2s; }
+    .fm-particle:nth-child(3) { top: 30%; right: 10%; animation: fmParticle 11s ease-in-out infinite 1s; }
+    .fm-particle:nth-child(4) { top: 75%; right: 18%; animation: fmParticle 15s ease-in-out infinite 3s; }
+    .fm-particle:nth-child(5) { top: 45%; left: 45%; animation: fmParticle 13s ease-in-out infinite 4s; }
+    @keyframes fmParticle {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      33% { transform: translateY(-20px) rotate(120deg); }
+      66% { transform: translateY(10px) rotate(240deg); }
+    }
+    @media (max-width: 700px) {
+      .fm-slide { flex: 0 0 260px; }
+    }
   </style>
 </head>
 <body class="home">
@@ -225,6 +388,99 @@
     </main>
   </div>
 
+  <div class="fm-carousel">
+    <div class="fm-particles">
+      <span class="fm-particle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+      <span class="fm-particle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      <span class="fm-particle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.169L12 18.896l-7.335 3.87 1.401-8.169L.132 9.21l8.2-1.192z"/></svg></span>
+      <span class="fm-particle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+      <span class="fm-particle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.169L12 18.896l-7.335 3.87 1.401-8.169L.132 9.21l8.2-1.192z"/></svg></span>
+    </div>
+
+    <div class="fm-carousel-header">
+      <p>Curated · Culture · Stories</p>
+      <h2>Worth Your Time</h2>
+    </div>
+
+    <div class="fm-track" id="fm-track">
+      <div class="fm-slide">
+        <img class="fm-slide-img" src="assets/zendaya-cover.png" alt="Zendaya" />
+        <div class="fm-slide-body">
+          <div class="fm-float-icons">
+            <svg viewBox="0 0 24 24" fill="#c9606b"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#c9a44e"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.169L12 18.896l-7.335 3.87 1.401-8.169L.132 9.21l8.2-1.192z"/></svg>
+          </div>
+          <span class="kicker">Fashion</span>
+          <h3>Zendaya: The Modern Muse</h3>
+          <p>Turning fashion into story through method dressing and character-driven press tours.</p>
+        </div>
+      </div>
+
+      <div class="fm-slide">
+        <img class="fm-slide-img" src="assets/final-four.png" alt="The Final Four" />
+        <div class="fm-slide-body">
+          <div class="fm-float-icons">
+            <svg viewBox="0 0 24 24" fill="#c9606b"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#c9a44e"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.169L12 18.896l-7.335 3.87 1.401-8.169L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <span class="kicker">Sports</span>
+          <h3>The Final Four Is Here</h3>
+          <p>France, Spain, England, and Argentina reach the World Cup semifinals.</p>
+        </div>
+      </div>
+
+      <div class="fm-slide">
+        <img class="fm-slide-img" src="assets/world-cup-2026.jpg" alt="World Cup" />
+        <div class="fm-slide-body">
+          <div class="fm-float-icons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#c9606b"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#c9a44e"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.169L12 18.896l-7.335 3.87 1.401-8.169L.132 9.21l8.2-1.192z"/></svg>
+          </div>
+          <span class="kicker">Sports</span>
+          <h3>The World Cup Is a Whole Mood</h3>
+          <p>The culture, the food, the watch parties — soccer becomes background music to summer.</p>
+        </div>
+      </div>
+
+      <div class="fm-slide">
+        <img class="fm-slide-img" src="assets/hotdragon.png" alt="My Current Obsessions" />
+        <div class="fm-slide-body">
+          <div class="fm-float-icons">
+            <svg viewBox="0 0 24 24" fill="#c9a44e"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.169L12 18.896l-7.335 3.87 1.401-8.169L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#c9606b"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </div>
+          <span class="kicker">TV & Film</span>
+          <h3>My Current Obsessions</h3>
+          <p>House of the Dragon, ACOTAR, picnics, gardens, and everything summer.</p>
+        </div>
+      </div>
+
+      <div class="fm-slide">
+        <img class="fm-slide-img" src="assets/obsession.png" alt="Gen Z Horror" />
+        <div class="fm-slide-body">
+          <div class="fm-float-icons">
+            <svg viewBox="0 0 24 24" fill="#c9606b"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#c9a44e"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.169L12 18.896l-7.335 3.87 1.401-8.169L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <span class="kicker">TV & Film</span>
+          <h3>Gen Z and the New Wave of Horror</h3>
+          <p>Obsession and The Backrooms capture two sides of modern horror.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fm-controls">
+      <button class="fm-btn" id="fm-prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <button class="fm-btn" id="fm-next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+    </div>
+    <div class="fm-dots" id="fm-dots"></div>
+  </div>
+
   <section class="newsletter" id="newsletter">
     <h2>A Letter from Chévere</h2>
     <p class="newsletter-sub">Get Chévere in your inbox — a weekly curation of finds worth discovering.</p>
@@ -243,6 +499,109 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="site.js"></script>
+  <script>
+    (function () {
+      var track = document.getElementById('fm-track');
+      var slides = track.querySelectorAll('.fm-slide');
+      var prev = document.getElementById('fm-prev');
+      var next = document.getElementById('fm-next');
+      var dotsContainer = document.getElementById('fm-dots');
+      var current = 0;
+      var autoTimer;
+      var slideWidth = 324;
+
+      function calcSlideWidth() {
+        if (window.innerWidth <= 700) slideWidth = 284;
+        else slideWidth = 324;
+      }
+
+      for (var i = 0; i < slides.length; i++) {
+        var dot = document.createElement('span');
+        dot.className = 'fm-dot';
+        dot.addEventListener('click', function () {
+          var idx = Array.prototype.indexOf.call(dotsContainer.children, this);
+          goTo(idx);
+        });
+        dotsContainer.appendChild(dot);
+      }
+
+      function updateDots() {
+        var dots = dotsContainer.querySelectorAll('.fm-dot');
+        dots.forEach(function (d, i) {
+          d.classList.toggle('active', i === current);
+        });
+      }
+
+      function goTo(idx) {
+        current = idx;
+        if (current < 0) current = slides.length - 1;
+        if (current >= slides.length) current = 0;
+        calcSlideWidth();
+        track.style.transform = 'translateX(-' + (current * slideWidth) + 'px)';
+        updateDots();
+        resetAuto();
+      }
+
+      function nextSlide() { goTo(current + 1); }
+      function prevSlide() { goTo(current - 1); }
+
+      function resetAuto() {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(nextSlide, 4000);
+      }
+
+      prev.addEventListener('click', prevSlide);
+      next.addEventListener('click', nextSlide);
+
+      /* drag / swipe */
+      var startX = 0;
+      var dragging = false;
+      var currentTranslate = 0;
+
+      track.addEventListener('pointerdown', function (e) {
+        dragging = true;
+        startX = e.clientX;
+        track.classList.add('dragging');
+        track.setPointerCapture(e.pointerId);
+      });
+
+      track.addEventListener('pointermove', function (e) {
+        if (!dragging) return;
+        var diff = e.clientX - startX;
+        calcSlideWidth();
+        currentTranslate = -(current * slideWidth) + diff;
+        track.style.transform = 'translateX(' + currentTranslate + 'px)';
+      });
+
+      track.addEventListener('pointerup', function (e) {
+        if (!dragging) return;
+        dragging = false;
+        track.classList.remove('dragging');
+        var diff = e.clientX - startX;
+        if (Math.abs(diff) > 50) {
+          if (diff < 0) nextSlide();
+          else prevSlide();
+        } else {
+          goTo(current);
+        }
+      });
+
+      track.addEventListener('pointercancel', function () {
+        dragging = false;
+        track.classList.remove('dragging');
+        goTo(current);
+      });
+
+      window.addEventListener('resize', function () {
+        calcSlideWidth();
+        goTo(current);
+      });
+
+      calcSlideWidth();
+      updateDots();
+      resetAuto();
+    })();
+  </script>
 
 </body>
 </html>
