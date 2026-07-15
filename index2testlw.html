@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chévere</title>
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .mag-wrapper {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      background: var(--bg);
+    }
+    .mag-main {
+      display: block;
+    }
+    .mag-main img {
+      width: 100%;
+      display: block;
+    }
+    .mag-h1 {
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--brown);
+      text-decoration: underline;
+      text-align: right;
+      margin-bottom: 24px;
+    }
+    .mag-image-block {
+      position: relative;
+      margin-bottom: 32px;
+    }
+    .mag-image-block p {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 8px;
+      padding: 0;
+      text-align: center;
+      color: var(--gray-soft);
+    }
+    .mag-image-block img {
+      opacity: 0.9;
+      border-radius: 4px;
+    }
+    .article-info {
+      max-width: 800px;
+      margin: 48px auto 0;
+    }
+    .article-info h2 {
+      font-family: var(--serif);
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--ink);
+      word-spacing: 0.15em;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+    .article-info h3 {
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      line-height: 1.4;
+      color: var(--brown);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .article-info .story p {
+      margin-top: 18px;
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    @media (min-width: 900px) {
+      .mag-wrapper {
+        padding: 60px 32px 100px;
+      }
+      .mag-main {
+        display: grid;
+        grid: repeat(auto-fill, minmax(6em, auto)) / auto-flow 1fr;
+        grid-gap: 16px;
+        align-items: start;
+      }
+      .mag-main img {
+        width: auto;
+      }
+      .mag-h1 {
+        grid-row: 1;
+        grid-column: 3;
+      }
+      .mag-image-1 {
+        grid-row: 1;
+        grid-column: 1;
+      }
+      .mag-image-1 img {
+        max-height: 475px;
+      }
+      .mag-image-2 {
+        grid-row: 2;
+        grid-column: 2;
+      }
+      .mag-image-2 img {
+        max-height: 475px;
+      }
+      .mag-image-3 {
+        grid-row: 4;
+        grid-column: 3;
+      }
+      .mag-image-3 img {
+        max-height: 500px;
+      }
+      .article-info {
+        grid-row: 6;
+        grid-column: 1 / 3;
+        margin: 48px 0 0 16px;
+      }
+      .article-info .story {
+        margin: 0 16px;
+        max-width: 600px;
+      }
+    }
+  </style>
+</head>
+<body class="home">
+
+  <header class="site-header">
+    <a class="header-logo" href="index.html" aria-label="chévere home">
+      <img src="assets/logo.png" alt="chévere" />
+    </a>
+    <div class="header-actions">
+      <button id="search-toggle" aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
+      <a href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+      <a href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+        <svg class="tiktok-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="19" height="19"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.87.13v-3.5a6.37 6.37 0 0 0-.87-.06A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.46a8.23 8.23 0 0 0 4.77 1.48v-3.4a4.86 4.86 0 0 1-1.01.15z"/></svg>
+      </a>
+      <a href="#newsletter" aria-label="Newsletter sign-up" title="Newsletter">
+        <i data-lucide="mail" stroke-width="1.8" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
+      <div class="search-bar-wrap">
+        <i data-lucide="search" class="search-bar-icon" stroke-width="2" aria-hidden="true"></i>
+        <input id="search-input" type="text" placeholder="Search posts..." autocomplete="off" />
+        <button id="search-submit" class="search-action-btn" aria-label="Search" type="button">
+          <i data-lucide="arrow-right" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+        <button id="search-close" class="search-close-btn" aria-label="Close search" type="button">
+          <i data-lucide="x" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <a href="index.html" class="active">Home</a>
+    <div class="nav-item has-dropdown">
+      <a href="blog.html">Blog<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="blog.html">All Blogs</a>
+        <a href="blog.html?cat=books">Books</a>
+        <a href="blog.html?cat=tv-film">TV &amp; Film</a>
+        <a href="blog.html?cat=travel">Travel</a>
+        <a href="blog.html?cat=food-drink">Food &amp; Drink</a>
+        <a href="blog.html?cat=fashion">Fashion</a>
+        <a href="blog.html?cat=sports">Sports</a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+  </nav>
+
+  <div class="mag-wrapper">
+    <main class="mag-main">
+      <h1 class="mag-h1">FASHION · SPORTS · FILM</h1>
+
+      <div class="mag-image-block mag-image-1">
+        <img src="assets/zendaya-cover.png" alt="Zendaya" />
+        <p>THE MODERN MUSE</p>
+      </div>
+
+      <div class="mag-image-block mag-image-2">
+        <img src="assets/final-four.png" alt="The Final Four" />
+        <p>THE FINAL FOUR IS HERE</p>
+      </div>
+
+      <div class="mag-image-block mag-image-3">
+        <img src="assets/world-cup-2026.jpg" alt="World Cup" />
+        <p>THE WORLD CUP IS A WHOLE MOOD</p>
+      </div>
+
+      <div class="article-info">
+        <h2 style="font-family:var(--serif);font-size:clamp(40px,7vw,72px);font-weight:700;line-height:1.1;color:var(--ink);word-spacing:0.15em;margin-bottom:16px">
+          WELCOME<br>TO<br>CHÉVERE
+        </h2>
+        <h3 style="font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:0.04em;color:var(--brown);text-transform:uppercase;margin-bottom:28px">
+          A curated lifestyle edit for culture, style, stories, and the everyday things worth discovering
+        </h3>
+        <div class="story">
+          <p style="margin-top:18px;font-size:17px;line-height:1.8;color:var(--text)">
+            From books and film to fashion, food, travel, and design, Chévere brings together thoughtful recommendations and ideas worth your time. A lifestyle edit exploring culture, style, stories, and the little discoveries that make everyday life feel more inspired.
+          </p>
+          <p style="margin-top:18px;font-size:17px;line-height:1.8;color:var(--text)">
+            Whether it's the latest press tour fashion moment, the drama of a World Cup summer, or the slow-burn thrillers that stay with you long after the credits — Chévere is where curated meets culture. Rooted in warmth, guided by curiosity, and always a little unexpected.
+          </p>
+        </div>
+        <div style="margin-top:36px;display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-start">
+          <a href="blog.html" class="btn-primary">Explore</a>
+          <a href="about.html" class="btn-secondary">About</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <section class="newsletter" id="newsletter">
+    <h2>A Letter from Chévere</h2>
+    <p class="newsletter-sub">Get Chévere in your inbox — a weekly curation of finds worth discovering.</p>
+    <form id="newsletter-form">
+      <input id="newsletter-email" type="email" placeholder="Enter your email" required />
+      <button type="submit">I'm In</button>
+    </form>
+  </section>
+
+  <div id="newsletter-popup" class="newsletter-popup">
+    <button id="newsletter-popup-close" class="newsletter-popup-close" aria-label="Close">&times;</button>
+    <h3>Thank you for subscribing!</h3>
+    <p>Be on the look out for our weekly newsletters!</p>
+    <p class="newsletter-popup-signoff">Stay <em>chévere</em></p>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="site.js"></script>
+
+</body>
+</html>
