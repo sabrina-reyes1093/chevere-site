@@ -53,7 +53,7 @@
     }
     @media (max-width: 560px) {
       .post-section.with-image { flex-direction: column; }
-      .post-section-img { width: 100%; height: 220px; object-position: center 30%; }
+      .post-section-img { width: 100%; height: 260px; object-fit: contain; object-position: center top; background: var(--skeleton); }
     }
     .press-tour-carousel {
       margin: 40px 0 32px;
@@ -61,10 +61,11 @@
     .carousel-label {
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      color: var(--gray-soft);
-      margin-bottom: 16px;
+      color: var(--brown);
+      margin-bottom: 14px;
+      text-align: left;
     }
     .splide__slide img {
       width: 100%;
@@ -72,6 +73,9 @@
       object-fit: cover;
       object-position: center top;
       border-radius: 8px;
+    }
+    @media (max-width: 560px) {
+      .splide__slide img { height: 280px; object-fit: contain; background: var(--skeleton); }
     }
     .splide__arrow { background: rgba(255,255,255,0.85) !important; opacity: 1 !important; }
     .splide__arrow svg { fill: var(--brown) !important; }
