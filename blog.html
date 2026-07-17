@@ -9,193 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    .dua-vacation-thumb {
-      position: relative;
-      overflow: hidden;
-      min-height: 100%;
-      background: linear-gradient(145deg, rgba(245,217,159,.95), rgba(246,238,224,.96) 42%, rgba(217,135,101,.9)), var(--skeleton);
-    }
-    .dua-vacation-thumb:before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(90deg, rgba(255,255,255,.24) 0 1px, transparent 1px 22px), linear-gradient(0deg, rgba(18,82,109,.88) 0 34%, transparent 34%);
-      opacity: .95;
-    }
-    .dua-thumb-sun {
-      position: absolute;
-      right: 11%;
-      top: 12%;
-      width: 58px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: #f3c550;
-      box-shadow: 0 10px 24px rgba(90,64,35,.18);
-    }
-    .dua-thumb-card {
-      position: absolute;
-      display: block;
-      border: 1px solid rgba(67,49,37,.18);
-      border-radius: 8px;
-      background: rgba(255,250,240,.9);
-      box-shadow: 0 16px 36px rgba(67,49,37,.16);
-    }
-    .dua-thumb-card.sunglasses { left: 10%; top: 16%; width: 28%; height: 50%; }
-    .dua-thumb-card.sunglasses:before,
-    .dua-thumb-card.sunglasses:after {
-      content: "";
-      position: absolute;
-      top: 24%;
-      width: 32%;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: #151515;
-    }
-    .dua-thumb-card.sunglasses:before { left: 14%; }
-    .dua-thumb-card.sunglasses:after { right: 14%; }
-    .dua-thumb-card.street { left: 43%; top: 12%; width: 22%; height: 58%; background: #2d5b75; }
-    .dua-thumb-card.street:after {
-      content: "";
-      position: absolute;
-      left: 26%;
-      right: 26%;
-      top: 34%;
-      bottom: 18%;
-      background: #244f43;
-      border-radius: 6px 6px 16px 16px;
-    }
-    .dua-thumb-card.sea { right: 8%; bottom: 12%; width: 26%; height: 35%; background: #fffaf0; }
-    .dua-thumb-card.sea:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 45%;
-      background: #63a6ad;
-      border-radius: 0 0 8px 8px;
-    }
-    .dua-vacation-thumb.large { aspect-ratio: 16 / 9; border-radius: 10px; margin-bottom: 28px; }
-    .dua-thumb-title {
-      position: absolute;
-      left: 26px;
-      right: 26px;
-      bottom: 24px;
-      z-index: 2;
-      color: var(--ink);
-      font-family: var(--serif);
-      font-weight: 700;
-      font-size: clamp(24px, 4vw, 42px);
-      line-height: 1.05;
-    }
-    .inline-post {
-      max-width: 760px;
-      margin: 84px auto 0;
-      padding-top: 54px;
-      border-top: 1px solid var(--border);
-    }
-    .inline-post h2 {
-      font-family: var(--serif);
-      font-weight: 700;
-      font-size: clamp(30px, 5vw, 38px);
-      color: var(--ink);
-      margin-bottom: 18px;
-    }
-    .inline-post-date {
-      font-size: 15px;
-      color: #8e8c88;
-      margin-top: -4px;
-      margin-bottom: 28px;
-    }
-    .inline-post-body {
-      font-size: 17px;
-      line-height: 1.8;
-      color: var(--text);
-    }
-    .inline-post-body p { margin-bottom: 16px; }
-    .inline-post-body p:first-of-type::first-letter {
-      font-family: var(--serif);
-      font-size: 56px;
-      font-weight: 700;
-      float: left;
-      line-height: 1;
-      padding-right: 6px;
-      color: var(--ink);
-    }
-    .inline-post-body strong {
-      display: block;
-      font-family: var(--serif);
-      font-weight: 700;
-      font-size: 20px;
-      color: var(--ink);
-      margin-top: 32px;
-      margin-bottom: 8px;
-    }
-    .inline-post-body ul { margin: 10px 0 22px; padding-left: 22px; }
-    .inline-post-body li { margin-bottom: 9px; }
-    .inline-frame-wrap {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      background: rgba(255,255,255,.42);
-      box-shadow: 0 18px 48px rgba(60,45,32,.08);
-    }
-    .inline-frame {
-      display: block;
-      width: 100%;
-      height: min(78vh, 980px);
-      border: 0;
-      background: var(--bg);
-    }
-    .inline-frame-note {
-      margin: 12px 0 0;
-      color: #8e8c88;
-      font-size: 13px;
-      text-align: center;
-    }
-    .travel-note,
-    .destination-card {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: rgba(255,255,255,.38);
-    }
-    .travel-note { padding: 20px; margin: 30px 0; }
-    .travel-note strong { margin-top: 0; }
-    .destination-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin: 18px 0 26px;
-    }
-    .destination-card { padding: 16px; }
-    .destination-card b {
-      display: block;
-      font-family: var(--serif);
-      font-size: 19px;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-    .source-list a { color: var(--brown); text-decoration: underline; text-underline-offset: 3px; }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 24px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--brown);
-      transition: opacity .15s ease;
-    }
-    .back-link:hover { opacity: .7; }
-    @media (max-width: 560px) {
-      .destination-grid { grid-template-columns: 1fr; }
-      .inline-frame { height: 84vh; }
-      .dua-thumb-card.sunglasses { width: 34%; }
-      .dua-thumb-card.street { left: 48%; width: 26%; }
-      .dua-thumb-card.sea { display: none; }
-    }
-  </style>
 </head>
 <body>
 
@@ -264,49 +77,35 @@
     </div>
 
     <div class="post-grid" id="post-grid">
-      <a class="post-card featured" data-cat="travel fashion" href="#dua-lipa-vacation">
-        <div class="thumb dua-vacation-thumb">
-          <span class="dua-thumb-sun"></span>
-          <span class="dua-thumb-card sunglasses"></span>
-          <span class="dua-thumb-card street"></span>
-          <span class="dua-thumb-card sea"></span>
-        </div>
-        <div>
-          <span class="kicker">Travel &amp; Fashion</span>
-          <h2>How to Vacation Like Dua Lipa</h2>
-          <p class="dek">A summer travel and street-style guide inspired by Dua Lipa's vacation energy: Mediterranean destinations, city-break outfits, beach-to-dinner packing tips, and hot-girl itinerary ideas.</p>
-          <p class="date">Jul 16, 2026</p>
-        </div>
-      </a>
-      <a class="post-card" data-cat="fashion" href="#zendaya-modern-muse">
+      <a class="post-card" data-cat="fashion" href="posts/zendaya-modern-muse.html">
         <div class="thumb" style="background-image:url(assets/zendaya-cover.png);background-size:cover;background-position:center"></div>
         <span class="kicker">Fashion</span>
         <h2>Zendaya: The Modern Muse and Turning Fashion Into Story</h2>
         <p class="dek">From red-carpet glamour to carefully crafted character dressing, Zendaya uses fashion to extend the stories she tells on screen.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="sports" href="#final-four">
+      <a class="post-card" data-cat="sports" href="posts/final-four.html">
         <div class="thumb" style="background-image:url(assets/final-four.png);background-size:contain;background-position:center;background-repeat:no-repeat;background-color:var(--skeleton)"></div>
         <span class="kicker">Sports</span>
         <h2>The Final Four Is Here</h2>
         <p class="dek">France, Spain, England, and Argentina have officially reached the World Cup semifinals &mdash; and each team has taken a very different route to get here.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="sports" href="#world-cup-mood">
+      <a class="post-card" data-cat="sports" href="posts/world-cup-mood.html">
         <div class="thumb" style="background-image:url(assets/world-cup-2026.jpg);background-size:cover;background-position:center"></div>
         <span class="kicker">Sports</span>
         <h2>The World Cup Isn't Just Soccer, It's a Whole Mood</h2>
         <p class="dek">The 2026 World Cup is already in knockout-stage mode, with the Round of 16 underway and major matchups like Mexico vs. England, Portugal vs. Spain, USA vs. Belgium, Argentina vs. Egypt, and Switzerland vs. Colombia on the schedule.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="tv-film" href="#gen-z-horror">
+      <a class="post-card" data-cat="tv-film" href="posts/gen-z-horror.html">
         <div class="thumb" style="background-image:url(assets/genz-horror-cover.png);background-size:cover;background-position:center"></div>
         <span class="kicker">TV &amp; Film</span>
         <h2>Gen Z and the New Wave of Horror &amp; Thriller Films</h2>
         <p class="dek">Obsession and The Backrooms capture two sides of modern horror &mdash; the psychological thriller and the internet-born nightmare.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="tv-film" href="#my-current-obsessions">
+      <a class="post-card" data-cat="tv-film" href="posts/my-current-obsessions.html">
         <div class="thumb" style="background-image:url(assets/hotdragon.png);background-size:cover;background-position:center"></div>
         <span class="kicker">TV &amp; Film</span>
         <h2>My Current Obsessions</h2>
@@ -320,128 +119,6 @@
       <h2>Nothing published here yet</h2>
       <p>The first edit is on its way &mdash; check back soon.</p>
     </div>
-
-    <article class="inline-post" id="zendaya-modern-muse">
-      <a class="back-link" href="#post-grid">&larr; Back to posts</a>
-      <span class="kicker" style="display:block;margin-bottom:8px">Fashion</span>
-      <h2>Zendaya: The Modern Muse and Turning Fashion Into Story</h2>
-      <p class="inline-post-date">Jul 5, 2026</p>
-      <div class="inline-frame-wrap"><iframe class="inline-frame" src="posts/zendaya-modern-muse.html" title="Zendaya post"></iframe></div>
-      <p class="inline-frame-note">Scroll inside the article frame to read the full post.</p>
-    </article>
-
-    <article class="inline-post" id="final-four">
-      <a class="back-link" href="#post-grid">&larr; Back to posts</a>
-      <span class="kicker" style="display:block;margin-bottom:8px">Sports</span>
-      <h2>The Final Four Is Here</h2>
-      <p class="inline-post-date">Jul 5, 2026</p>
-      <div class="inline-frame-wrap"><iframe class="inline-frame" src="posts/final-four.html" title="Final Four post"></iframe></div>
-      <p class="inline-frame-note">Scroll inside the article frame to read the full post.</p>
-    </article>
-
-    <article class="inline-post" id="world-cup-mood">
-      <a class="back-link" href="#post-grid">&larr; Back to posts</a>
-      <span class="kicker" style="display:block;margin-bottom:8px">Sports</span>
-      <h2>The World Cup Isn't Just Soccer, It's a Whole Mood</h2>
-      <p class="inline-post-date">Jul 5, 2026</p>
-      <div class="inline-frame-wrap"><iframe class="inline-frame" src="posts/world-cup-mood.html" title="World Cup post"></iframe></div>
-      <p class="inline-frame-note">Scroll inside the article frame to read the full post.</p>
-    </article>
-
-    <article class="inline-post" id="gen-z-horror">
-      <a class="back-link" href="#post-grid">&larr; Back to posts</a>
-      <span class="kicker" style="display:block;margin-bottom:8px">TV &amp; Film</span>
-      <h2>Gen Z and the New Wave of Horror &amp; Thriller Films</h2>
-      <p class="inline-post-date">Jul 5, 2026</p>
-      <div class="inline-frame-wrap"><iframe class="inline-frame" src="posts/gen-z-horror.html" title="Gen Z horror post"></iframe></div>
-      <p class="inline-frame-note">Scroll inside the article frame to read the full post.</p>
-    </article>
-
-    <article class="inline-post" id="my-current-obsessions">
-      <a class="back-link" href="#post-grid">&larr; Back to posts</a>
-      <span class="kicker" style="display:block;margin-bottom:8px">TV &amp; Film</span>
-      <h2>My Current Obsessions</h2>
-      <p class="inline-post-date">Jul 5, 2026</p>
-      <div class="inline-frame-wrap"><iframe class="inline-frame" src="posts/my-current-obsessions.html" title="My Current Obsessions post"></iframe></div>
-      <p class="inline-frame-note">Scroll inside the article frame to read the full post.</p>
-    </article>
-
-    <article class="inline-post" id="dua-lipa-vacation">
-      <a class="back-link" href="#post-grid">&larr; Back to posts</a>
-      <span class="kicker" style="display:block;margin-bottom:8px">Travel &amp; Fashion</span>
-      <h2>How to Vacation Like Dua Lipa</h2>
-      <p class="inline-post-date">Jul 16, 2026</p>
-      <div class="inline-post-hero">
-        <div class="dua-vacation-thumb large">
-          <span class="dua-thumb-sun"></span>
-          <span class="dua-thumb-card sunglasses"></span>
-          <span class="dua-thumb-card street"></span>
-          <span class="dua-thumb-card sea"></span>
-          <span class="dua-thumb-title">Summer street style, somewhere by the water</span>
-        </div>
-      </div>
-
-      <div class="inline-post-body">
-        <p>Dua Lipa vacations like she has cracked the code: beach by day, city by night, outfit always doing something. Her travel energy is not just "go somewhere pretty." It is a whole lifestyle formula: sun, food, movement, friends, color, a little glamour, and streetwear that makes even a coffee run look like it belongs in a photo dump.</p>
-        <p>The goal is not to copy her life. The goal is to borrow the method. Vacation like Dua by choosing places with texture: somewhere you can swim in the morning, wander old streets in the afternoon, eat something perfect at sunset, and wear an outfit that makes the walk to dinner feel like part of the trip.</p>
-
-        <strong>Start With the Destination Mood</strong>
-        <p>A Dua-coded trip is usually built around the Mediterranean fantasy: Italy, Albania, Greece, Spain, island light, long lunches, beach clubs, boats, and a suitcase full of looks that can move from swimwear to streetwear without feeling overplanned.</p>
-        <p>For 2026 inspiration, Italy is especially hot. Conde Nast Traveler recently covered a route inspired by Dua's Italian honeymoon orbit, including Sicily, the Amalfi Coast, Porto Ercole, and Rome. That is the blueprint: not just one destination, but a string of places with different moods.</p>
-
-        <div class="destination-grid">
-          <div class="destination-card"><b>Sicily</b><p>Palermo for food, Scopello for clear water, Taormina for drama. Wear a bikini under a linen shirt, then switch into a slip dress for dinner.</p></div>
-          <div class="destination-card"><b>Amalfi Coast</b><p>Positano, Praiano, Ravello. The move is polished glamour: oversized sunglasses, strappy sandals, a small dress, and a bag with personality.</p></div>
-          <div class="destination-card"><b>Albania</b><p>Dua's family roots make Albania part of her broader cultural story. Go for beaches, mountain-meets-sea views, seafood, and a less obvious Mediterranean itinerary.</p></div>
-          <div class="destination-card"><b>Ibiza or Mallorca</b><p>For Balearic energy: beach mornings, late dinners, dancing, and outfits that can handle all three.</p></div>
-        </div>
-
-        <strong>Pack Like Every Outfit Has a Second Life</strong>
-        <p>Dua's vacation style works because it is not just resortwear. It is resortwear with street instincts. Fashion coverage this summer keeps pointing to the same Dua-adjacent pieces: leather flip-flops with jeans, moto boots with slip dresses, crochet, oversized sunglasses, denim cutoffs, button-downs, statement bags, and swimwear styled like clothing.</p>
-
-        <div class="travel-note">
-          <strong>The Chevere packing edit</strong>
-          <ul>
-            <li><b>The beach base:</b> two swimsuits, one oversized cotton shirt, one crochet or mesh dress, one sarong.</li>
-            <li><b>The city base:</b> straight-leg jeans, denim shorts, loose trousers, black tank, white button-down.</li>
-            <li><b>The night base:</b> slip dress, small shoulder bag, gold hoops, strappy sandals or boots.</li>
-            <li><b>The chaos piece:</b> one loud color, one print, one weird accessory, or one tiny bag that carries the whole mood.</li>
-          </ul>
-        </div>
-
-        <strong>The Street-Fashion Vacation Uniform</strong>
-        <p>Here is the easiest Dua-inspired summer formula: contrast. A bikini with raw denim. A slip dress with boots. Jeans with refined flip-flops. A white shirt worn open over swimwear. The outfit should say: relaxed, but very aware.</p>
-        <ul>
-          <li><b>Airport to aperitivo:</b> straight-leg jeans, black tank, open white shirt, leather flip-flops, oversized sunglasses, big black bag.</li>
-          <li><b>Beach club but make it editorial:</b> printed bikini, oversized button-down, low-slung sarong, gold hoops, slick bun, tinted lip balm.</li>
-          <li><b>Old town dinner:</b> lace-trim slip dress, chunky belt, moto boots or strappy sandals, small yellow or red bag.</li>
-          <li><b>Market morning:</b> linen trousers, cropped tee, woven tote, sandals, sunglasses, scarf in the hair.</li>
-          <li><b>Boat day:</b> one-piece swimsuit, denim cutoffs, cotton shirt, waterproof sandals, salty hair, SPF everywhere.</li>
-        </ul>
-
-        <strong>Travel Tips for the Full Dua Effect</strong>
-        <p><b>Book for contrast.</b> Do not just do five beach days in a row. Mix swim days with city wandering, markets, museums, wine bars, and one late night.</p>
-        <p><b>Eat locally, not just aesthetically.</b> The vacation photo is better when the meal is actually good. Find the bakery, the seafood spot, the market fruit, the family-run taverna.</p>
-        <p><b>Keep one flexible day.</b> The most Dua-coded thing you can do is look like you had no plan and somehow found the best beach, best lunch, and best outfit lighting.</p>
-        <p><b>Walk more than you taxi.</b> Street style happens in motion. Also, you find better places when you wander.</p>
-        <p><b>Bring one workout look.</b> Dua has spoken about keeping movement in her travel life, especially Pilates and strength work. You do not need a full wellness itinerary. Pack one cute set, stretch in the morning, swim, walk, dance. That counts.</p>
-
-        <strong>The Chevere Take</strong>
-        <p>To vacation like Dua Lipa is to treat travel as a full-sensory edit. It is not only where you go. It is what you notice: the tiles, the tomatoes, the sea color, the song playing at dinner, the way a white shirt looks after a beach day, the corner table where everyone seems cooler than you but somehow you fit right in.</p>
-        <p>The real formula is simple: pick a destination with sun and culture. Pack clothes that move from beach to street. Eat beautifully. Walk everywhere. Wear the sunglasses. Order the second espresso. Take the photo, then put the phone down.</p>
-
-        <strong>Sources &amp; Inspiration</strong>
-        <ul class="source-list">
-          <li><a href="https://www.cntraveler.com/story/i-followed-dua-lipas-honeymoon-itinerary-heres-how-to-plan-it-for-less" target="_blank" rel="noopener">Conde Nast Traveler: Dua Lipa-inspired Italy itinerary</a></li>
-          <li><a href="https://www.vogue.com/article/dua-lipas-brings-her-vacation-staples-back-to-work" target="_blank" rel="noopener">Vogue: Dua Lipa brings vacation staples back to work</a></li>
-          <li><a href="https://www.vogue.com/article/dua-lipa-summer-moto-boot" target="_blank" rel="noopener">Vogue: Dua Lipa summer moto boot style</a></li>
-          <li><a href="https://www.thezoereport.com/culture/dua-lipa-vacation-style-fashion-celebrity-style-summer-outfits" target="_blank" rel="noopener">The Zoe Report: Dua Lipa's vacation style</a></li>
-          <li><a href="https://www.euronews.com/travel/2026/06/25/mediterranean-travel-trends-how-blue-mind-experiences-and-local-culture-keep-people-coming" target="_blank" rel="noopener">Euronews: Mediterranean travel trends 2026</a></li>
-        </ul>
-
-        <p class="post-signoff">Until next week &mdash; stay <em>chevere</em></p>
-      </div>
-    </article>
   </main>
 
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -464,8 +141,7 @@
       function apply(cat) {
         var visible = 0;
         cards.forEach(function (c) {
-          var cats = (c.getAttribute('data-cat') || '').split(/\s+/);
-          var hide = cat !== 'all' && cats.indexOf(cat) === -1;
+          var hide = cat !== 'all' && c.getAttribute('data-cat') !== cat;
           c.classList.toggle('hidden', hide);
           if (!hide) visible++;
         });
