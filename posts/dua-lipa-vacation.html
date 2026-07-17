@@ -39,6 +39,8 @@
       border-radius: 10px;
       background: rgba(255,255,255,.38);
       padding: 16px;
+      display: flex;
+      flex-direction: column;
     }
     .destination-card b {
       display: block;
@@ -55,7 +57,34 @@
       object-fit: cover;
       object-position: center;
       border-radius: 8px;
-      margin-top: 12px;
+      margin-top: auto;
+    }
+    .post-cover-frame {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      margin-bottom: 28px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--skeleton);
+    }
+    .post-cover-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('../assets/dua-lipa-cover-collage.png') center / cover;
+      filter: blur(16px);
+      transform: scale(1.08);
+      opacity: 0.72;
+    }
+    .post-cover-frame img {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
     }
     .travel-note {
       border: 1px solid var(--border);
@@ -175,7 +204,9 @@
     <h1 class="page-title">How to Vacation Like Dua Lipa</h1>
     <p class="page-tagline" style="font-size:15px;color:#8e8c88;margin-top:-4px;margin-bottom:28px">Jul 16, 2026</p>
     <div class="post-body">
-      <img src="../assets/dua-lipa-cover-collage.png" alt="Summer Travel Moodboard" style="display:block;width:100%;max-height:760px;object-fit:contain;object-position:center;border-radius:10px;margin-bottom:28px;background:var(--skeleton)" />
+      <div class="post-cover-frame">
+        <img src="../assets/dua-lipa-cover-collage.png" alt="Summer Travel Moodboard" />
+      </div>
       <p>Dua Lipa vacations like she has cracked the code: beach by day, city by night, outfit always doing something. Her travel energy is not just "go somewhere pretty." It is a whole lifestyle formula: sun, food, movement, friends, color, a little glamour, and streetwear that makes even a coffee run look like it belongs in a photo dump.</p>
       <p>The goal is not to copy her life. The goal is to borrow the method. Vacation like Dua by choosing places with texture: somewhere you can swim in the morning, wander old streets in the afternoon, eat something perfect at sunset, and wear an outfit that makes the walk to dinner feel like part of the trip.</p>
 
