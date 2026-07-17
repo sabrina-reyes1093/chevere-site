@@ -77,14 +77,12 @@
     </div>
 
     <div class="post-grid" id="post-grid">
-      <a class="post-card featured" data-cat="travel fashion" href="posts/dua-lipa-vacation.html">
-        <div class="thumb"></div>
-        <div>
-          <span class="kicker">Travel &amp; Fashion</span>
-          <h2>How to Vacation Like Dua Lipa</h2>
-          <p class="dek">A summer travel and street-style guide inspired by Dua Lipa's vacation energy: Mediterranean destinations, city-break outfits, beach-to-dinner packing tips, and hot-girl itinerary ideas.</p>
-          <p class="date">Jul 16, 2026</p>
-        </div>
+      <a class="post-card" data-cat="travel fashion" href="posts/dua-lipa-vacation.html">
+        <div class="thumb" style="background-image:url(assets/dua-lipa-cover-collage.png);background-size:cover;background-position:center"></div>
+        <span class="kicker">Travel &amp; Fashion</span>
+        <h2>How to Vacation Like Dua Lipa</h2>
+        <p class="dek">A summer travel and street-style guide inspired by Dua Lipa's vacation energy: Mediterranean destinations, city-break outfits, beach-to-dinner packing tips, and hot-girl itinerary ideas.</p>
+        <p class="date">Jul 16, 2026</p>
       </a>
       <a class="post-card" data-cat="fashion" href="posts/zendaya-modern-muse.html">
         <div class="thumb" style="background-image:url(assets/zendaya-cover.png);background-size:cover;background-position:center"></div>
@@ -150,7 +148,8 @@
       function apply(cat) {
         var visible = 0;
         cards.forEach(function (c) {
-          var hide = cat !== 'all' && c.getAttribute('data-cat') !== cat;
+          var categories = (c.getAttribute('data-cat') || '').split(/\s+/);
+          var hide = cat !== 'all' && categories.indexOf(cat) === -1;
           c.classList.toggle('hidden', hide);
           if (!hide) visible++;
         });
