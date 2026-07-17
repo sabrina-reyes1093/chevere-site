@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Vacation Like Dua Lipa — chévere</title>
+  <link rel="icon" type="image/png" href="../assets/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .post-body {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .post-body p { margin-bottom: 16px; }
+    .post-body strong {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--ink);
+      margin-top: 32px;
+      margin-bottom: 8px;
+    }
+    .post-body ul { margin: 10px 0 22px; padding-left: 22px; }
+    .post-body li { margin-bottom: 9px; }
+    .destination-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0 26px;
+    }
+    .destination-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,.38);
+      padding: 16px;
+    }
+    .destination-card b {
+      display: block;
+      font-family: var(--serif);
+      font-size: 19px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .destination-card p { font-size: 14px; line-height: 1.5; }
+    .travel-note {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,.38);
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .travel-note strong { margin-top: 0; }
+    .source-list a { color: var(--brown); text-decoration: underline; text-underline-offset: 3px; }
+    .source-list li { margin-bottom: 6px; font-size: 14px; }
+    .post-signoff {
+      margin-top: 48px;
+      font-size: 17px;
+      color: var(--gray-soft);
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--brown);
+      transition: opacity .15s ease;
+    }
+    .back-link:hover { opacity: 0.7; }
+    @media (max-width: 560px) {
+      .destination-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="header-logo" href="../index.html" aria-label="chévere home">
+      <img src="../assets/logo.png" alt="chévere" />
+    </a>
+    <div class="header-actions">
+      <button id="search-toggle" aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
+      <a href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+      <a href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+        <svg class="tiktok-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="19" height="19"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.87.13v-3.5a6.37 6.37 0 0 0-.87-.06A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.46a8.23 8.23 0 0 0 4.77 1.48v-3.4a4.86 4.86 0 0 1-1.01.15z"/></svg>
+      </a>
+      <a href="../index.html#newsletter" aria-label="Newsletter sign-up" title="Newsletter">
+        <i data-lucide="mail" stroke-width="1.8" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
+      <div class="search-bar-wrap">
+        <i data-lucide="search" class="search-bar-icon" stroke-width="2" aria-hidden="true"></i>
+        <input id="search-input" type="text" placeholder="Search posts..." autocomplete="off" />
+        <button id="search-submit" class="search-action-btn" aria-label="Search" type="button">
+          <i data-lucide="arrow-right" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+        <button id="search-close" class="search-close-btn" aria-label="Close search" type="button">
+          <i data-lucide="x" stroke-width="2.5" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <a href="../index.html">Home</a>
+    <div class="nav-item has-dropdown">
+      <a href="../blog.html">Blog<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="../blog.html">All Blogs</a>
+        <a href="../blog.html?cat=books">Books</a>
+        <a href="../blog.html?cat=tv-film">TV &amp; Film</a>
+        <a href="../blog.html?cat=travel">Travel</a>
+        <a href="../blog.html?cat=food-drink">Food &amp; Drink</a>
+        <a href="../blog.html?cat=fashion">Fashion</a>
+        <a href="../blog.html?cat=sports">Sports</a>
+      </div>
+    </div>
+    <a href="../about.html">About</a>
+  </nav>
+
+  <main class="page-main">
+    <a class="back-link" href="../blog.html">&larr; Back to Blog</a>
+    <span class="kicker" style="display:block;margin-bottom:8px">Travel &amp; Fashion</span>
+    <h1 class="page-title">How to Vacation Like Dua Lipa</h1>
+    <p class="page-tagline" style="font-size:15px;color:#8e8c88;margin-top:-4px;margin-bottom:28px">Jul 16, 2026</p>
+    <div class="post-body">
+      <p>Dua Lipa vacations like she has cracked the code: beach by day, city by night, outfit always doing something. Her travel energy is not just "go somewhere pretty." It is a whole lifestyle formula: sun, food, movement, friends, color, a little glamour, and streetwear that makes even a coffee run look like it belongs in a photo dump.</p>
+      <p>The goal is not to copy her life. The goal is to borrow the method. Vacation like Dua by choosing places with texture: somewhere you can swim in the morning, wander old streets in the afternoon, eat something perfect at sunset, and wear an outfit that makes the walk to dinner feel like part of the trip.</p>
+
+      <strong>Start With the Destination Mood</strong>
+      <p>A Dua-coded trip is usually built around the Mediterranean fantasy: Italy, Albania, Greece, Spain, island light, long lunches, beach clubs, boats, and a suitcase full of looks that can move from swimwear to streetwear without feeling overplanned.</p>
+      <p>For 2026 inspiration, Italy is especially hot. Conde Nast Traveler recently covered a route inspired by Dua's Italian honeymoon orbit, including Sicily, the Amalfi Coast, Porto Ercole, and Rome. That is the blueprint: not just one destination, but a string of places with different moods.</p>
+
+      <div class="destination-grid">
+        <div class="destination-card"><b>Sicily</b><p>Palermo for food, Scopello for clear water, Taormina for drama. Wear a bikini under a linen shirt, then switch into a slip dress for dinner.</p></div>
+        <div class="destination-card"><b>Amalfi Coast</b><p>Positano, Praiano, Ravello. The move is polished glamour: oversized sunglasses, strappy sandals, a small dress, and a bag with personality.</p></div>
+        <div class="destination-card"><b>Albania</b><p>Dua's family roots make Albania part of her broader cultural story. Go for beaches, mountain-meets-sea views, seafood, and a less obvious Mediterranean itinerary.</p></div>
+        <div class="destination-card"><b>Ibiza or Mallorca</b><p>For Balearic energy: beach mornings, late dinners, dancing, and outfits that can handle all three.</p></div>
+      </div>
+
+      <strong>Pack Like Every Outfit Has a Second Life</strong>
+      <p>Dua's vacation style works because it is not just resortwear. It is resortwear with street instincts. Fashion coverage this summer keeps pointing to the same Dua-adjacent pieces: leather flip-flops with jeans, moto boots with slip dresses, crochet, oversized sunglasses, denim cutoffs, button-downs, statement bags, and swimwear styled like clothing.</p>
+
+      <div class="travel-note">
+        <strong>The Chevere packing edit</strong>
+        <ul>
+          <li><b>The beach base:</b> two swimsuits, one oversized cotton shirt, one crochet or mesh dress, one sarong.</li>
+          <li><b>The city base:</b> straight-leg jeans, denim shorts, loose trousers, black tank, white button-down.</li>
+          <li><b>The night base:</b> slip dress, small shoulder bag, gold hoops, strappy sandals or boots.</li>
+          <li><b>The chaos piece:</b> one loud color, one print, one weird accessory, or one tiny bag that carries the whole mood.</li>
+        </ul>
+      </div>
+
+      <strong>The Street-Fashion Vacation Uniform</strong>
+      <p>Here is the easiest Dua-inspired summer formula: contrast. A bikini with raw denim. A slip dress with boots. Jeans with refined flip-flops. A white shirt worn open over swimwear. The outfit should say: relaxed, but very aware.</p>
+      <ul>
+        <li><b>Airport to aperitivo:</b> straight-leg jeans, black tank, open white shirt, leather flip-flops, oversized sunglasses, big black bag.</li>
+        <li><b>Beach club but make it editorial:</b> printed bikini, oversized button-down, low-slung sarong, gold hoops, slick bun, tinted lip balm.</li>
+        <li><b>Old town dinner:</b> lace-trim slip dress, chunky belt, moto boots or strappy sandals, small yellow or red bag.</li>
+        <li><b>Market morning:</b> linen trousers, cropped tee, woven tote, sandals, sunglasses, scarf in the hair.</li>
+        <li><b>Boat day:</b> one-piece swimsuit, denim cutoffs, cotton shirt, waterproof sandals, salty hair, SPF everywhere.</li>
+      </ul>
+
+      <strong>Travel Tips for the Full Dua Effect</strong>
+      <p><b>Book for contrast.</b> Do not just do five beach days in a row. Mix swim days with city wandering, markets, museums, wine bars, and one late night.</p>
+      <p><b>Eat locally, not just aesthetically.</b> The vacation photo is better when the meal is actually good. Find the bakery, the seafood spot, the market fruit, the family-run taverna.</p>
+      <p><b>Keep one flexible day.</b> The most Dua-coded thing you can do is look like you had no plan and somehow found the best beach, best lunch, and best outfit lighting.</p>
+      <p><b>Walk more than you taxi.</b> Street style happens in motion. Also, you find better places when you wander.</p>
+      <p><b>Bring one workout look.</b> Dua has spoken about keeping movement in her travel life, especially Pilates and strength work. You do not need a full wellness itinerary. Pack one cute set, stretch in the morning, swim, walk, dance. That counts.</p>
+
+      <strong>The Chevere Take</strong>
+      <p>To vacation like Dua Lipa is to treat travel as a full-sensory edit. It is not only where you go. It is what you notice: the tiles, the tomatoes, the sea color, the song playing at dinner, the way a white shirt looks after a beach day, the corner table where everyone seems cooler than you but somehow you fit right in.</p>
+      <p>The real formula is simple: pick a destination with sun and culture. Pack clothes that move from beach to street. Eat beautifully. Walk everywhere. Wear the sunglasses. Order the second espresso. Take the photo, then put the phone down.</p>
+
+      <strong>Sources &amp; Inspiration</strong>
+      <ul class="source-list">
+        <li><a href="https://www.cntraveler.com/story/i-followed-dua-lipas-honeymoon-itinerary-heres-how-to-plan-it-for-less" target="_blank" rel="noopener">Conde Nast Traveler: Dua Lipa-inspired Italy itinerary</a></li>
+        <li><a href="https://www.vogue.com/article/dua-lipas-brings-her-vacation-staples-back-to-work" target="_blank" rel="noopener">Vogue: Dua Lipa brings vacation staples back to work</a></li>
+        <li><a href="https://www.vogue.com/article/dua-lipa-summer-moto-boot" target="_blank" rel="noopener">Vogue: Dua Lipa summer moto boot style</a></li>
+        <li><a href="https://www.thezoereport.com/culture/dua-lipa-vacation-style-fashion-celebrity-style-summer-outfits" target="_blank" rel="noopener">The Zoe Report: Dua Lipa's vacation style</a></li>
+        <li><a href="https://www.euronews.com/travel/2026/06/25/mediterranean-travel-trends-how-blue-mind-experiences-and-local-culture-keep-people-coming" target="_blank" rel="noopener">Euronews: Mediterranean travel trends 2026</a></li>
+      </ul>
+
+      <p class="post-signoff">Until next week — stay <em>chévere</em></p>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../site.js"></script>
+</body>
+</html>
