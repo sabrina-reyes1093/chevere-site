@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css" />
   <style>
     .post-body {
       font-size: 17px;
@@ -47,6 +48,15 @@
       margin-bottom: 4px;
     }
     .destination-card p { font-size: 14px; line-height: 1.5; }
+    .destination-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
     .travel-note {
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -55,6 +65,37 @@
       margin: 30px 0;
     }
     .travel-note strong { margin-top: 0; }
+    .street-style-carousel {
+      margin: 36px 0 42px;
+    }
+    .carousel-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 14px;
+      margin-top: 0;
+      text-align: left;
+    }
+    .street-style-carousel .splide__slide img {
+      display: block;
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 8px;
+      background: var(--skeleton);
+    }
+    .street-style-carousel .splide__arrow {
+      background: rgba(255,255,255,0.85) !important;
+      opacity: 1 !important;
+    }
+    .street-style-carousel .splide__arrow svg { fill: var(--brown) !important; }
+    .street-style-carousel .splide__pagination__page.is-active { background: var(--brown) !important; }
+    @media (max-width: 560px) {
+      .street-style-carousel .splide__slide img { height: 360px; object-position: center top; }
+    }
     .source-list a { color: var(--brown); text-decoration: underline; text-underline-offset: 3px; }
     .source-list li { margin-bottom: 6px; font-size: 14px; }
     .post-signoff {
@@ -134,7 +175,7 @@
     <h1 class="page-title">How to Vacation Like Dua Lipa</h1>
     <p class="page-tagline" style="font-size:15px;color:#8e8c88;margin-top:-4px;margin-bottom:28px">Jul 16, 2026</p>
     <div class="post-body">
-      <img src="../assets/dua-lipa-cover-collage.png" alt="Summer Travel Moodboard" style="width:100%;max-height:400px;object-fit:cover;object-position:center;border-radius:10px;margin-bottom:28px" />
+      <img src="../assets/dua-lipa-cover-collage.png" alt="Summer Travel Moodboard" style="display:block;width:100%;max-height:760px;object-fit:contain;object-position:center;border-radius:10px;margin-bottom:28px;background:var(--skeleton)" />
       <p>Dua Lipa vacations like she has cracked the code: beach by day, city by night, outfit always doing something. Her travel energy is not just "go somewhere pretty." It is a whole lifestyle formula: sun, food, movement, friends, color, a little glamour, and streetwear that makes even a coffee run look like it belongs in a photo dump.</p>
       <p>The goal is not to copy her life. The goal is to borrow the method. Vacation like Dua by choosing places with texture: somewhere you can swim in the morning, wander old streets in the afternoon, eat something perfect at sunset, and wear an outfit that makes the walk to dinner feel like part of the trip.</p>
 
@@ -143,10 +184,10 @@
       <p>For 2026 inspiration, Italy is especially hot. Conde Nast Traveler recently covered a route inspired by Dua's Italian honeymoon orbit, including Sicily, the Amalfi Coast, Porto Ercole, and Rome. That is the blueprint: not just one destination, but a string of places with different moods.</p>
 
       <div class="destination-grid">
-        <div class="destination-card"><b>Sicily</b><p>Palermo for food, Scopello for clear water, Taormina for drama. Wear a bikini under a linen shirt, then switch into a slip dress for dinner.</p></div>
-        <div class="destination-card"><b>Amalfi Coast</b><p>Positano, Praiano, Ravello. The move is polished glamour: oversized sunglasses, strappy sandals, a small dress, and a bag with personality.</p></div>
-        <div class="destination-card"><b>Albania</b><p>Dua's family roots make Albania part of her broader cultural story. Go for beaches, mountain-meets-sea views, seafood, and a less obvious Mediterranean itinerary.</p></div>
-        <div class="destination-card"><b>Ibiza or Mallorca</b><p>For Balearic energy: beach mornings, late dinners, dancing, and outfits that can handle all three.</p></div>
+        <div class="destination-card"><b>Sicily</b><p>Palermo for food, Scopello for clear water, Taormina for drama. Wear a bikini under a linen shirt, then switch into a slip dress for dinner.</p><img src="../assets/sicily-palermo.jpg" alt="Palermo, Sicily skyline at sunset" /></div>
+        <div class="destination-card"><b>Amalfi Coast</b><p>Positano, Praiano, Ravello. The move is polished glamour: oversized sunglasses, strappy sandals, a small dress, and a bag with personality.</p><img src="../assets/amalfi-coast.jpg" alt="Amalfi Coast seaside view" /></div>
+        <div class="destination-card"><b>Albania</b><p>Dua's family roots make Albania part of her broader cultural story. Go for beaches, mountain-meets-sea views, seafood, and a less obvious Mediterranean itinerary.</p><img src="../assets/albania.jpg" alt="Albania hillside town" /></div>
+        <div class="destination-card"><b>Ibiza or Mallorca</b><p>For Balearic energy: beach mornings, late dinners, dancing, and outfits that can handle all three.</p><img src="../assets/ibiza-mallorca.jpg" alt="Mallorca coastline and cathedral view" /></div>
       </div>
 
       <strong>Pack Like Every Outfit Has a Second Life</strong>
@@ -172,6 +213,29 @@
         <li><b>Boat day:</b> one-piece swimsuit, denim cutoffs, cotton shirt, waterproof sandals, salty hair, SPF everywhere.</li>
       </ul>
 
+      <div class="street-style-carousel">
+        <p class="carousel-label">Dua Lipa vacation fashion</p>
+        <div id="dua-vacay-fashion-carousel" class="splide">
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-01.jpg" alt="Dua Lipa vacation fashion look 1" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-02.jpg" alt="Dua Lipa vacation fashion look 2" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-03.jpg" alt="Dua Lipa vacation fashion look 3" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-04.jpg" alt="Dua Lipa vacation fashion look 4" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-05.jpg" alt="Dua Lipa vacation fashion look 5" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-06.jpg" alt="Dua Lipa vacation fashion look 6" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-07.jpg" alt="Dua Lipa vacation fashion look 7" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-08.jpg" alt="Dua Lipa vacation fashion look 8" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-09.jpg" alt="Dua Lipa vacation fashion look 9" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-10.jpg" alt="Dua Lipa vacation fashion look 10" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-11.jpg" alt="Dua Lipa vacation fashion look 11" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-12.jpg" alt="Dua Lipa vacation fashion look 12" /></li>
+              <li class="splide__slide"><img src="../assets/dua-vacay-fashion-13.jpg" alt="Dua Lipa vacation fashion look 13" /></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <strong>Travel Tips for the Full Dua Effect</strong>
       <p><b>Book for contrast.</b> Do not just do five beach days in a row. Mix swim days with city wandering, markets, museums, wine bars, and one late night.</p>
       <p><b>Eat locally, not just aesthetically.</b> The vacation photo is better when the meal is actually good. Find the bakery, the seafood spot, the market fruit, the family-run taverna.</p>
@@ -183,6 +247,40 @@
       <p>To vacation like Dua Lipa is to treat travel as a full-sensory edit. It is not only where you go. It is what you notice: the tiles, the tomatoes, the sea color, the song playing at dinner, the way a white shirt looks after a beach day, the corner table where everyone seems cooler than you but somehow you fit right in.</p>
       <p>The real formula is simple: pick a destination with sun and culture. Pack clothes that move from beach to street. Eat beautifully. Walk everywhere. Wear the sunglasses. Order the second espresso. Take the photo, then put the phone down.</p>
 
+      <p class="post-signoff">Until next week — stay <em>chévere</em></p>
+
+      <div class="street-style-carousel">
+        <p class="carousel-label">More <strong>Street-style vacation looks</strong></p>
+        <div id="street-style-carousel" class="splide">
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide"><img src="../assets/street-style-01.jpg" alt="Street-style vacation look 1" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-02.jpg" alt="Street-style vacation look 2" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-03.jpg" alt="Street-style vacation look 3" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-04.jpg" alt="Street-style vacation look 4" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-05.jpg" alt="Street-style vacation look 5" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-06.jpg" alt="Street-style vacation look 6" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-07.jpg" alt="Street-style vacation look 7" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-08.jpg" alt="Street-style vacation look 8" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-09.jpg" alt="Street-style vacation look 9" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-10.jpg" alt="Street-style vacation look 10" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-11.jpg" alt="Street-style vacation look 11" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-12.jpg" alt="Street-style vacation look 12" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-13.jpg" alt="Street-style vacation look 13" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-14.jpg" alt="Street-style vacation look 14" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-15.jpg" alt="Street-style vacation look 15" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-16.jpg" alt="Street-style vacation look 16" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-17.jpg" alt="Street-style vacation look 17" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-18.jpg" alt="Street-style vacation look 18" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-19.jpg" alt="Street-style vacation look 19" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-20.jpg" alt="Street-style vacation look 20" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-21.jpg" alt="Street-style vacation look 21" /></li>
+              <li class="splide__slide"><img src="../assets/street-style-22.jpg" alt="Street-style vacation look 22" /></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <strong>Sources &amp; Inspiration</strong>
       <ul class="source-list">
         <li><a href="https://www.cntraveler.com/story/i-followed-dua-lipas-honeymoon-itinerary-heres-how-to-plan-it-for-less" target="_blank" rel="noopener">Conde Nast Traveler: Dua Lipa-inspired Italy itinerary</a></li>
@@ -191,12 +289,33 @@
         <li><a href="https://www.thezoereport.com/culture/dua-lipa-vacation-style-fashion-celebrity-style-summer-outfits" target="_blank" rel="noopener">The Zoe Report: Dua Lipa's vacation style</a></li>
         <li><a href="https://www.euronews.com/travel/2026/06/25/mediterranean-travel-trends-how-blue-mind-experiences-and-local-culture-keep-people-coming" target="_blank" rel="noopener">Euronews: Mediterranean travel trends 2026</a></li>
       </ul>
-
-      <p class="post-signoff">Until next week — stay <em>chévere</em></p>
     </div>
   </main>
 
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js"></script>
   <script src="../site.js"></script>
+  <script>
+    function mountPostCarousel(selector) {
+      var el = document.querySelector(selector);
+      if (!el) return;
+      new Splide(selector, {
+        type: 'slide',
+        perPage: 4,
+        perMove: 1,
+        gap: '12px',
+        pagination: true,
+        arrows: true,
+        drag: 'free',
+        swipe: true,
+        breakpoints: {
+          768: { perPage: 2 },
+          480: { perPage: 1 }
+        }
+      }).mount();
+    }
+    mountPostCarousel('#dua-vacay-fashion-carousel');
+    mountPostCarousel('#street-style-carousel');
+  </script>
 </body>
 </html>
