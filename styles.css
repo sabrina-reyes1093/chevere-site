@@ -746,7 +746,7 @@ body.popup-open::after {
 
 @media (max-width: 620px) {
   html,
-  body { overflow-x: hidden; }
+  body { overflow-x: clip; }
   .site-header { height: 116px; }
   .header-logo img { width: 160px; max-width: 46vw; }
   .header-actions { right: 10px; gap: 4px; }
