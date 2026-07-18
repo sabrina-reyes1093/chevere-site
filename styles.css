@@ -495,17 +495,12 @@ body.popup-open::after {
   color: var(--ink);
   font-family: var(--serif);
   font-size: clamp(38px, 5vw, 58px);
-  font-style: italic;
-  font-weight: 600;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.035em;
   line-height: 1.05;
 }
 .featured-controls { display: flex; gap: 8px; }
-.featured-controls .splide__arrow {
-  position: static;
-  opacity: 1;
-  transform: none;
-  background: transparent;
-}
 .featured-arrow {
   display: inline-flex;
   align-items: center;
@@ -609,9 +604,10 @@ body.popup-open::after {
 }
 .newsletter h2 {
   font-family: var(--serif);
-  font-weight: 500;
+  font-weight: 700;
   font-size: clamp(34px, 5vw, 52px);
   color: var(--ink);
+  letter-spacing: -0.035em;
   margin-top: 8px;
 }
 .newsletter h2 em {

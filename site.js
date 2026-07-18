@@ -247,9 +247,10 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
 
   function mountCarousel() {
     if (typeof window.Splide === 'undefined') return;
-    new window.Splide('#featured-carousel', {
+    var carousel = new window.Splide('#featured-carousel', {
       type: 'slide',
       rewind: true,
+      arrows: false,
       perPage: 3,
       perMove: 1,
       gap: '24px',
@@ -261,7 +262,11 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
         980: { perPage: 2 },
         620: { perPage: 1, gap: '16px', padding: { right: '12%' } }
       }
-    }).mount();
+    });
+    carousel.mount();
+
+    var next = document.getElementById('featured-next');
+    if (next) next.addEventListener('click', function () { carousel.go('>'); });
   }
 
   fetch('blog.html')
