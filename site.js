@@ -164,6 +164,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   if (!form) return;
   var input = document.getElementById('newsletter-email');
   var btn = form.querySelector('button[type="submit"]');
+  var defaultButtonText = btn.textContent;
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -185,13 +186,13 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
       btn.textContent = 'You\'re in!';
       showPopup();
       setTimeout(function () {
-        btn.textContent = 'I\'m In';
+        btn.textContent = defaultButtonText;
         btn.disabled = false;
       }, 2500);
     }).catch(function () {
       btn.textContent = 'Something went wrong';
       setTimeout(function () {
-        btn.textContent = 'I\'m In';
+        btn.textContent = defaultButtonText;
         btn.disabled = false;
       }, 3000);
     });
@@ -226,4 +227,42 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
       hidePopup();
     }
   });
+})();
+
+/* homepage featured reads: mirror the newest three cards from the blog index */
+(function () {
+  var track = document.getElementById('featured-track');
+  var prev = document.getElementById('featured-prev');
+  var next = document.getElementById('featured-next');
+  if (!track) return;
+
+  function cardMarkup(card) {
+    var thumb = card.querySelector('.thumb');
+    var kicker = card.querySelector('.kicker');
+    var title = card.querySelector('h2');
+    return '<a class="featured-card" href="' + (card.getAttribute('href') || 'blog.html') + '">' +
+      '<div class="featured-thumb" style="' + (thumb ? thumb.getAttribute('style') : '') + '"></div>' +
+      '<p class="featured-meta">' + (kicker ? kicker.innerHTML : '') + '</p>' +
+      '<h3>' + (title ? title.innerHTML : '') + '</h3>' +
+      '</a>';
+  }
+
+  fetch('blog.html')
+    .then(function (response) { return response.text(); })
+    .then(function (html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var newest = Array.prototype.slice.call(doc.querySelectorAll('.post-card')).slice(0, 4);
+      if (newest.length) track.innerHTML = newest.map(cardMarkup).join('');
+    })
+    .catch(function () { /* Keep the three server-rendered fallback cards. */ });
+
+  function move(direction) {
+    var card = track.querySelector('.featured-card');
+    if (!card) return;
+    var gap = parseFloat(getComputedStyle(track).columnGap) || 24;
+    track.scrollBy({ left: direction * (card.getBoundingClientRect().width + gap), behavior: 'smooth' });
+  }
+
+  if (prev) prev.addEventListener('click', function () { move(-1); });
+  if (next) next.addEventListener('click', function () { move(1); });
 })();

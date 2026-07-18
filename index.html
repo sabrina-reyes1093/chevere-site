@@ -61,13 +61,6 @@
   </nav>
 
   <main class="home-main">
-    <aside class="side-col left" aria-hidden="true">
-      <div class="skeleton-block"></div>
-      <div class="skeleton-line w1"></div>
-      <div class="skeleton-line w2"></div>
-      <div class="skeleton-line w3"></div>
-    </aside>
-
     <section class="center-col">
       <h1 class="post-title">Welcome to Chévere</h1>
       <p class="post-subtitle">A lifestyle edit for culture, style, stories, and the little discoveries that make everyday life feel more inspired.</p>
@@ -77,20 +70,54 @@
         <a href="about.html" class="btn-secondary">About</a>
       </div>
     </section>
-
-    <aside class="side-col right" aria-hidden="true">
-      <div class="skeleton-block"></div>
-      <div class="skeleton-line w1"></div>
-      <div class="skeleton-line w2"></div>
-      <div class="skeleton-line w3"></div>
-    </aside>
   </main>
+
+  <section class="featured-reads" aria-labelledby="featured-title">
+    <div class="featured-heading">
+      <div>
+        <p class="featured-kicker">The latest from Chévere</p>
+        <h2 id="featured-title">Featured Reads</h2>
+      </div>
+      <div class="featured-controls" aria-label="Featured reads carousel controls">
+        <button class="featured-arrow" id="featured-prev" type="button" aria-label="Previous featured read">
+          <i data-lucide="arrow-left" stroke-width="1.6" aria-hidden="true"></i>
+        </button>
+        <button class="featured-arrow" id="featured-next" type="button" aria-label="Next featured read">
+          <i data-lucide="arrow-right" stroke-width="1.6" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="featured-track" id="featured-track" aria-live="polite">
+      <a class="featured-card" href="posts/best-chicago-patios-2026.html">
+        <div class="featured-thumb" style="background-image:url(assets/chicago-patio-guide-cover.png);background-size:cover;background-position:center"></div>
+        <p class="featured-meta">Food &amp; Drink</p>
+        <h3>The Chévere Guide to Chicago Patio Season</h3>
+      </a>
+      <a class="featured-card" href="posts/dua-lipa-vacation.html">
+        <div class="featured-thumb" style="background-image:url(assets/dua-lipa-cover-collage.png);background-size:cover;background-position:center"></div>
+        <p class="featured-meta">Travel &amp; Fashion</p>
+        <h3>How to Vacation Like Dua Lipa</h3>
+      </a>
+      <a class="featured-card" href="posts/zendaya-modern-muse.html">
+        <div class="featured-thumb" style="background-image:url(assets/zendaya-cover.png);background-size:cover;background-position:center"></div>
+        <p class="featured-meta">Fashion</p>
+        <h3>Zendaya: The Modern Muse and Turning Fashion Into Story</h3>
+      </a>
+      <a class="featured-card" href="posts/final-four.html">
+        <div class="featured-thumb" style="background-image:url(assets/final-four.png);background-size:contain;background-position:center;background-repeat:no-repeat;background-color:var(--skeleton)"></div>
+        <p class="featured-meta">Sports</p>
+        <h3>The Final Four Is Here</h3>
+      </a>
+    </div>
+    <a class="featured-all" href="blog.html">Explore all stories <span aria-hidden="true">&rarr;</span></a>
+  </section>
 
   <section class="newsletter" id="newsletter">
     <h2>A Letter from Chévere</h2>
-    <p class="newsletter-sub">Get Chévere in your inbox — a weekly curation of finds worth discovering.</p>
+    <p class="newsletter-sub">Get Chévere in your inbox &mdash; a weekly curation of finds worth discovering.</p>
     <form id="newsletter-form">
-      <input id="newsletter-email" type="email" placeholder="Enter your email" required />
+      <label class="sr-only" for="newsletter-email">Email address</label>
+      <input id="newsletter-email" name="email" type="email" placeholder="Email address" autocomplete="email" required />
       <button type="submit">I'm In</button>
     </form>
   </section>
