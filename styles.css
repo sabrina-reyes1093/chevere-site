@@ -596,6 +596,10 @@ body.popup-open::after {
 
 /* ---------- newsletter ---------- */
 .newsletter {
+  display: block;
+  position: static;
+  visibility: visible;
+  opacity: 1;
   border-top: 1px solid var(--border);
   background: #afa095;
   background: color-mix(in srgb, var(--brown) 46%, var(--bg));

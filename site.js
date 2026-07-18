@@ -241,10 +241,6 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     if (!popup) return;
     popup.classList.add('newsletter-popup--visible');
     document.body.classList.add('popup-open');
-    setTimeout(function () {
-      popup.classList.remove('newsletter-popup--visible');
-      document.body.classList.remove('popup-open');
-    }, 5000);
   }
 
   function hidePopup() {
