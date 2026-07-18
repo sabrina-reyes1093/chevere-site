@@ -229,22 +229,39 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   });
 })();
 
-/* homepage featured reads: mirror the newest three cards from the blog index */
+/* homepage featured reads: Splide carousel fed by the newest four blog cards */
 (function () {
   var track = document.getElementById('featured-track');
-  var prev = document.getElementById('featured-prev');
-  var next = document.getElementById('featured-next');
   if (!track) return;
 
   function cardMarkup(card) {
     var thumb = card.querySelector('.thumb');
     var kicker = card.querySelector('.kicker');
     var title = card.querySelector('h2');
-    return '<a class="featured-card" href="' + (card.getAttribute('href') || 'blog.html') + '">' +
+    return '<li class="splide__slide"><a class="featured-card" href="' + (card.getAttribute('href') || 'blog.html') + '">' +
       '<div class="featured-thumb" style="' + (thumb ? thumb.getAttribute('style') : '') + '"></div>' +
       '<p class="featured-meta">' + (kicker ? kicker.innerHTML : '') + '</p>' +
       '<h3>' + (title ? title.innerHTML : '') + '</h3>' +
-      '</a>';
+      '</a></li>';
+  }
+
+  function mountCarousel() {
+    if (typeof window.Splide === 'undefined') return;
+    new window.Splide('#featured-carousel', {
+      type: 'slide',
+      rewind: true,
+      perPage: 3,
+      perMove: 1,
+      gap: '24px',
+      speed: 650,
+      drag: true,
+      keyboard: 'global',
+      pagination: false,
+      breakpoints: {
+        980: { perPage: 2 },
+        620: { perPage: 1, gap: '16px', padding: { right: '12%' } }
+      }
+    }).mount();
   }
 
   fetch('blog.html')
@@ -254,15 +271,6 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
       var newest = Array.prototype.slice.call(doc.querySelectorAll('.post-card')).slice(0, 4);
       if (newest.length) track.innerHTML = newest.map(cardMarkup).join('');
     })
-    .catch(function () { /* Keep the three server-rendered fallback cards. */ });
-
-  function move(direction) {
-    var card = track.querySelector('.featured-card');
-    if (!card) return;
-    var gap = parseFloat(getComputedStyle(track).columnGap) || 24;
-    track.scrollBy({ left: direction * (card.getBoundingClientRect().width + gap), behavior: 'smooth' });
-  }
-
-  if (prev) prev.addEventListener('click', function () { move(-1); });
-  if (next) next.addEventListener('click', function () { move(1); });
+    .catch(function () { /* Keep the four server-rendered fallback cards. */ })
+    .then(mountCarousel);
 })();

@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="home">
@@ -72,42 +73,52 @@
     </section>
   </main>
 
-  <section class="featured-reads" aria-labelledby="featured-title">
+  <section class="featured-reads splide" id="featured-carousel" aria-labelledby="featured-title">
     <div class="featured-heading">
       <div>
         <p class="featured-kicker">The latest from Chévere</p>
         <h2 id="featured-title">Featured Reads</h2>
       </div>
-      <div class="featured-controls" aria-label="Featured reads carousel controls">
-        <button class="featured-arrow" id="featured-prev" type="button" aria-label="Previous featured read">
+      <div class="featured-controls splide__arrows" aria-label="Featured reads carousel controls">
+        <button class="featured-arrow splide__arrow splide__arrow--prev" type="button" aria-label="Previous featured read">
           <i data-lucide="arrow-left" stroke-width="1.6" aria-hidden="true"></i>
         </button>
-        <button class="featured-arrow" id="featured-next" type="button" aria-label="Next featured read">
+        <button class="featured-arrow splide__arrow splide__arrow--next" type="button" aria-label="Next featured read">
           <i data-lucide="arrow-right" stroke-width="1.6" aria-hidden="true"></i>
         </button>
       </div>
     </div>
-    <div class="featured-track" id="featured-track" aria-live="polite">
-      <a class="featured-card" href="posts/best-chicago-patios-2026.html">
-        <div class="featured-thumb" style="background-image:url(assets/chicago-patio-guide-cover.png);background-size:cover;background-position:center"></div>
-        <p class="featured-meta">Food &amp; Drink</p>
-        <h3>The Chévere Guide to Chicago Patio Season</h3>
-      </a>
-      <a class="featured-card" href="posts/dua-lipa-vacation.html">
-        <div class="featured-thumb" style="background-image:url(assets/dua-lipa-cover-collage.png);background-size:cover;background-position:center"></div>
-        <p class="featured-meta">Travel &amp; Fashion</p>
-        <h3>How to Vacation Like Dua Lipa</h3>
-      </a>
-      <a class="featured-card" href="posts/zendaya-modern-muse.html">
-        <div class="featured-thumb" style="background-image:url(assets/zendaya-cover.png);background-size:cover;background-position:center"></div>
-        <p class="featured-meta">Fashion</p>
-        <h3>Zendaya: The Modern Muse and Turning Fashion Into Story</h3>
-      </a>
-      <a class="featured-card" href="posts/final-four.html">
-        <div class="featured-thumb" style="background-image:url(assets/final-four.png);background-size:contain;background-position:center;background-repeat:no-repeat;background-color:var(--skeleton)"></div>
-        <p class="featured-meta">Sports</p>
-        <h3>The Final Four Is Here</h3>
-      </a>
+    <div class="splide__track">
+      <ul class="splide__list" id="featured-track">
+        <li class="splide__slide">
+          <a class="featured-card" href="posts/best-chicago-patios-2026.html">
+            <div class="featured-thumb" style="background-image:url(assets/chicago-patio-guide-cover.png);background-size:cover;background-position:center"></div>
+            <p class="featured-meta">Food &amp; Drink</p>
+            <h3>The Chévere Guide to Chicago Patio Season</h3>
+          </a>
+        </li>
+        <li class="splide__slide">
+          <a class="featured-card" href="posts/dua-lipa-vacation.html">
+            <div class="featured-thumb" style="background-image:url(assets/dua-lipa-cover-collage.png);background-size:cover;background-position:center"></div>
+            <p class="featured-meta">Travel &amp; Fashion</p>
+            <h3>How to Vacation Like Dua Lipa</h3>
+          </a>
+        </li>
+        <li class="splide__slide">
+          <a class="featured-card" href="posts/zendaya-modern-muse.html">
+            <div class="featured-thumb" style="background-image:url(assets/zendaya-cover.png);background-size:cover;background-position:center"></div>
+            <p class="featured-meta">Fashion</p>
+            <h3>Zendaya: The Modern Muse and Turning Fashion Into Story</h3>
+          </a>
+        </li>
+        <li class="splide__slide">
+          <a class="featured-card" href="posts/final-four.html">
+            <div class="featured-thumb" style="background-image:url(assets/final-four.png);background-size:contain;background-position:center;background-repeat:no-repeat;background-color:var(--skeleton)"></div>
+            <p class="featured-meta">Sports</p>
+            <h3>The Final Four Is Here</h3>
+          </a>
+        </li>
+      </ul>
     </div>
     <a class="featured-all" href="blog.html">Explore all stories <span aria-hidden="true">&rarr;</span></a>
   </section>
@@ -130,6 +141,7 @@
   </div>
 
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
   <script src="site.js"></script>
 
 </body>

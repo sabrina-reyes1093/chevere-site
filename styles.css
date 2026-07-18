@@ -500,6 +500,12 @@ body.popup-open::after {
   line-height: 1.05;
 }
 .featured-controls { display: flex; gap: 8px; }
+.featured-controls .splide__arrow {
+  position: static;
+  opacity: 1;
+  transform: none;
+  background: transparent;
+}
 .featured-arrow {
   display: inline-flex;
   align-items: center;
@@ -519,21 +525,12 @@ body.popup-open::after {
   outline: none;
 }
 .featured-arrow svg { width: 18px; height: 18px; }
-.featured-track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% - 48px) / 3);
-  gap: 24px;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-.featured-track::-webkit-scrollbar { display: none; }
+.featured-reads .splide__track { overflow: hidden; }
+.featured-reads .splide__slide { min-width: 0; }
 .featured-card {
+  display: block;
+  height: 100%;
   min-width: 0;
-  scroll-snap-align: start;
 }
 .featured-thumb {
   width: 100%;
@@ -890,7 +887,6 @@ body.popup-open::after {
   .featured-heading { align-items: center; margin-bottom: 24px; }
   .featured-heading h2 { font-size: 38px; }
   .featured-arrow { width: 38px; height: 38px; }
-  .featured-track { grid-auto-columns: 88%; gap: 16px; }
   .featured-card h3 { font-size: 22px; }
   .newsletter { padding: 52px 16px 58px; }
   .newsletter h2 { font-size: 36px; line-height: 1.12; }
