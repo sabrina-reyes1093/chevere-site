@@ -1,5 +1,43 @@
 /* chevere -- shared site behavior: icons, nav dropdown, search, newsletter */
 
+/* global newsletter component: render once, after page content and before the footer */
+(function renderGlobalNewsletter() {
+  if (document.getElementById('newsletter')) return;
+
+  var section = [
+    '<section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">',
+    '  <h2 id="newsletter-heading">A Letter from Chévere</h2>',
+    '  <p class="newsletter-sub">Get Chévere in your inbox &mdash; a weekly curation of finds worth discovering.</p>',
+    '  <form id="newsletter-form">',
+    '    <label class="sr-only" for="newsletter-email">Email address</label>',
+    '    <input id="newsletter-email" name="email" type="email" placeholder="Email address" autocomplete="email" required />',
+    '    <button type="submit">I&rsquo;M IN</button>',
+    '  </form>',
+    '</section>'
+  ].join('');
+
+  var popup = [
+    '<div id="newsletter-popup" class="newsletter-popup" role="status" aria-live="polite">',
+    '  <button id="newsletter-popup-close" class="newsletter-popup-close" aria-label="Close">&times;</button>',
+    '  <h3>Thank you for subscribing!</h3>',
+    '  <p>Be on the look out for our weekly newsletters!</p>',
+    '  <p class="newsletter-popup-signoff">Stay <em>chévere</em></p>',
+    '</div>'
+  ].join('');
+
+  var footer = document.querySelector('footer');
+  var firstScript = document.querySelector('script');
+
+  if (footer) {
+    footer.insertAdjacentHTML('beforebegin', section);
+    footer.insertAdjacentHTML('afterend', popup);
+  } else if (firstScript) {
+    firstScript.insertAdjacentHTML('beforebegin', section + popup);
+  } else {
+    document.body.insertAdjacentHTML('beforeend', section + popup);
+  }
+})();
+
 lucide.createIcons();
 
 /* nav dropdown: tap-to-open on touch devices (hover handles desktop via CSS) */
