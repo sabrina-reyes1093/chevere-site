@@ -19,8 +19,8 @@
   var popup = [
     '<div id="newsletter-popup" class="newsletter-popup" role="status" aria-live="polite">',
     '  <button id="newsletter-popup-close" class="newsletter-popup-close" aria-label="Close">&times;</button>',
-    '  <h3>Thank you for subscribing!</h3>',
-    '  <p>Be on the look out for our weekly newsletters!</p>',
+    '  <h3>Check your inbox</h3>',
+    '  <p>Confirm your email to join The Edit, Delivered.</p>',
     '  <p class="newsletter-popup-signoff">Stay <em>chévere</em></p>',
     '</div>'
   ].join('');
@@ -196,7 +196,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   });
 })();
 
-/* newsletter: POST to Substack in the background — no redirect */
+/* newsletter: create a pending subscriber and send double-opt-in confirmation */
 (function () {
   var form = document.getElementById('newsletter-form');
   if (!form) return;
@@ -212,16 +212,15 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
-    var body = new URLSearchParams();
-    body.append('email', email);
-    body.append('_captcha', 'false');
-
-    fetch('https://formsubmit.co/sabrrinareyes@icloud.com', {
+    var newsletterApi = window.CHEVERE_NEWSLETTER_API_URL || 'https://newsletter.itschevere.com';
+    fetch(newsletterApi + '/api/subscribe', {
       method: 'POST',
-      body: body
-    }).then(function () {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    }).then(function (response) {
+      if (!response.ok) throw new Error('Subscription request failed');
       input.value = '';
-      btn.textContent = 'You\'re in!';
+      btn.textContent = 'Check your inbox';
       showPopup();
       setTimeout(function () {
         btn.textContent = defaultButtonText;
