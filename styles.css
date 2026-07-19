@@ -407,9 +407,8 @@ body.popup-open::after {
   display: block;
   min-height: 0;
   background:
-    radial-gradient(circle at 18% 22%, rgba(94, 68, 50, 0.11) 0 1px, transparent 1.5px) 0 0 / 25px 25px,
-    radial-gradient(circle at 76% 68%, rgba(94, 68, 50, 0.075) 0 0.9px, transparent 1.4px) 7px 11px / 39px 39px,
-    linear-gradient(115deg, rgba(255, 255, 255, 0.18), transparent 42%, rgba(94, 68, 50, 0.025)),
+    linear-gradient(rgba(247, 243, 237, 0.76), rgba(247, 243, 237, 0.76)),
+    url('assets/welcome-texture.jpg') center 46% / cover no-repeat,
     var(--bg);
 }
 
@@ -891,15 +890,17 @@ body.popup-open::after {
 @media (max-width: 620px) {
   html,
   body { overflow-x: clip; }
-  .site-header { height: 116px; }
-  .header-logo img { width: 160px; max-width: 46vw; }
-  .header-actions { right: 10px; gap: 4px; }
+  .site-header { height: 116px; justify-content: flex-start; padding-left: 16px; }
+  .header-logo img { width: 142px; max-width: 40vw; }
+  .header-actions { right: 8px; gap: 2px; }
   .header-actions a[href*="instagram.com"],
-  .header-actions a[href*="tiktok.com"] { display: none; }
+  .header-actions a[href*="tiktok.com"] { display: flex; }
+  .header-actions a[href*="instagram.com"] { margin-left: 2px; }
+  .header-actions a[href*="instagram.com"]::before { display: none; }
   .header-actions button,
-  .header-actions a { width: 32px; height: 32px; }
-  .header-actions svg { width: 19px; height: 19px; }
-  .header-actions .tiktok-icon { width: 17px; height: 17px; }
+  .header-actions a { width: 28px; height: 28px; }
+  .header-actions svg { width: 18px; height: 18px; }
+  .header-actions .tiktok-icon { width: 16px; height: 16px; }
   .search-panel { width: min(480px, calc(100vw - 16px)); padding: 12px 12px 6px; }
   .site-nav { height: 58px; gap: 20px; }
   .site-nav > a,
