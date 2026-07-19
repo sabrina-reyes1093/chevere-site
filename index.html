@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
-  <link rel="stylesheet" href="styles.css?v=20260719-3" />
+  <link rel="stylesheet" href="styles.css?v=20260719-4" />
 </head>
 <body class="home">
 
@@ -81,7 +81,10 @@
         <h2 id="featured-title">Featured Reads</h2>
       </div>
       <div class="featured-controls">
-        <button class="featured-arrow" id="featured-next" type="button" aria-label="Show next featured read">
+        <button class="featured-arrow featured-arrow--previous" id="featured-previous" type="button" aria-label="Show previous featured read" disabled>
+          <i data-lucide="arrow-left" stroke-width="1.6" aria-hidden="true"></i>
+        </button>
+        <button class="featured-arrow featured-arrow--next" id="featured-next" type="button" aria-label="Show next featured read">
           <i data-lucide="arrow-right" stroke-width="1.6" aria-hidden="true"></i>
         </button>
       </div>
@@ -137,7 +140,7 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-  <script src="site.js?v=20260719-3"></script>
+  <script src="site.js?v=20260719-4"></script>
 
 </body>
 </html>

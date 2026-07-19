@@ -333,7 +333,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     if (typeof window.Splide === 'undefined') return;
     var carousel = new window.Splide('#featured-carousel', {
       type: 'slide',
-      rewind: true,
+      rewind: false,
       arrows: false,
       perPage: 3,
       perMove: 1,
@@ -347,10 +347,27 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
         620: { perPage: 1, gap: '16px', padding: { right: '12%' } }
       }
     });
-    carousel.mount();
 
+    var previous = document.getElementById('featured-previous');
     var next = document.getElementById('featured-next');
+
+    function updateControls() {
+      var end = carousel.Components.Controller.getEnd();
+      if (previous) previous.disabled = carousel.index <= 0;
+      if (next) next.disabled = carousel.index >= end;
+    }
+
+    carousel.on('mounted', updateControls);
+    carousel.on('moved', updateControls);
+    carousel.on('resized', updateControls);
+    carousel.on('updated', updateControls);
+    carousel.on('refresh', updateControls);
+
+    if (previous) previous.addEventListener('click', function () { carousel.go('<'); });
     if (next) next.addEventListener('click', function () { carousel.go('>'); });
+
+    carousel.mount();
+    updateControls();
   }
 
   fetch('blog.html')
