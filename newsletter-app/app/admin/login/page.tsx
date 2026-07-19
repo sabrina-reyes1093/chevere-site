@@ -9,9 +9,9 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
       <p className="eyebrow">Private editor</p>
       <h1>The Edit, Delivered</h1>
       <p>Create, preview, approve, and schedule the Friday newsletter.</p>
-      {query.error && <p className="message error">The email or password was not accepted.</p>}
+      {query.error && <p className="message error">The username or password was not accepted.</p>}
       <form action="/api/auth/login" method="post" className="stack">
-        <label>Email<input name="email" type="email" autoComplete="username" required /></label>
+        <label>Username<input name="username" type="text" autoComplete="username" required /></label>
         <label>Password<input name="password" type="password" autoComplete="current-password" required /></label>
         <button className="primary">Sign in</button>
       </form>

@@ -4,8 +4,10 @@ import { config } from "@/lib/config";
 
 export async function POST(request: NextRequest) {
   const form = await request.formData();
-  const email = String(form.get("email") || "").toLowerCase();
+  const username = String(form.get("username") || "").trim().toLowerCase();
   const password = String(form.get("password") || "");
+  if (username !== config.adminUsername) return NextResponse.redirect(new URL("/admin/login?error=invalid", request.url), 303);
+  const email = config.adminEmail;
   const response = NextResponse.redirect(new URL("/admin", request.url), 303);
   const supabase = createServerClient(config.supabaseUrl, config.supabaseAnonKey, {
     cookies: {

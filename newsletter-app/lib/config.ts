@@ -11,6 +11,7 @@ export const config = {
   get supabaseAnonKey() { return required("NEXT_PUBLIC_SUPABASE_ANON_KEY"); },
   get supabaseServiceKey() { return required("SUPABASE_SERVICE_ROLE_KEY"); },
   get adminEmail() { return required("ADMIN_EMAIL").toLowerCase(); },
+  get adminUsername() { return required("ADMIN_USERNAME").toLowerCase(); },
   get resendKey() { return required("RESEND_API_KEY"); },
   get from() { return required("NEWSLETTER_FROM"); },
   get replyTo() { return required("NEWSLETTER_REPLY_TO"); },
