@@ -6,8 +6,8 @@
 
   var section = [
     '<section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">',
-    '  <h2 id="newsletter-heading">A Letter from Chévere</h2>',
-    '  <p class="newsletter-sub">Get Chévere in your inbox &mdash; a weekly curation of finds worth discovering.</p>',
+    '  <h2 id="newsletter-heading">The Edit, Delivered</h2>',
+    '  <p class="newsletter-sub">Get Chévere in your inbox&mdash;a weekly curation of finds worth discovering.</p>',
     '  <form id="newsletter-form">',
     '    <label class="sr-only" for="newsletter-email">Email address</label>',
     '    <input id="newsletter-email" name="email" type="email" placeholder="Email address" autocomplete="email" required />',
