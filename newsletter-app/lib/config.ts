@@ -15,7 +15,6 @@ export const config = {
   get resendKey() { return required("RESEND_API_KEY"); },
   get from() { return required("NEWSLETTER_FROM"); },
   get replyTo() { return required("NEWSLETTER_REPLY_TO"); },
-  get testEmail() { return required("NEWSLETTER_TEST_EMAIL"); },
   get postalAddress() { return required("NEWSLETTER_POSTAL_ADDRESS"); },
   get sendTime() { return process.env.NEWSLETTER_SEND_TIME || "08:30"; },
   get resendWebhookSecret() { return required("RESEND_WEBHOOK_SECRET"); },

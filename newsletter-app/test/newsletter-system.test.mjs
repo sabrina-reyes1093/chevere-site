@@ -41,3 +41,11 @@ test("provider events are signature-verified and deduplicated", () => {
   assert.match(webhook, /23505/);
   assert.match(migration, /webhook_id text primary key/);
 });
+
+test("test sends are restricted to the administrator's own email", () => {
+  const route = read("app/api/admin/issues/[id]/test/route.ts");
+  const env = read(".env.example");
+  assert.match(route, /to: config\.adminEmail/);
+  assert.doesNotMatch(route, /config\.testEmail/);
+  assert.doesNotMatch(env, /NEWSLETTER_TEST_EMAIL/);
+});

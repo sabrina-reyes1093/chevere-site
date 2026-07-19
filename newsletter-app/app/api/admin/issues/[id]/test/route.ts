@@ -11,7 +11,7 @@ export async function POST(_: Request, context: { params: Promise<{ id: string }
   const { data: issue, error } = await createAdminClient().from("newsletter_issues").select("*").eq("id", id).single();
   if (error || !issue) return NextResponse.json({ error: "Issue not found." }, { status: 404 });
   const result = await new Resend(config.resendKey).emails.send({
-    from: config.from, to: config.testEmail, replyTo: config.replyTo,
+    from: config.from, to: config.adminEmail, replyTo: config.replyTo,
     subject: `[TEST] ${issue.subject}`, html: renderNewsletter(issue, `${config.siteUrl}/`),
   });
   return result.error ? NextResponse.json({ error: result.error.message }, { status: 502 }) : NextResponse.json({ ok: true, providerId: result.data?.id });

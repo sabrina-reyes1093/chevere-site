@@ -32,7 +32,7 @@ The production scheduler is intentionally disabled unless `NEWSLETTER_CRON_ENABL
 - The footer unsubscribe link, one-click unsubscribe request, and subscription-management page immediately mark the subscriber unsubscribed.
 - A draft can be saved, edited, and previewed at desktop and mobile widths.
 - A published website article can populate The Chévere Read.
-- A test email reaches `NEWSLETTER_TEST_EMAIL` with correct images, links, sender details, and footer.
+- A test email reaches the private `ADMIN_EMAIL` with correct images, links, sender details, and footer.
 - An incomplete issue cannot be approved.
 - An approved issue shows the next Friday at `NEWSLETTER_SEND_TIME` in America/Chicago.
 - Resend webhook signatures are verified, duplicate webhook IDs are ignored, and supported delivery metrics appear in the dashboard.
