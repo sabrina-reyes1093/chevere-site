@@ -266,10 +266,15 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     var newsletterApi = window.CHEVERE_NEWSLETTER_API_URL || 'https://newsletter.itschevere.com';
     fetch(newsletterApi + '/api/subscribe', {
       method: 'POST',
+      cache: 'no-store',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email })
     }).then(function (response) {
-      if (!response.ok) throw new Error('Subscription request failed');
+      return response.json().catch(function () { return {}; }).then(function (data) {
+        if (!response.ok) throw new Error(data.error || 'Subscription request failed');
+        return data;
+      });
+    }).then(function () {
       input.value = '';
       btn.textContent = 'You\'re in';
       showPopup();
@@ -277,8 +282,8 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
         btn.textContent = defaultButtonText;
         btn.disabled = false;
       }, 2500);
-    }).catch(function () {
-      btn.textContent = 'Something went wrong';
+    }).catch(function (error) {
+      btn.textContent = error && error.message === 'Enter a valid email address.' ? 'Check your email' : 'Please try again';
       setTimeout(function () {
         btn.textContent = defaultButtonText;
         btn.disabled = false;

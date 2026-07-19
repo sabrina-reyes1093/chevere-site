@@ -18,7 +18,23 @@ test("the public form reports immediate subscription", () => {
   const site = fs.readFileSync(path.resolve(projectRoot, "../site.js"), "utf8");
 
   assert.match(site, /You&(?:rsquo|#39);re subscribed to The Edit, Delivered\./);
+  assert.match(site, /cache: 'no-store'/);
+  assert.match(site, /response\.json\(\)/);
+  assert.doesNotMatch(site, /Something went wrong/);
   assert.doesNotMatch(site, /Confirm your email to join/);
+});
+
+test("every public page loads the current signup script version", () => {
+  const publicRoot = path.resolve(projectRoot, "..");
+  const htmlFiles = [
+    ...fs.readdirSync(publicRoot).filter((file) => file.endsWith(".html")).map((file) => path.join(publicRoot, file)),
+    ...fs.readdirSync(path.join(publicRoot, "posts")).filter((file) => file.endsWith(".html")).map((file) => path.join(publicRoot, "posts", file)),
+  ];
+
+  for (const file of htmlFiles) {
+    const html = fs.readFileSync(file, "utf8");
+    if (html.includes("site.js")) assert.match(html, /site\.js\?v=20260719-5/);
+  }
 });
 
 test("the migration activates existing pending subscribers", () => {
