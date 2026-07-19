@@ -38,6 +38,57 @@
   }
 })();
 
+/* back to top: shared, accessible control with footer collision avoidance */
+(function renderBackToTop() {
+  if (document.querySelector('.back-to-top')) return;
+
+  var button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'back-to-top';
+  button.setAttribute('aria-label', 'Back to top');
+  button.setAttribute('title', 'Back to top');
+  button.innerHTML = '<i data-lucide="arrow-up" aria-hidden="true"></i>';
+  document.body.appendChild(button);
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var ticking = false;
+
+  function updateButton() {
+    var baseOffset = window.innerWidth <= 620 ? 18 : 24;
+    var buttonHeight = button.offsetHeight || 44;
+    var maxOffset = window.innerHeight - buttonHeight - 16;
+    var offset = baseOffset;
+    var blocked = false;
+
+    document.querySelectorAll('.newsletter, footer').forEach(function (element) {
+      var rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        offset = Math.max(offset, window.innerHeight - rect.top + 16);
+      }
+    });
+
+    if (offset >= maxOffset) blocked = true;
+    button.style.setProperty('--back-to-top-offset', Math.min(offset, maxOffset) + 'px');
+    button.classList.toggle('back-to-top--visible', window.scrollY > 160);
+    button.classList.toggle('back-to-top--blocked', blocked);
+    ticking = false;
+  }
+
+  function requestUpdate() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(updateButton);
+  }
+
+  button.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+  });
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
+  updateButton();
+})();
+
 lucide.createIcons();
 
 /* nav dropdown: tap-to-open on touch devices (hover handles desktop via CSS) */
