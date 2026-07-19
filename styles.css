@@ -407,7 +407,7 @@ body.popup-open::after {
   display: block;
   min-height: 0;
   background:
-    linear-gradient(rgba(247, 243, 237, 0.76), rgba(247, 243, 237, 0.76)),
+    linear-gradient(rgba(247, 243, 237, 0.68), rgba(247, 243, 237, 0.68)),
     url('assets/welcome-texture.jpg') center 46% / cover no-repeat,
     var(--bg);
 }
