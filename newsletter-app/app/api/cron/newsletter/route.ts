@@ -22,8 +22,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ skipped: true, reason: "Schedule disabled" });
   }
   const now = new Date();
-  if (!isFridaySendWindow(now)) {
-    await recordSkip("Invocation was outside the Friday 8:30–10:30 America/Chicago send and retry window.");
+  if (!isFridaySendWindow(now, config.sendTime)) {
+    await recordSkip(`Invocation was outside the Friday ${config.sendTime} America/Chicago send and retry window.`);
     return NextResponse.json({ skipped: true, reason: "Outside send window" });
   }
 

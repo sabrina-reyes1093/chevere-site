@@ -4,11 +4,14 @@ import { verifyUnsubscribeToken } from "@/lib/tokens";
 
 async function unsubscribe(token: string | null) {
   if (!token) return false;
-  const id = await verifyUnsubscribeToken(token);
-  if (!id) return false;
+  const verified = await verifyUnsubscribeToken(token);
+  if (!verified) return false;
   const now = new Date().toISOString();
-  const { error } = await createAdminClient().from("newsletter_subscribers")
-    .update({ status: "unsubscribed", unsubscribed_at: now, updated_at: now }).eq("id", id);
+  const db = createAdminClient();
+  const { error } = await db.from("newsletter_subscribers")
+    .update({ status: "unsubscribed", unsubscribed_at: now, updated_at: now }).eq("id", verified.subscriberId);
+  if (!error && verified.issueId) await db.from("newsletter_deliveries")
+    .update({ unsubscribed_at: now, updated_at: now }).eq("issue_id", verified.issueId).eq("subscriber_id", verified.subscriberId);
   return !error;
 }
 

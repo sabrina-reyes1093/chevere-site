@@ -21,18 +21,23 @@ async function signature(payload: string) {
   return Buffer.from(await crypto.subtle.sign("HMAC", key, encoder.encode(payload))).toString("base64url");
 }
 
-export async function createUnsubscribeToken(subscriberId: string) {
-  return `${subscriberId}.${await signature(subscriberId)}`;
+export async function createUnsubscribeToken(subscriberId: string, issueId?: string) {
+  const payload = issueId ? `${subscriberId}:${issueId}` : subscriberId;
+  return `${payload}.${await signature(payload)}`;
 }
 
 export async function verifyUnsubscribeToken(token: string) {
-  const [id, supplied] = token.split(".");
-  if (!id || !supplied) return null;
-  const expected = await signature(id);
+  const separator = token.lastIndexOf(".");
+  const payload = token.slice(0, separator);
+  const supplied = token.slice(separator + 1);
+  if (!payload || !supplied) return null;
+  const expected = await signature(payload);
   if (expected.length !== supplied.length) return null;
   let difference = 0;
   for (let index = 0; index < expected.length; index += 1) {
     difference |= expected.charCodeAt(index) ^ supplied.charCodeAt(index);
   }
-  return difference === 0 ? id : null;
+  if (difference !== 0) return null;
+  const [subscriberId, issueId] = payload.split(":");
+  return { subscriberId, issueId: issueId || null };
 }

@@ -59,6 +59,8 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
 .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 .recommendation { padding:18px; border:1px solid var(--line); border-radius:12px; display:grid; gap:10px; background:#faf7f1; }
 .action-bar { display:flex; flex-wrap:wrap; gap:10px; position:sticky; bottom:12px; padding:12px; border:1px solid var(--line); border-radius:13px; background:rgba(255,253,248,.94); backdrop-filter:blur(10px); }
+.approval-check { grid-template-columns:auto 1fr; align-items:center; padding:16px; border:1px solid #b6c7b7; border-radius:11px; background:#edf4ed; }
+.approval-check input { width:20px; height:20px; }
 .preview-panel { position:sticky; top:100px; padding:18px; min-height:500px; }
 .preview-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
 .preview-toolbar button { border:0; background:transparent; padding:7px 10px; border-radius:7px; }

@@ -16,6 +16,8 @@ export const config = {
   get replyTo() { return required("NEWSLETTER_REPLY_TO"); },
   get testEmail() { return required("NEWSLETTER_TEST_EMAIL"); },
   get postalAddress() { return required("NEWSLETTER_POSTAL_ADDRESS"); },
+  get sendTime() { return process.env.NEWSLETTER_SEND_TIME || "08:30"; },
+  get resendWebhookSecret() { return required("RESEND_WEBHOOK_SECRET"); },
   get tokenSecret() { return required("TOKEN_SECRET"); },
   get cronSecret() { return required("CRON_SECRET"); },
   get cronEnabled() { return process.env.NEWSLETTER_CRON_ENABLED === "true"; },

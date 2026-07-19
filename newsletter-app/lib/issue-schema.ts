@@ -4,6 +4,7 @@ const recommendation = z.object({
   title: z.string().trim().max(160),
   text: z.string().trim().max(1000),
   url: z.string().trim().url().or(z.literal("")),
+  image_url: z.string().trim().url().or(z.literal("")).optional(),
 });
 
 export const issueSchema = z.object({

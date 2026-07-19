@@ -1,4 +1,4 @@
-export type Recommendation = { title: string; text: string; url: string };
+export type Recommendation = { title: string; text: string; url: string; image_url?: string };
 
 export type IssueInput = {
   title: string;
