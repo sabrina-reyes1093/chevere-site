@@ -916,7 +916,13 @@ body.popup-open::after {
   .featured-heading h2 { font-size: 38px; }
   .featured-arrow { width: 38px; height: 38px; }
   .featured-card h3 { font-size: 22px; }
-  .newsletter { padding: 52px 16px 58px; }
+  .newsletter {
+    padding: 52px 16px 58px;
+    background:
+      linear-gradient(rgba(247, 243, 237, 0.34), rgba(247, 243, 237, 0.34)),
+      url('assets/welcome-texture.jpg') center 46% / cover no-repeat,
+      var(--bg);
+  }
   .newsletter h2 { font-size: 36px; line-height: 1.12; }
   .newsletter .newsletter-sub {
     max-width: 340px;
