@@ -623,8 +623,10 @@ body.popup-open::after {
   visibility: visible;
   opacity: 1;
   border-top: 1px solid var(--border);
-  background: #afa095;
-  background: color-mix(in srgb, var(--brown) 46%, var(--bg));
+  background:
+    linear-gradient(rgba(247, 243, 237, 0.68), rgba(247, 243, 237, 0.68)),
+    url('assets/welcome-texture.jpg') center 46% / cover no-repeat,
+    var(--bg);
   text-align: center;
   padding: 70px 24px 76px;
 }
@@ -679,7 +681,7 @@ body.popup-open::after {
 .newsletter-note {
   margin-top: 16px;
   font-size: 12px;
-  color: rgba(255, 253, 248, 0.78);
+  color: rgba(77, 56, 41, 0.72);
 }
 .sr-only {
   position: absolute;
