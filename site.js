@@ -19,8 +19,8 @@
   var popup = [
     '<div id="newsletter-popup" class="newsletter-popup" role="status" aria-live="polite">',
     '  <button id="newsletter-popup-close" class="newsletter-popup-close" aria-label="Close">&times;</button>',
-    '  <h3>Check your inbox</h3>',
-    '  <p>Confirm your email to join The Edit, Delivered.</p>',
+    '  <h3>You&rsquo;re in</h3>',
+    '  <p>You&rsquo;re subscribed to The Edit, Delivered.</p>',
     '  <p class="newsletter-popup-signoff">Stay <em>chévere</em></p>',
     '</div>'
   ].join('');
@@ -247,7 +247,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   });
 })();
 
-/* newsletter: create a pending subscriber and send double-opt-in confirmation */
+/* newsletter: subscribe immediately after a valid email is submitted */
 (function () {
   var form = document.getElementById('newsletter-form');
   if (!form) return;
@@ -271,7 +271,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     }).then(function (response) {
       if (!response.ok) throw new Error('Subscription request failed');
       input.value = '';
-      btn.textContent = 'Check your inbox';
+      btn.textContent = 'You\'re in';
       showPopup();
       setTimeout(function () {
         btn.textContent = defaultButtonText;
