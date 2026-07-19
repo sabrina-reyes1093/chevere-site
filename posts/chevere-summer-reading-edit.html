@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The books we'd recommend to a friend—from literary favorites and addictive thrillers to romance, fantasy, and unforgettable standouts." />
+  <title>The Ch&eacute;vere Summer Reading Edit &mdash; ch&eacute;vere</title>
+  <link rel="icon" type="image/png" href="../assets/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .post-body { font-size: 17px; line-height: 1.8; color: var(--text); }
+    .post-body p { margin-bottom: 16px; }
+    .post-hero { width: 100%; height: min(440px, 52vw); min-height: 260px; object-fit: cover; object-position: center; border-radius: 10px; margin-bottom: 28px; display: block; }
+    .post-dek { font-family: var(--serif); font-size: 20px; font-style: italic; line-height: 1.55; color: var(--gray-soft); }
+    .reading-section { margin-top: 48px; padding-top: 30px; border-top: 1px solid var(--border); }
+    .reading-section h2 { font-family: var(--serif); font-size: 30px; color: var(--ink); margin-bottom: 8px; }
+    .section-intro { color: var(--gray-soft); margin-bottom: 26px !important; }
+    .book-entry { margin: 28px 0; }
+    .book-entry h3 { font-family: var(--serif); font-size: 22px; line-height: 1.35; color: var(--ink); margin-bottom: 7px; }
+    .book-entry h3 em { font-weight: 700; }
+    .final-chapter { margin-top: 48px; padding: 26px; border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.38); }
+    .final-chapter h2 { font-family: var(--serif); font-size: 28px; color: var(--ink); margin-bottom: 14px; }
+    .back-link { display: inline-block; margin-bottom: 24px; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--brown); transition: opacity .15s ease; }
+    .back-link:hover { opacity: .7; }
+    @media (max-width: 560px) { .post-hero { height: 300px; } .reading-section { margin-top: 38px; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="header-logo" href="../index.html" aria-label="ch&eacute;vere home"><img src="../assets/logo.png" alt="ch&eacute;vere" /></a>
+    <div class="header-actions">
+      <button id="search-toggle" aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
+      <a href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+      <a href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok"><svg class="tiktok-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="19" height="19"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.87.13v-3.5a6.37 6.37 0 0 0-.87-.06A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.46a8.23 8.23 0 0 0 4.77 1.48v-3.4a4.86 4.86 0 0 1-1.01.15z"/></svg></a>
+      <a href="../index.html#newsletter" aria-label="Newsletter sign-up" title="Newsletter"><i data-lucide="mail" stroke-width="1.8" aria-hidden="true"></i></a>
+    </div>
+    <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
+      <div class="search-bar-wrap"><i data-lucide="search" class="search-bar-icon" stroke-width="2" aria-hidden="true"></i><input id="search-input" type="text" placeholder="Search posts..." autocomplete="off" /><button id="search-submit" class="search-action-btn" aria-label="Search" type="button"><i data-lucide="arrow-right" stroke-width="2.5" aria-hidden="true"></i></button><button id="search-close" class="search-close-btn" aria-label="Close search" type="button"><i data-lucide="x" stroke-width="2.5" aria-hidden="true"></i></button></div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </header>
+  <nav class="site-nav">
+    <a href="../index.html">Home</a>
+    <div class="nav-item has-dropdown"><a href="../blog.html">The Edit<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a><div class="dropdown"><a href="../blog.html">All Blogs</a><a href="../blog.html?cat=books">Books</a><a href="../blog.html?cat=tv-film">TV &amp; Film</a><a href="../blog.html?cat=travel">Travel</a><a href="../blog.html?cat=food-drink">Food &amp; Drink</a><a href="../blog.html?cat=fashion">Fashion</a><a href="../blog.html?cat=sports">Sports</a><a href="../blog.html?cat=culture">Culture</a></div></div>
+    <a href="../about.html">About</a>
+  </nav>
+  <main class="page-main">
+    <a class="back-link" href="../blog.html">&larr; Back to Blog</a>
+    <span class="kicker" style="display:block;margin-bottom:8px">Books</span>
+    <h1 class="page-title">The Ch&eacute;vere Summer Reading Edit</h1>
+    <p class="page-tagline" style="font-size:15px;color:#8e8c88;margin-top:-4px;margin-bottom:28px">Jul 18, 2026</p>
+    <article class="post-body">
+      <img class="post-hero" src="../assets/chevere-summer-reading-edit.png" alt="A sunlit stack of books with reading glasses and a citrus drink" />
+      <p class="post-dek">The books we&rsquo;d recommend to a friend&mdash;from literary favorites and addictive thrillers to romance, fantasy, and a few unforgettable standouts.</p>
+      <p>There is no shortage of great books to choose from, which can make deciding what to read next feel surprisingly difficult. Between BookTok favorites, literary award contenders, and the novel that's been sitting on your nightstand for months, the list only seems to get longer.</p>
+      <p>At Ch&eacute;vere, we believe the best recommendations come from the books that linger long after you've finished them. The ones you immediately want to hand to a friend, annotate in the margins, or find yourself thinking about weeks later. So instead of chasing every new release, we've put together a collection of novels that are genuinely worth your time for the rest of 2026.</p>
+      <p>Whether you're packing a book for a summer getaway, settling into a cozy fall weekend, or simply looking for your next great read, consider this your starting point.</p>
+
+      <section class="reading-section"><h2>Literary Fiction</h2><p class="section-intro">These are the novels that reward slow reading. Rich characters, thoughtful writing, and stories that stay with you long after the final page.</p>
+        <div class="book-entry"><h3><em>Intermezzo</em> &mdash; Sally Rooney</h3><p>Rooney returns with another deeply human story, exploring grief, family, love, and the complicated dynamics between two brothers navigating life after loss. Like her previous novels, <em>Intermezzo</em> is quiet in all the right ways, asking readers to pay attention to the moments that often go unnoticed.</p></div>
+        <div class="book-entry"><h3><em>My Year of Rest and Relaxation</em> &mdash; Ottessa Moshfegh</h3><p>A modern literary classic that follows a young woman attempting to sleep through an entire year in an effort to escape herself and the world around her. Equal parts dark, funny, and unsettling, it's one of those books that sparks conversation every time someone brings it up.</p></div>
+        <div class="book-entry"><h3><em>Cleopatra and Frankenstein</em> &mdash; Coco Mellors</h3><p>Set in New York City, this novel follows a whirlwind marriage between two people trying to find themselves while navigating the expectations of love, friendship, family, and adulthood. Beautifully written and emotionally layered, it's a favorite for readers who enjoy character-driven fiction.</p></div>
+        <div class="book-entry"><h3><em>If We Were Villains</em> &mdash; M.L. Rio</h3><p>Part murder mystery and part Shakespearean drama, this cult favorite follows a group of elite theater students whose lives begin to imitate the tragedies they perform on stage. If you love dark academia, this one deserves a place at the top of your list.</p></div>
+      </section>
+
+      <section class="reading-section"><h2>Thrillers</h2><p class="section-intro">For the nights when &ldquo;just one more chapter&rdquo; somehow turns into finishing the entire book.</p>
+        <div class="book-entry"><h3><em>Bright Young Women</em> &mdash; Jessica Knoll</h3><p>Inspired by the crimes of Ted Bundy, Knoll shifts the focus away from the killer and toward the women whose lives were forever changed. More than a thriller, it's a powerful story about survival, resilience, and reclaiming the narrative.</p></div>
+        <div class="book-entry"><h3><em>The Change</em> &mdash; Kirsten Miller</h3><p>Imagine a thriller with a touch of magic, a feminist revenge story, and a mystery all rolled into one. Three women discover extraordinary abilities just as a series of suspicious deaths rocks their coastal town. Unexpected, empowering, and wildly entertaining.</p></div>
+        <div class="book-entry"><h3><em>His &amp; Hers</em> &mdash; Alice Feeney</h3><p>When a murder investigation unfolds through two unreliable narrators, every chapter raises a new question. Twisty, addictive, and impossible to predict, it's exactly what a psychological thriller should be.</p></div>
+        <div class="book-entry"><h3><em>The God of the Woods</em> &mdash; Liz Moore</h3><p>One of the most talked-about mysteries in recent years, Liz Moore's atmospheric novel follows the disappearance of a teenage girl at a prestigious summer camp. Family secrets, wealth, privilege, and a haunting setting make this one nearly impossible to put down.</p></div>
+      </section>
+
+      <section class="reading-section"><h2>Fantasy</h2><p class="section-intro">Whether you're revisiting old favorites or discovering a new world for the first time, these books make reality feel a little less interesting.</p>
+        <div class="book-entry"><h3><em>Fire &amp; Blood</em> &mdash; George R.R. Martin</h3><p>Already obsessed with <em>House of the Dragon</em>? This is where it all begins. The history of House Targaryen is filled with dragons, betrayals, political rivalries, and enough family drama to make every episode even better.</p></div>
+        <div class="book-entry"><h3><em>A Court of Thorns and Roses</em> &mdash; Sarah J. Maas</h3><p>One of the defining fantasy series of the last decade for a reason. Romance, adventure, unforgettable characters, and a world you'll want to keep returning to. If you're late to the ACOTAR phenomenon, there's still plenty of time to catch up.</p></div>
+        <div class="book-entry"><h3><em>The Invisible Life of Addie LaRue</em> &mdash; V.E. Schwab</h3><p>A woman makes a bargain that grants her immortality&mdash;but at the cost of being forgotten by everyone she meets. Romantic, beautifully written, and quietly magical, it's a story about art, memory, and what it means to leave a lasting mark.</p></div>
+      </section>
+
+      <section class="reading-section"><h2>Romance</h2><p class="section-intro">Love stories that feel honest, hopeful, heartbreaking, and worth rooting for.</p>
+        <div class="book-entry"><h3><em>Funny Story</em> &mdash; Emily Henry</h3><p>Emily Henry continues to prove why she's one of today's most beloved romance writers. Equal parts witty and heartfelt, this novel delivers memorable characters, genuine chemistry, and the kind of emotional payoff that makes you want to start it all over again.</p></div>
+        <div class="book-entry"><h3><em>Lie With Me</em> &mdash; Philippe Besson</h3><p>A beautifully understated novel about first love, memory, and the relationships that shape us forever. It's short enough to finish in a weekend but powerful enough to stay with you much longer.</p></div>
+        <div class="book-entry"><h3><em>How to End a Love Story</em> &mdash; Yulin Kuang</h3><p>Kuang's debut blends romance with grief, healing, and second chances. Thoughtful, funny, and emotionally rich, it's one of the strongest contemporary romances to pick up this year.</p></div>
+        <div class="book-entry"><h3><em>The Two Lives of Lydia Bird</em> &mdash; Josie Silver</h3><p>What if you could continue living the life you lost while still trying to move forward? Josie Silver delivers an emotional story about grief, hope, and learning that loving someone doesn't always mean holding on forever.</p></div>
+      </section>
+
+      <section class="reading-section"><h2>Ch&eacute;vere Recommends</h2><p class="section-intro">Some books don't fit neatly into a single category&mdash;they're simply stories we think everyone should experience at least once.</p>
+        <div class="book-entry"><h3><em>Crying in H Mart</em> &mdash; Michelle Zauner</h3><p>A deeply moving memoir exploring grief, identity, family, and the powerful connection between food and memory.</p></div>
+        <div class="book-entry"><h3><em>Remarkably Bright Creatures</em> &mdash; Shelby Van Pelt</h3><p>Warm, hopeful, and quietly charming, this novel reminds us that healing often comes from the most unexpected places&mdash;including an exceptionally observant octopus.</p></div>
+        <div class="book-entry"><h3><em>The House in the Cerulean Sea</em> &mdash; T.J. Klune</h3><p>A cozy fantasy about found family, kindness, and embracing what makes people different. Comforting in the very best way.</p></div>
+        <div class="book-entry"><h3><em>The Nightingale</em> &mdash; Kristin Hannah</h3><p>An unforgettable historical novel about two sisters navigating occupied France during World War II. Emotional, inspiring, and impossible to forget.</p></div>
+        <div class="book-entry"><h3><em>Eileen</em> &mdash; Ottessa Moshfegh</h3><p>Strange, unsettling, and brilliantly written, <em>Eileen</em> isn't always comfortable&mdash;but that's exactly what makes it so compelling.</p></div>
+        <div class="book-entry"><h3><em>Piranesi</em> &mdash; Susanna Clarke</h3><p>Unlike anything else you'll read this year, <em>Piranesi</em> unfolds inside a mysterious labyrinth where beauty, loneliness, and imagination collide.</p></div>
+        <div class="book-entry"><h3><em>Yellowface</em> &mdash; R.F. Kuang</h3><p>Sharp, funny, and uncomfortably relevant, <em>Yellowface</em> takes aim at publishing, social media, cultural appropriation, and the stories we choose to tell.</p></div>
+      </section>
+
+      <section class="final-chapter"><h2>Final Chapter</h2><p>The best books aren't always the newest ones&mdash;they're the ones that stay with you. The stories you recommend without hesitation, lend to friends, or find yourself revisiting years later.</p><p>If even one of these titles earns a spot on your bookshelf before the end of the year, we'd call that a successful reading season.</p><p>And if there's a book you think belongs on every must-read list, let us know. We're always looking for our next favorite.</p></section>
+    </article>
+  </main>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../site.js"></script>
+</body>
+</html>
