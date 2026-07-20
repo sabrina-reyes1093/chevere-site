@@ -71,3 +71,38 @@ test("the portal links the blog editor alongside the newsletter", () => {
   assert.match(read("components/admin-shell.tsx"), /\/admin\/posts/);
   assert.match(read("components/post-editor.tsx"), /ImageField/);
 });
+
+test("publishing commits to GitHub when the host cannot write files", () => {
+  const route = read("app/api/admin/posts/[id]/publish/route.ts");
+  assert.match(route, /githubConfigured/);
+  assert.match(route, /publishPostToGitHub/);
+  assert.match(route, /unpublishPostFromGitHub/);
+  // The filesystem path must remain for running locally.
+  assert.match(route, /publishPost\(/);
+});
+
+test("a read-only filesystem explains itself instead of leaking EROFS", () => {
+  const route = read("app/api/admin/posts/[id]/publish/route.ts");
+  assert.match(route, /EROFS\|read-only file system/);
+  assert.match(route, /GITHUB_TOKEN and GITHUB_REPO/);
+});
+
+test("both files land in a single commit so the blog never links to a missing page", () => {
+  const github = read("lib/publish-github.ts");
+  // One tree, one commit, one ref update - not two content-API writes.
+  assert.match(github, /git\/trees/);
+  assert.match(github, /git\/commits/);
+  assert.match(github, /git\/refs\/heads/);
+  assert.match(github, /base_tree/);
+  assert.match(github, /parents: \[headSha\]/);
+  assert.match(github, /posts\/\$\{post\.slug\}\.html/);
+  assert.match(github, /"blog\.html"/);
+});
+
+test("GitHub credentials are optional and never assumed present", () => {
+  const configSource = read("lib/config.ts");
+  // required() would throw at import time on a local setup with no token.
+  assert.match(configSource, /githubToken\(\) \{ return process\.env\.GITHUB_TOKEN \|\| ""/);
+  assert.match(configSource, /githubConfigured/);
+  assert.match(read(".env.example"), /GITHUB_TOKEN=/);
+});

@@ -15,7 +15,7 @@ function escapeAttr(value: string) {
 }
 
 /** One card in the #post-grid of blog.html, matching the hand-written ones. */
-function cardMarkup(post: PostInput) {
+export function cardMarkup(post: PostInput) {
   return `      <a class="post-card" data-cat="${escapeAttr(post.category)}" href="posts/${escapeAttr(post.slug)}.html">
         <div class="thumb" style="background-image:url(${escapeAttr(post.cover_image_url)});background-size:cover;background-position:center"></div>
         <span class="kicker">${escapeAttr(categoryLabel(post.category))}</span>
@@ -28,7 +28,7 @@ function cardMarkup(post: PostInput) {
 /** Replaces an existing card for this slug, or inserts a new one at the top of
  *  the grid. Everything outside the touched card is left byte-for-byte intact,
  *  which a full parse-and-reserialize would not guarantee. */
-function upsertCard(html: string, post: PostInput) {
+export function upsertCard(html: string, post: PostInput) {
   const href = `posts/${post.slug}.html`;
   const existing = new RegExp(
     `[ \\t]*<a class="post-card"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
@@ -75,15 +75,20 @@ export async function publishPost(post: PostInput): Promise<PublishResult> {
   return { postFile: path.relative(root, postFile), cardAction: action, siteRoot: root };
 }
 
+/** Strips a slug's card out of blog.html. Shared with the GitHub path. */
+export function removeCard(html: string, slug: string) {
+  const href = `posts/${slug}.html`;
+  const card = new RegExp(
+    `\\n?[ \\t]*<a class="post-card"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
+  );
+  return html.replace(card, "");
+}
+
 /** Removes a published post's file and its card, used when unpublishing. */
 export async function unpublishPost(slug: string) {
   const root = siteRoot();
   const blogPath = path.join(root, "blog.html");
   const blogHtml = await fs.readFile(blogPath, "utf8");
-  const href = `posts/${slug}.html`;
-  const card = new RegExp(
-    `\\n?[ \\t]*<a class="post-card"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
-  );
-  await fs.writeFile(blogPath, blogHtml.replace(card, ""), "utf8");
+  await fs.writeFile(blogPath, removeCard(blogHtml, slug), "utf8");
   await fs.rm(path.join(root, "posts", `${slug}.html`), { force: true });
 }
