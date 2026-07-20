@@ -1,0 +1,89 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import { renderPostPage } from "@/lib/post-template";
+import { categoryLabel, displayDate, type PostInput } from "@/lib/post-schema";
+
+/** The site repo is the parent of the newsletter app. */
+export function siteRoot() {
+  return path.resolve(process.cwd(), "..");
+}
+
+function escapeAttr(value: string) {
+  return value.replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;",
+  }[char] || char));
+}
+
+/** One card in the #post-grid of blog.html, matching the hand-written ones. */
+function cardMarkup(post: PostInput) {
+  return `      <a class="post-card" data-cat="${escapeAttr(post.category)}" href="posts/${escapeAttr(post.slug)}.html">
+        <div class="thumb" style="background-image:url(${escapeAttr(post.cover_image_url)});background-size:cover;background-position:center"></div>
+        <span class="kicker">${escapeAttr(categoryLabel(post.category))}</span>
+        <h2>${escapeAttr(post.title)}</h2>
+        <p class="dek">${escapeAttr(post.dek)}</p>
+        <p class="date">${escapeAttr(displayDate(post.published_on))}</p>
+      </a>`;
+}
+
+/** Replaces an existing card for this slug, or inserts a new one at the top of
+ *  the grid. Everything outside the touched card is left byte-for-byte intact,
+ *  which a full parse-and-reserialize would not guarantee. */
+function upsertCard(html: string, post: PostInput) {
+  const href = `posts/${post.slug}.html`;
+  const existing = new RegExp(
+    `[ \\t]*<a class="post-card"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
+  );
+  if (existing.test(html)) {
+    return { html: html.replace(existing, cardMarkup(post)), action: "updated" as const };
+  }
+
+  const gridOpen = html.indexOf('<div class="post-grid" id="post-grid">');
+  if (gridOpen === -1) throw new Error('Could not find <div class="post-grid" id="post-grid"> in blog.html.');
+  const insertAt = html.indexOf(">", gridOpen) + 1;
+  return {
+    html: html.slice(0, insertAt) + "\n" + cardMarkup(post) + html.slice(insertAt),
+    action: "inserted" as const,
+  };
+}
+
+export type PublishResult = {
+  postFile: string;
+  cardAction: "inserted" | "updated";
+  siteRoot: string;
+};
+
+/** Writes posts/<slug>.html and adds or refreshes the card in blog.html. */
+export async function publishPost(post: PostInput): Promise<PublishResult> {
+  const root = siteRoot();
+  const blogPath = path.join(root, "blog.html");
+
+  let blogHtml: string;
+  try {
+    blogHtml = await fs.readFile(blogPath, "utf8");
+  } catch {
+    throw new Error(`Could not read ${blogPath}. Publishing writes files directly, so the admin app has to be running from inside the site repo.`);
+  }
+
+  const postsDir = path.join(root, "posts");
+  await fs.mkdir(postsDir, { recursive: true });
+  const postFile = path.join(postsDir, `${post.slug}.html`);
+  await fs.writeFile(postFile, renderPostPage(post), "utf8");
+
+  const { html, action } = upsertCard(blogHtml, post);
+  await fs.writeFile(blogPath, html, "utf8");
+
+  return { postFile: path.relative(root, postFile), cardAction: action, siteRoot: root };
+}
+
+/** Removes a published post's file and its card, used when unpublishing. */
+export async function unpublishPost(slug: string) {
+  const root = siteRoot();
+  const blogPath = path.join(root, "blog.html");
+  const blogHtml = await fs.readFile(blogPath, "utf8");
+  const href = `posts/${slug}.html`;
+  const card = new RegExp(
+    `\\n?[ \\t]*<a class="post-card"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
+  );
+  await fs.writeFile(blogPath, blogHtml.replace(card, ""), "utf8");
+  await fs.rm(path.join(root, "posts", `${slug}.html`), { force: true });
+}
