@@ -76,6 +76,13 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
 .preview-panel iframe.desktop { width:100%; }
 .preview-panel iframe.mobile { width:min(375px,100%); }
 .preview-empty { min-height:430px; display:grid; place-items:center; color:#80756d; border:1px dashed #cfc1b4; border-radius:10px; text-align:center; padding:20px; }
+.image-field { display:grid; gap:8px; border:1px dashed #cfc1b4; border-radius:11px; padding:12px; background:var(--paper); }
+.image-field.dragging { border-color:var(--brown); background:#f6efe6; }
+.image-field-actions { display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+.image-field-actions .text-button { min-height:0; padding:0; font-size:13px; text-decoration:underline; }
+.image-field-hint { color:#80756d; font-size:12px; }
+.image-field-error { margin:0; font-size:13px; }
+.image-field-thumb { display:block; width:100%; max-height:170px; object-fit:cover; border-radius:8px; border:1px solid var(--line); }
 
 @media (max-width:1000px) { .editor-layout { grid-template-columns:1fr; } .preview-panel { position:static; } }
 @media (max-width:650px) {
