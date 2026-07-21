@@ -30,6 +30,7 @@ export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string, mana
         <div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-top:10px;color:#7b6658">A weekly curation by Chévere</div>
       </td></tr>
       <tr><td class="email-pad" style="padding:40px 44px">
+        ${issue.note_from_sabrina ? `<h2 style="font-family:Georgia,serif;font-size:27px;margin:0 0 16px">From Sabrina</h2><div style="font-family:Arial,sans-serif;font-size:16px;color:#544b43">${paragraphs(issue.note_from_sabrina)}</div><hr style="border:0;border-top:1px solid #ded3c7;margin:32px 0">` : ""}
         ${issue.featured_image_url ? `<img src="${escape(issue.featured_image_url)}" alt="" width="552" style="display:block;width:100%;height:auto;margin:0 0 20px;border-radius:8px">` : ""}
         <h2 style="font-family:Georgia,serif;font-size:29px;margin:0 0 12px">${escape(issue.featured_title)}</h2>
         <p style="font-family:Arial,sans-serif;font-size:15px;line-height:1.7;color:#544b43;margin:0 0 18px">${escape(issue.featured_preview)}</p>

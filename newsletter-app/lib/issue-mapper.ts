@@ -5,10 +5,10 @@ import type { IssueInput } from "@/lib/types";
  *  but the editor now uses roundup_items, closing_note, and signoff. */
 export function toDbRow(issue: IssueInput): Record<string, unknown> {
   return {
+    note_from_sabrina: issue.note_from_sabrina || "",
     title: issue.title,
     subject: issue.subject,
     preview_text: issue.preview_text,
-    note_from_sabrina: issue.signoff || "",
     recommendations: JSON.stringify(issue.roundup_items || []),
     featured_title: issue.featured_title,
     featured_preview: issue.featured_preview,
@@ -44,6 +44,7 @@ export function fromDbRow(row: Record<string, unknown>): IssueInput {
   }
 
   return {
+    note_from_sabrina: String(row.note_from_sabrina || ""),
     title: String(row.title || ""),
     subject: String(row.subject || ""),
     preview_text: String(row.preview_text || ""),
@@ -54,6 +55,6 @@ export function fromDbRow(row: Record<string, unknown>): IssueInput {
     featured_image_url: String(row.featured_image_url || ""),
     roundup_items: roundupItems,
     closing_note: String(row.last_thing || ""),
-    signoff: String(row.note_from_sabrina || "Until next week,\nSabrina"),
+    signoff: "Until next week,\nSabrina",
   };
 }

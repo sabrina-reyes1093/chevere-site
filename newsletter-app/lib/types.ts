@@ -7,6 +7,7 @@ export type RoundupItem = {
 };
 
 export type IssueInput = {
+  note_from_sabrina: string;
   title: string;
   subject: string;
   preview_text: string;

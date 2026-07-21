@@ -9,6 +9,7 @@ const roundupItem = z.object({
 });
 
 export const issueSchema = z.object({
+  note_from_sabrina: z.string().trim().max(10000),
   title: z.string().trim().min(1).max(160),
   subject: z.string().trim().min(1).max(200),
   preview_text: z.string().trim().max(240),

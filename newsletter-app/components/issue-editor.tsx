@@ -13,7 +13,7 @@ const defaultRoundup: RoundupItem[] = [
 ];
 
 const empty: IssueInput = {
-  title: "", subject: "", preview_text: "", scheduled_for: "",
+  note_from_sabrina: "", title: "", subject: "", preview_text: "", scheduled_for: "",
   featured_title: "", featured_preview: "", featured_url: "", featured_image_url: "",
   roundup_items: defaultRoundup,
   closing_note: "", signoff: "Until next week,\nSabrina",
@@ -109,9 +109,15 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
     <div className="editor-layout">
       <form className="editor stack" onSubmit={(event) => { event.preventDefault(); void save(); }}>
 
-        {/* Section 1: Issue Details */}
+        {/* Section 1: From Sabrina */}
         <fieldset disabled={busy || locked}>
-          <legend>1. Issue Details</legend>
+          <legend>1. From Sabrina</legend>
+          <label>Personal letter<textarea rows={8} value={issue.note_from_sabrina} onChange={(e) => field("note_from_sabrina", e.target.value)} placeholder="Write a personal introduction or note for this week's issue..." /></label>
+        </fieldset>
+
+        {/* Section 2: Issue Details */}
+        <fieldset disabled={busy || locked}>
+          <legend>2. Issue Details</legend>
           <div className="two-col">
             <label>Internal title<input value={issue.title} onChange={(e) => field("title", e.target.value)} required /></label>
             <label>Email subject<input value={issue.subject} onChange={(e) => field("subject", e.target.value)} required /></label>
@@ -120,9 +126,9 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
           <label>Optional scheduled date<input type="datetime-local" value={issue.scheduled_for} onChange={(e) => field("scheduled_for", e.target.value)} /></label>
         </fieldset>
 
-        {/* Section 2: Featured Blog */}
+        {/* Section 3: Featured Blog */}
         <fieldset disabled={busy || locked}>
-          <legend>2. Featured Blog</legend>
+          <legend>3. Featured Blog</legend>
           <label>Select a published article
             <select value="" onChange={(e) => chooseArticle(e.target.value)}>
               <option value="">Choose from the website...</option>
@@ -146,9 +152,9 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
           )}
         </fieldset>
 
-        {/* Section 3: This Week's Chévere Edit */}
+        {/* Section 4: This Week's Chévere Edit */}
         <fieldset disabled={busy || locked}>
-          <legend>3. This Week&rsquo;s Chévere Edit</legend>
+          <legend>4. This Week&rsquo;s Chévere Edit</legend>
           {issue.roundup_items.map((item, index) => (
             <div className="recommendation" key={index} style={{ marginBottom: 16 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
@@ -177,9 +183,9 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
           <button type="button" className="secondary" onClick={addRoundupItem} style={{ fontSize: 13, padding: "7px 14px" }}>+ Add item</button>
         </fieldset>
 
-        {/* Section 4: Closing */}
+        {/* Section 5: Closing */}
         <fieldset disabled={busy || locked}>
-          <legend>4. Closing</legend>
+          <legend>5. Closing</legend>
           <label>Closing note<textarea rows={5} value={issue.closing_note} onChange={(e) => field("closing_note", e.target.value)} placeholder="A personal sign-off note for this week" /></label>
           <label>Sign-off<textarea rows={2} value={issue.signoff} onChange={(e) => field("signoff", e.target.value)} placeholder="Until next week,&#10;Sabrina" /></label>
         </fieldset>

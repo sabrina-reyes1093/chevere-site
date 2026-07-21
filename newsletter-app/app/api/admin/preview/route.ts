@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => null);
     if (!body) return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
     const issue: IssueInput = {
+      note_from_sabrina: body.note_from_sabrina || "",
       title: body.title || "Untitled issue",
       subject: body.subject || "The Edit, Delivered",
       preview_text: body.preview_text || "",
