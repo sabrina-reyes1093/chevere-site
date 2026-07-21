@@ -4,6 +4,7 @@ import { requireAdminPage } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase-admin";
 import { categoryLabel, displayDate } from "@/lib/post-schema";
 import { UnpublishPostButton } from "@/components/unpublish-post-button";
+import { DeletePostButton } from "@/components/delete-post-button";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,7 @@ export default async function BlogPosts() {
             <td style={{ whiteSpace: "nowrap" }}>
               <Link href={`/admin/posts/${post.id}`} className="text-button" style={{ fontSize: 12, marginRight: 8 }}>Edit</Link>
               {post.status === "published" && <UnpublishPostButton id={post.id} />}
+              <DeletePostButton id={post.id} published={post.status === "published"} />
             </td>
           </tr>)}
           {!posts?.length && <tr><td colSpan={6}>No posts yet. Write the first one.</td></tr>}
