@@ -1,8 +1,8 @@
 import type { IssueInput } from "@/lib/types";
 import { config } from "@/lib/config";
 
-function escape(value: string) {
-  return value.replace(/[&<>"']/g, (char) => ({
+function escape(value: string | undefined | null) {
+  return String(value || "").replace(/[&<>"']/g, (char) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;",
   }[char] || char));
 }

@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       featured_preview: body.featured_preview || "",
       featured_url: body.featured_url || "",
       featured_image_url: body.featured_image_url || "",
-      roundup_items: Array.isArray(body.roundup_items) ? body.roundup_items : [],
+      roundup_items: Array.isArray(body.roundup_items) ? body.roundup_items.map((item: any) => ({ category: item?.category || "", title: item?.title || "", text: item?.text || "", url: item?.url || "", image_url: item?.image_url || "" })) : [],
       closing_note: body.closing_note || "",
       signoff: body.signoff || "Until next week,\nSabrina",
     };
