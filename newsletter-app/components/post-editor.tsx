@@ -7,11 +7,20 @@ import { CATEGORIES, slugify, type Post, type PostInput } from "@/lib/post-schem
 
 const today = () => new Date().toISOString().slice(0, 10);
 
+function getSections(body: string) {
+  const parts = body.split(/\n\n+/).filter(Boolean);
+  return parts.map((p, i) => {
+    const label = p.replace(/^##\s*/, "").replace(/[*_[\]()]/g, "").replace(/!\[.*?\]\(.*?\)/g, "").trim().slice(0, 50);
+    return { index: i, label: `After paragraph ${i + 1}: ${label}${label.length >= 50 ? "\u2026" : ""}` };
+  });
+}
+
 function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: string) => void; bodyContent: string }) {
   const [busy, setBusy] = useState(false);
-  const [position, setPosition] = useState("cursor");
+  const [sectionIndex, setSectionIndex] = useState(0);
   const [error, setError] = useState("");
   const picker = useRef<HTMLInputElement>(null);
+  const sections = getSections(bodyContent);
 
   async function upload(file: File) {
     setBusy(true); setError("");
@@ -24,9 +33,15 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
       if (!response.ok) throw new Error(data.error || "Upload failed.");
       const alt = file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
       const imgMarkdown = `\n\n![${alt}](${data.url})\n`;
-      if (position === "top") onInsert(imgMarkdown + bodyContent);
-      else if (position === "bottom") onInsert(bodyContent + "\n\n" + imgMarkdown);
-      else onInsert(imgMarkdown);
+      if (sectionIndex === 0) {
+        onInsert(imgMarkdown + bodyContent);
+      } else if (sectionIndex >= sections.length) {
+        onInsert(bodyContent + "\n\n" + imgMarkdown);
+      } else {
+        const parts = bodyContent.split(/\n\n+/).filter(Boolean);
+        parts.splice(sectionIndex, 0, `![${alt}](${data.url})`);
+        onInsert(parts.join("\n\n"));
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed.");
     } finally { setBusy(false); }
@@ -38,12 +53,12 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
         <button type="button" className="secondary" onClick={() => picker.current?.click()} disabled={busy} style={{ fontSize: 13, padding: "7px 14px", minHeight: 36 }}>
           {busy ? "Uploading image\u2026" : "Insert image"}
         </button>
-        <select value={position} onChange={(e) => setPosition(e.target.value)} style={{ fontSize: 13, padding: "7px 10px", borderRadius: 8, border: "1px solid var(--line)", background: "var(--paper)", color: "var(--ink)", minHeight: 36, width: "auto", maxWidth: 160 }}>
-          <option value="cursor">At cursor</option>
-          <option value="top">At top of body</option>
-          <option value="bottom">At bottom of body</option>
+        <select value={sectionIndex} onChange={(e) => setSectionIndex(Number(e.target.value))} style={{ fontSize: 13, padding: "7px 10px", borderRadius: 8, border: "1px solid var(--line)", background: "var(--paper)", color: "var(--ink)", minHeight: 36, maxWidth: 340 }}>
+          <option value={0}>At the very top</option>
+          {sections.map((s) => <option key={s.index} value={s.index + 1}>{s.label}</option>)}
+          <option value={sections.length + 1}>At the very bottom</option>
         </select>
-        <span className="image-field-hint">Upload and place in the body</span>
+        <span className="image-field-hint">Pick where to insert the image</span>
         <input ref={picker} type="file" accept="image/*" capture="environment" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
       </div>
       {error && <p className="error-text" style={{ margin: "8px 0 0", fontSize: 13 }}>{error}</p>}
