@@ -7,30 +7,40 @@ import { CATEGORIES, slugify, type Post, type PostInput } from "@/lib/post-schem
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-function InlineImageUpload({ onInsert }: { onInsert: (markdown: string) => void }) {
+function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: string) => void; bodyContent: string }) {
   const [busy, setBusy] = useState(false);
+  const [position, setPosition] = useState("cursor");
   const picker = useRef<HTMLInputElement>(null);
 
   async function upload(file: File) {
     setBusy(true);
     try {
-      const body = new FormData();
-      body.append("file", file);
-      const response = await fetch("/api/admin/upload", { method: "POST", body });
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await fetch("/api/admin/upload", { method: "POST", body: formData });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Upload failed.");
-      onInsert(`\n\n![${file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ")}](${data.url})\n`);
+      const alt = file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
+      const imgMarkdown = `\n\n![${alt}](${data.url})\n`;
+      if (position === "top") onInsert(imgMarkdown + bodyContent);
+      else if (position === "bottom") onInsert(bodyContent + "\n\n" + imgMarkdown);
+      else onInsert(imgMarkdown);
     } catch (error) {
       alert(error instanceof Error ? error.message : "Upload failed.");
     } finally { setBusy(false); }
   }
 
   return (
-    <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12 }}>
+    <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12, flexWrap: "wrap" }}>
       <button type="button" className="secondary" onClick={() => picker.current?.click()} disabled={busy} style={{ fontSize: 13, padding: "7px 14px", minHeight: 36 }}>
-        {busy ? "Uploading image…" : "Insert image"}
+        {busy ? "Uploading image\u2026" : "Insert image"}
       </button>
-      <span className="image-field-hint">Upload and place at cursor position in the body</span>
+      <select value={position} onChange={(e) => setPosition(e.target.value)} style={{ fontSize: 13, padding: "7px 10px", borderRadius: 8, border: "1px solid var(--line)", background: "var(--paper)", color: "var(--ink)", minHeight: 36, width: "auto", maxWidth: 160 }}>
+        <option value="cursor">At cursor</option>
+        <option value="top">At top of body</option>
+        <option value="bottom">At bottom of body</option>
+      </select>
+      <span className="image-field-hint">Upload and place in the body</span>
       <input ref={picker} type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
     </div>
   );
@@ -159,16 +169,8 @@ export function PostEditor({ initial }: { initial?: Post }) {
               <li>Leave a blank line between paragraphs.</li>
             </ul>
           </details>
-          <InlineImageUpload onInsert={(markdown) => {
-            const textarea = document.getElementById("post-body-input") as HTMLTextAreaElement | null;
-            if (!textarea) return;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const before = post.body.slice(0, start);
-            const after = post.body.slice(end);
-            const newBody = before + markdown + (after ? "\n" + after : "");
+          <InlineImageUpload bodyContent={post.body} onInsert={(newBody) => {
             field("body", newBody);
-            requestAnimationFrame(() => { textarea.focus(); textarea.setSelectionRange(start + markdown.length, start + markdown.length); });
           }} />
           <label>Sign-off (optional)<input value={post.signoff} onChange={(e) => field("signoff", e.target.value)} /></label>
         </fieldset>
