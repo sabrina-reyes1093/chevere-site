@@ -129,8 +129,8 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
           </label>
           <label>Article title<input value={issue.featured_title} onChange={(e) => field("featured_title", e.target.value)} placeholder="Auto-filled when you select an article" /></label>
           <label>Short excerpt<textarea rows={3} value={issue.featured_preview} onChange={(e) => field("featured_preview", e.target.value)} placeholder="Preview text for the featured article" /></label>
-          <div className="two-col">
-            <label>Article URL<input type="url" value={issue.featured_url} onChange={(e) => field("featured_url", e.target.value)} placeholder="https://www.itschevere.com/posts/..." /></label>
+          <div className="two-col" style={{textAlign:'center'}}>
+            <label>Article URL<input type="url" value={issue.featured_url} onChange={(e) => field("featured_url", e.target.value)} placeholder="https://www.itschevere.com/posts/..." style={{textAlign:'center'}} /></label>
             <ImageField label="Featured image" value={issue.featured_image_url} onChange={(url) => field("featured_image_url", url)} disabled={busy || locked} />
           </div>
           {issue.featured_image_url && issue.featured_title && (
