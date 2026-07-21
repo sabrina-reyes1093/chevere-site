@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import type { Issue, IssueInput, RoundupItem } from "@/lib/types";
 import { ImageField } from "@/components/image-field";
 
+const DEFAULT_CATS = new Set(["Watching", "Listening", "Reading", "Favorite Find"]);
+
 const defaultRoundup: RoundupItem[] = [
   { category: "Watching", title: "", text: "", url: "", image_url: "" },
   { category: "Listening", title: "", text: "", url: "", image_url: "" },
@@ -12,18 +14,20 @@ const defaultRoundup: RoundupItem[] = [
   { category: "Favorite Find", title: "", text: "", url: "", image_url: "" },
 ];
 
+function isDefault(cat: string) { return DEFAULT_CATS.has(cat); }
+
 const empty: IssueInput = {
   note_from_sabrina: "", title: "", subject: "", preview_text: "", scheduled_for: "",
   featured_title: "", featured_preview: "", featured_url: "", featured_image_url: "",
   roundup_items: defaultRoundup,
-  closing_note: "", signoff: "Until next week,\nSabrina",
+  closing_note: "", signoff: "Until next week,\nStay CHÉVERE",
 };
 
 type Article = { title: string; preview: string; url: string; image: string };
 
 export function IssueEditor({ initial }: { initial?: Issue }) {
   const router = useRouter();
-  const [issue, setIssue] = useState<IssueInput>(initial ? { ...initial, roundup_items: initial.roundup_items?.length ? initial.roundup_items : defaultRoundup, signoff: initial.signoff || "Until next week,\nSabrina" } : empty);
+  const [issue, setIssue] = useState<IssueInput>(initial ? { ...initial, roundup_items: initial.roundup_items?.length ? initial.roundup_items : defaultRoundup, signoff: initial.signoff || "Until next week,\nStay CHÉVERE" } : empty);
   const [id, setId] = useState(initial?.id || "");
   const [status, setStatus] = useState(initial?.status || "draft");
   const [message, setMessage] = useState("");
@@ -33,6 +37,7 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [approved, setApproved] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
+  const [search, setSearch] = useState("");
 
   useEffect(() => { fetch("/api/articles").then((r) => r.ok ? r.json() : []).then(setArticles).catch(() => setArticles([])); }, []);
 
@@ -102,6 +107,7 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
   }
 
   const locked = status === "sent" || status === "sending";
+  const filteredArticles = articles.filter((a) => !search || a.title.toLowerCase().includes(search.toLowerCase()));
 
   return <>
     <div className="page-heading"><div><p className="eyebrow">The Edit, Delivered</p><h1>{id ? issue.title || "Untitled issue" : "New weekly issue"}</h1><p><span className={`status ${status}`}>{status}</span>{initial?.scheduled_for && ` Scheduled ${new Date(initial.scheduled_for).toLocaleString("en-US", { timeZone: "America/Chicago" })} CT`}</p></div><a href="/admin" className="secondary link-button">Back to issues</a></div>
@@ -109,36 +115,37 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
     <div className="editor-layout">
       <form className="editor stack" onSubmit={(event) => { event.preventDefault(); void save(); }}>
 
-        {/* Section 1: From Sabrina */}
+        {/* Section 1: Issue Details */}
         <fieldset disabled={busy || locked}>
-          <legend>1. From Sabrina</legend>
-          <label>Personal letter<textarea rows={8} value={issue.note_from_sabrina} onChange={(e) => field("note_from_sabrina", e.target.value)} placeholder="Write a personal introduction or note for this week's issue..." /></label>
+          <legend>1. Issue Details</legend>
+          <div className="two-col">
+            <label>Internal title<input value={issue.title} onChange={(e) => field("title", e.target.value)} placeholder="e.g. Week of Jul 27" required /></label>
+            <label>Email subject<input value={issue.subject} onChange={(e) => field("subject", e.target.value)} placeholder="Shown in subscribers' inboxes" required /></label>
+          </div>
+          <label>Inbox preview text<input value={issue.preview_text} onChange={(e) => field("preview_text", e.target.value)} maxLength={240} placeholder="Short teaser shown below the subject line" /></label>
+          <label>Optional scheduled date<input type="datetime-local" value={issue.scheduled_for} onChange={(e) => field("scheduled_for", e.target.value)} /></label>
         </fieldset>
 
-        {/* Section 2: Issue Details */}
+        {/* Section 2: Opening Note */}
         <fieldset disabled={busy || locked}>
-          <legend>2. Issue Details</legend>
-          <div className="two-col">
-            <label>Internal title<input value={issue.title} onChange={(e) => field("title", e.target.value)} required /></label>
-            <label>Email subject<input value={issue.subject} onChange={(e) => field("subject", e.target.value)} required /></label>
-          </div>
-          <label>Inbox preview text<input value={issue.preview_text} onChange={(e) => field("preview_text", e.target.value)} maxLength={240} placeholder="Short teaser shown in the inbox preview" /></label>
-          <label>Optional scheduled date<input type="datetime-local" value={issue.scheduled_for} onChange={(e) => field("scheduled_for", e.target.value)} /></label>
+          <legend>2. Opening Note</legend>
+          <label>From the Editor<textarea rows={6} value={issue.note_from_sabrina} onChange={(e) => field("note_from_sabrina", e.target.value)} placeholder="Welcome readers and introduce this week&rsquo;s issue." /></label>
         </fieldset>
 
         {/* Section 3: Featured Blog */}
         <fieldset disabled={busy || locked}>
           <legend>3. Featured Blog</legend>
           <label>Select a published article
-            <select value="" onChange={(e) => chooseArticle(e.target.value)}>
+            <input type="text" placeholder="Search articles..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ marginBottom: 6 }} />
+            <select value="" onChange={(e) => chooseArticle(e.target.value)} size={Math.min(filteredArticles.length + 1, 6)} style={{ height: "auto" }}>
               <option value="">Choose from the website...</option>
-              {articles.map((article) => <option key={article.url} value={article.url}>{article.title}</option>)}
+              {filteredArticles.map((article) => <option key={article.url} value={article.url}>{article.title}</option>)}
             </select>
           </label>
           <label>Article title<input value={issue.featured_title} onChange={(e) => field("featured_title", e.target.value)} placeholder="Auto-filled when you select an article" /></label>
           <label>Short excerpt<textarea rows={3} value={issue.featured_preview} onChange={(e) => field("featured_preview", e.target.value)} placeholder="Preview text for the featured article" /></label>
-          <div className="two-col" style={{textAlign:'center'}}>
-            <label>Article URL<input type="url" value={issue.featured_url} onChange={(e) => field("featured_url", e.target.value)} placeholder="https://www.itschevere.com/posts/..." style={{textAlign:'center'}} /></label>
+          <div className="two-col" style={{ textAlign: "center" }}>
+            <label>Article URL<input type="url" value={issue.featured_url} onChange={(e) => field("featured_url", e.target.value)} placeholder="https://www.itschevere.com/posts/..." style={{ textAlign: "center" }} /></label>
             <ImageField label="Featured image" value={issue.featured_image_url} onChange={(url) => field("featured_image_url", url)} disabled={busy || locked} />
           </div>
           {issue.featured_image_url && issue.featured_title && (
@@ -152,42 +159,48 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
           )}
         </fieldset>
 
-        {/* Section 4: This Week's Chévere Edit */}
+        {/* Section 4: Weekly Chévere Picks */}
         <fieldset disabled={busy || locked}>
-          <legend>4. This Week&rsquo;s Chévere Edit</legend>
-          {issue.roundup_items.map((item, index) => (
-            <div className="recommendation" key={index} style={{ marginBottom: 16 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                <strong style={{ fontSize: 14 }}>{item.category || `Item ${index + 1}`}</strong>
-                <div style={{ display: "flex", gap: 6 }}>
-                  <button type="button" className="text-button" onClick={() => moveRoundupItem(index, -1)} disabled={index === 0} style={{ fontSize: 12, padding: "2px 6px" }}>&uarr;</button>
-                  <button type="button" className="text-button" onClick={() => moveRoundupItem(index, 1)} disabled={index === issue.roundup_items.length - 1} style={{ fontSize: 12, padding: "2px 6px" }}>&darr;</button>
-                  <button type="button" className="text-button" onClick={() => removeRoundupItem(index)} style={{ fontSize: 12, padding: "2px 6px", color: "var(--red)" }}>Remove</button>
+          <legend>4. Weekly Ch&eacute;vere Picks</legend>
+          {issue.roundup_items.map((item, index) => {
+            const isDefaultCat = isDefault(item.category) && index < 4;
+            return (
+              <div className="recommendation" key={index} style={{ marginBottom: 16 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                  {isDefaultCat ? (
+                    <strong style={{ fontSize: 14, color: "var(--brown)", letterSpacing: "0.05em", textTransform: "uppercase" }}>{item.category}</strong>
+                  ) : (
+                    <input aria-label="Category name" value={item.category} onChange={(e) => updateRoundupItem(index, "category", e.target.value)} placeholder="Category name" style={{ fontWeight: 600, fontSize: 14, margin: 0, padding: "4px 8px", width: "auto", minWidth: 120 }} />
+                  )}
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <button type="button" className="text-button" onClick={() => moveRoundupItem(index, -1)} disabled={index === 0} style={{ fontSize: 12, padding: "2px 6px" }}>&uarr;</button>
+                    <button type="button" className="text-button" onClick={() => moveRoundupItem(index, 1)} disabled={index === issue.roundup_items.length - 1} style={{ fontSize: 12, padding: "2px 6px" }}>&darr;</button>
+                    <button type="button" className="text-button" onClick={() => removeRoundupItem(index)} style={{ fontSize: 12, padding: "2px 6px", color: "var(--red)" }}>Remove</button>
+                  </div>
                 </div>
+                <input aria-label={`Title ${index + 1}`} value={item.title} onChange={(e) => updateRoundupItem(index, "title", e.target.value)} placeholder="Item title" style={{ marginBottom: 8 }} />
+                <textarea aria-label={`Description ${index + 1}`} rows={2} value={item.text} onChange={(e) => updateRoundupItem(index, "text", e.target.value)} placeholder="One short description" style={{ marginBottom: 8 }} />
+                {!expandedItems[index] && (
+                  <button type="button" className="text-button" onClick={() => toggleExpand(index)} style={{ fontSize: 12, padding: "2px 0" }}>+ Add image or link</button>
+                )}
+                {expandedItems[index] && (
+                  <div style={{ display: "grid", gap: 8, marginTop: 4 }}>
+                    <input type="url" aria-label={`Link ${index + 1}`} value={item.url} onChange={(e) => updateRoundupItem(index, "url", e.target.value)} placeholder="Optional link (https://...)" />
+                    <ImageField label="Optional image" value={item.image_url} onChange={(url) => updateRoundupItem(index, "image_url", url)} disabled={busy || locked} />
+                    <button type="button" className="text-button" onClick={() => toggleExpand(index)} style={{ fontSize: 12, padding: "2px 0" }}>&minus; Hide image or link</button>
+                  </div>
+                )}
               </div>
-              <input aria-label={`Category ${index + 1}`} value={item.category} onChange={(e) => updateRoundupItem(index, "category", e.target.value)} placeholder="Category (e.g. Watching, Reading, Eating)" style={{ marginBottom: 8 }} />
-              <input aria-label={`Title ${index + 1}`} value={item.title} onChange={(e) => updateRoundupItem(index, "title", e.target.value)} placeholder="Item title" style={{ marginBottom: 8 }} />
-              <textarea aria-label={`Description ${index + 1}`} rows={2} value={item.text} onChange={(e) => updateRoundupItem(index, "text", e.target.value)} placeholder="One short description" style={{ marginBottom: 8 }} />
-              {!expandedItems[index] && (
-                <button type="button" className="text-button" onClick={() => toggleExpand(index)} style={{ fontSize: 12, padding: "2px 0" }}>+ Add image or link</button>
-              )}
-              {expandedItems[index] && (
-                <div style={{ display: "grid", gap: 8, marginTop: 4 }}>
-                  <input type="url" aria-label={`Link ${index + 1}`} value={item.url} onChange={(e) => updateRoundupItem(index, "url", e.target.value)} placeholder="Optional link (https://...)" />
-                  <ImageField label="Optional image" value={item.image_url} onChange={(url) => updateRoundupItem(index, "image_url", url)} disabled={busy || locked} />
-                  <button type="button" className="text-button" onClick={() => toggleExpand(index)} style={{ fontSize: 12, padding: "2px 0" }}>&minus; Hide image or link</button>
-                </div>
-              )}
-            </div>
-          ))}
+            );
+          })}
           <button type="button" className="secondary" onClick={addRoundupItem} style={{ fontSize: 13, padding: "7px 14px" }}>+ Add item</button>
         </fieldset>
 
         {/* Section 5: Closing */}
         <fieldset disabled={busy || locked}>
           <legend>5. Closing</legend>
-          <label>Closing note<textarea rows={5} value={issue.closing_note} onChange={(e) => field("closing_note", e.target.value)} placeholder="A personal sign-off note for this week" /></label>
-          <label>Sign-off<textarea rows={2} value={issue.signoff} onChange={(e) => field("signoff", e.target.value)} placeholder="Until next week,&#10;Sabrina" /></label>
+          <label>Closing note<textarea rows={5} value={issue.closing_note} onChange={(e) => field("closing_note", e.target.value)} placeholder="End the issue with a personal thought, question, or invitation to reply." /></label>
+          <label>Sign-off<textarea rows={2} value={issue.signoff} onChange={(e) => field("signoff", e.target.value)} placeholder="Until next week,&#10;Stay CHÉVERE" /></label>
         </fieldset>
 
         <label className="approval-check"><input type="checkbox" checked={approved} onChange={(event) => setApproved(event.target.checked)} disabled={busy || locked} /><span>I reviewed this specific issue and approve it for delivery.</span></label>

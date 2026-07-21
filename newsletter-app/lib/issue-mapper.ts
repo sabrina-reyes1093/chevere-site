@@ -55,6 +55,6 @@ export function fromDbRow(row: Record<string, unknown>): IssueInput {
     featured_image_url: String(row.featured_image_url || ""),
     roundup_items: roundupItems,
     closing_note: String(row.last_thing || ""),
-    signoff: "Until next week,\nSabrina",
+    signoff: "Until next week,\nStay CHÉVERE",
   };
 }
