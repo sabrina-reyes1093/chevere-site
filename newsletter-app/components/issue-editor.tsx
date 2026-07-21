@@ -128,8 +128,8 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
 
         {/* Section 2: Opening Note */}
         <fieldset disabled={busy || locked}>
-          <legend>2. Opening Note</legend>
-          <label>From the Editor<textarea rows={6} value={issue.note_from_sabrina} onChange={(e) => field("note_from_sabrina", e.target.value)} placeholder="Welcome readers and introduce this week&rsquo;s issue." /></label>
+          <legend>2. From the Editor</legend>
+          <label>Personal note<textarea rows={6} value={issue.note_from_sabrina} onChange={(e) => field("note_from_sabrina", e.target.value)} placeholder="Welcome readers and introduce this week&rsquo;s issue." /></label>
         </fieldset>
 
         {/* Section 3: Featured Blog */}
