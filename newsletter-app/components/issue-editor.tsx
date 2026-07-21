@@ -81,7 +81,11 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
     setBusy(true); setMessage("");
     try {
       const response = await fetch("/api/admin/preview", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(issue) });
-      if (!response.ok) throw new Error((await response.json()).error || "Preview failed.");
+      if (!response.ok) {
+        let errMsg = "Preview failed.";
+        try { const body = await response.json(); errMsg = body.error || errMsg; } catch { errMsg = await response.text().catch(() => errMsg); }
+        throw new Error(errMsg);
+      }
       setPreview(await response.text());
     } catch (error) { setMessage(error instanceof Error ? error.message : "Preview failed."); }
     finally { setBusy(false); }
