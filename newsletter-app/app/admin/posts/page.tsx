@@ -3,6 +3,7 @@ import { AdminShell } from "@/components/admin-shell";
 import { requireAdminPage } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase-admin";
 import { categoryLabel, displayDate } from "@/lib/post-schema";
+import { UnpublishPostButton } from "@/components/unpublish-post-button";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,7 @@ export default async function BlogPosts() {
     </div>
     <section className="panel">
       <div className="table-wrap"><table>
-        <thead><tr><th>Post</th><th>Category</th><th>Status</th><th>Date</th><th>Last edited</th></tr></thead>
+        <thead><tr><th>Post</th><th>Category</th><th>Status</th><th>Date</th><th>Last edited</th><th>Actions</th></tr></thead>
         <tbody>
           {(posts || []).map((post) => <tr key={post.id}>
             <td><Link href={`/admin/posts/${post.id}`}><strong>{post.title || "Untitled post"}</strong></Link><small>/posts/{post.slug}.html</small></td>
@@ -31,8 +32,12 @@ export default async function BlogPosts() {
             <td><span className={`status ${post.status === "published" ? "sent" : post.status}`}>{post.status}</span></td>
             <td>{displayDate(post.published_on)}</td>
             <td>{new Date(post.updated_at).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}</td>
+            <td style={{ whiteSpace: "nowrap" }}>
+              <Link href={`/admin/posts/${post.id}`} className="text-button" style={{ fontSize: 12, marginRight: 8 }}>Edit</Link>
+              {post.status === "published" && <UnpublishPostButton id={post.id} />}
+            </td>
           </tr>)}
-          {!posts?.length && <tr><td colSpan={5}>No posts yet. Write the first one.</td></tr>}
+          {!posts?.length && <tr><td colSpan={6}>No posts yet. Write the first one.</td></tr>}
         </tbody>
       </table></div>
     </section>
