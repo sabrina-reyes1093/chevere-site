@@ -14,7 +14,7 @@ export function toDbRow(issue: IssueInput): Record<string, unknown> {
     featured_preview: issue.featured_preview,
     featured_url: issue.featured_url,
     featured_image_url: issue.featured_image_url,
-    obsessed_title: "",
+    obsessed_title: issue.signoff || "",
     obsessed_text: "",
     obsessed_url: "",
     weekend_title: "",
@@ -55,6 +55,6 @@ export function fromDbRow(row: Record<string, unknown>): IssueInput {
     featured_image_url: String(row.featured_image_url || ""),
     roundup_items: roundupItems,
     closing_note: String(row.last_thing || ""),
-    signoff: "Until next week,\nStay CHÉVERE",
+    signoff: String(row.obsessed_title || "Until next week,\nStay CHÉVERE"),
   };
 }
