@@ -82,14 +82,16 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
     try {
       const response = await fetch("/api/admin/preview", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(issue) });
       if (!response.ok) {
-        let errMsg = "Preview failed.";
-        try { const body = await response.json(); errMsg = body.error || errMsg; } catch { errMsg = await response.text().catch(() => errMsg); }
-        throw new Error(errMsg);
+        const text = await response.text().catch(() => "");
+        const body = text ? tryParseJson(text) : null;
+        throw new Error(body?.error || `Preview failed (HTTP ${response.status}).`);
       }
       setPreview(await response.text());
     } catch (error) { setMessage(error instanceof Error ? error.message : "Preview failed."); }
     finally { setBusy(false); }
   }
+
+  function tryParseJson(text: string) { try { return JSON.parse(text); } catch { return null; } }
 
   async function test() { if (!id) return setMessage("Save the draft before sending a test."); await request(`/api/admin/issues/${id}/test`, { method: "POST" }); setMessage("Test email sent."); }
   async function approve() { if (!id) return setMessage("Save the draft before scheduling."); if (!approved) return setMessage("Confirm that you reviewed and approved this issue first."); const data = await request(`/api/admin/issues/${id}/approve`, { method: "POST" }); setStatus(data.status); setMessage(`Approved for ${new Date(data.scheduled_for).toLocaleString("en-US", { timeZone: "America/Chicago", dateStyle: "medium", timeStyle: "short" })} CT.`); router.refresh(); }
