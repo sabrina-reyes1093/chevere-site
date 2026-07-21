@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
   });
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${config.siteUrl}/admin/reset-password`,
+    redirectTo: `${config.newsletterUrl}/admin/reset-password`,
   });
 
   return NextResponse.redirect(
