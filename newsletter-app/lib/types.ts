@@ -1,22 +1,23 @@
-export type Recommendation = { title: string; text: string; url: string; image_url?: string };
+export type RoundupItem = {
+  category: string;
+  title: string;
+  text: string;
+  url: string;
+  image_url: string;
+};
 
 export type IssueInput = {
   title: string;
   subject: string;
   preview_text: string;
-  note_from_sabrina: string;
-  recommendations: Recommendation[];
+  scheduled_for: string;
   featured_title: string;
   featured_preview: string;
   featured_url: string;
   featured_image_url: string;
-  obsessed_title: string;
-  obsessed_text: string;
-  obsessed_url: string;
-  weekend_title: string;
-  weekend_text: string;
-  weekend_url: string;
-  last_thing: string;
+  roundup_items: RoundupItem[];
+  closing_note: string;
+  signoff: string;
 };
 
 export type Issue = IssueInput & {

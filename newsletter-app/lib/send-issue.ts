@@ -3,7 +3,8 @@ import { createAdminClient } from "@/lib/supabase-admin";
 import { config } from "@/lib/config";
 import { createUnsubscribeToken } from "@/lib/tokens";
 import { renderNewsletter } from "@/lib/email-template";
-import type { Issue } from "@/lib/types";
+import { fromDbRow } from "@/lib/issue-mapper";
+import type { Issue, IssueInput } from "@/lib/types";
 
 const BATCH_SIZE = 100;
 
@@ -15,6 +16,7 @@ function temporary(error: unknown) {
 export async function sendIssue(issue: Issue) {
   const db = createAdminClient();
   const resend = new Resend(config.resendKey);
+  const issueData: IssueInput = fromDbRow(issue as unknown as Record<string, unknown>);
   const started = new Date().toISOString();
   const { data: attempt } = await db.from("newsletter_send_attempts").insert({
     issue_id: issue.id,
@@ -65,7 +67,7 @@ export async function sendIssue(issue: Issue) {
         to: subscriber.email,
         replyTo: config.replyTo,
         subject: issue.subject,
-        html: renderNewsletter(issue, unsubscribeUrl, manageUrl),
+        html: renderNewsletter(issueData, unsubscribeUrl, manageUrl),
         headers: {
           "List-Unsubscribe": `<${unsubscribeUrl}>`,
           "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",

@@ -4,12 +4,14 @@ import { requireAdminApi } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase-admin";
 import { config } from "@/lib/config";
 import { renderNewsletter } from "@/lib/email-template";
+import { fromDbRow } from "@/lib/issue-mapper";
 
 export async function POST(_: Request, context: { params: Promise<{ id: string }> }) {
   if (!await requireAdminApi()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await context.params;
-  const { data: issue, error } = await createAdminClient().from("newsletter_issues").select("*").eq("id", id).single();
-  if (error || !issue) return NextResponse.json({ error: "Issue not found." }, { status: 404 });
+  const { data: row, error } = await createAdminClient().from("newsletter_issues").select("*").eq("id", id).single();
+  if (error || !row) return NextResponse.json({ error: "Issue not found." }, { status: 404 });
+  const issue = fromDbRow(row);
   const result = await new Resend(config.resendKey).emails.send({
     from: config.from, to: config.adminEmail, replyTo: config.replyTo,
     subject: `[TEST] ${issue.subject}`, html: renderNewsletter(issue, `${config.siteUrl}/`),
