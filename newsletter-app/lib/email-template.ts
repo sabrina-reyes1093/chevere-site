@@ -8,7 +8,8 @@ function escape(value: string | undefined | null) {
 }
 
 function paragraphs(value: string) {
-  return escape(value).split(/\n{2,}/).map((text) => `<p style="margin:0 0 16px;line-height:1.7">${text.replace(/\n/g, "<br>")}</p>`).join("");
+  if (!value) return "";
+  return escape(value).split(/\n{2,}/).filter(Boolean).map((text) => `<p style="margin:0 0 16px;line-height:1.7">${text.replace(/\n/g, "<br>")}</p>`).join("");
 }
 
 export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string, manageUrl = unsubscribeUrl) {
@@ -35,9 +36,9 @@ export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string, mana
         <h2 style="font-family:Georgia,serif;font-size:29px;margin:0 0 12px">${escape(issue.featured_title)}</h2>
         <p style="font-family:Arial,sans-serif;font-size:15px;line-height:1.7;color:#544b43;margin:0 0 18px">${escape(issue.featured_preview)}</p>
         <p style="margin:0 0 34px"><a href="${escape(issue.featured_url)}" style="display:inline-block;padding:12px 28px;background:#6b4a36;color:#fffdf8;font-family:Arial,sans-serif;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-radius:8px">Read the story</a></p>
-        <hr style="border:0;border-top:1px solid #ded3c7;margin:0 0 34px">
+        ${items ? `<hr style="border:0;border-top:1px solid #ded3c7;margin:0 0 34px">
         <h2 style="font-family:Georgia,serif;font-size:27px;margin:0 0 22px">Weekly Chévere Picks</h2>
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${items}</table>
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${items}</table>` : ""}
         <hr style="border:0;border-top:1px solid #ded3c7;margin:0 0 34px">
         <div style="font-family:Arial,sans-serif;font-size:16px;color:#544b43">${paragraphs(issue.closing_note)}</div>
         <p style="font-family:Georgia,serif;font-size:20px;font-style:italic;margin:28px 0 0">${escape(issue.signoff || "Until next week,\nStay CHÉVERE").replace(/\n/g, "<br>")}</p>
