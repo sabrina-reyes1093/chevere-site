@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdminPage } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase-admin";
+import { DeleteIssueButton } from "@/components/delete-issue-button";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ export default async function AdminHome() {
   return <AdminShell>
     <div className="page-heading"><div><p className="eyebrow">Weekly publishing</p><h1>Newsletter issues</h1><p>{activeSubscribers || 0} active subscribers</p></div><Link href="/admin/issues/new" className="primary link-button">Create issue</Link></div>
     <section className="panel">
-      <div className="table-wrap"><table><thead><tr><th>Issue</th><th>Status</th><th>Scheduled / sent</th><th>Recipients</th><th>Delivered</th><th>Failures</th><th>Opens</th><th>Clicks</th><th>Unsubscribes</th></tr></thead><tbody>
+      <div className="table-wrap"><table><thead><tr><th>Issue</th><th>Status</th><th>Scheduled / sent</th><th>Recipients</th><th>Delivered</th><th>Failures</th><th>Opens</th><th>Clicks</th><th>Unsubscribes</th><th>Actions</th></tr></thead><tbody>
         {(issues || []).map((issue) => { const issueMetrics = metrics.get(issue.id); return <tr key={issue.id}>
           <td><Link href={`/admin/issues/${issue.id}`}><strong>{issue.title}</strong></Link>{issue.last_error && <small className="error-text">{issue.last_error}</small>}</td>
           <td><span className={`status ${issue.status}`}>{issue.status}</span></td>
@@ -38,8 +39,12 @@ export default async function AdminHome() {
           <td>{issueMetrics?.opens || "—"}</td>
           <td>{issueMetrics?.clicks || "—"}</td>
           <td>{issueMetrics?.unsubscribes || "—"}</td>
+          <td style={{ whiteSpace: "nowrap" }}>
+            <Link href={`/admin/issues/${issue.id}`} style={{ fontSize: 12, marginRight: 8 }}>Edit</Link>
+            {issue.status !== "sent" && issue.status !== "sending" && <DeleteIssueButton id={issue.id} />}
+          </td>
         </tr>})}
-        {!issues?.length && <tr><td colSpan={9}>No issues yet. Create the first Friday edit.</td></tr>}
+        {!issues?.length && <tr><td colSpan={10}>No issues yet. Create the first Friday edit.</td></tr>}
       </tbody></table></div>
     </section>
     <section className="panel"><h2>Recent schedule activity</h2><ul className="activity-list">{(attempts || []).map((attempt) => <li key={attempt.id}><span className={`status ${attempt.result}`}>{attempt.result.replaceAll("_", " ")}</span><span>{attempt.reason || attempt.error || "Provider request completed."}</span><time>{new Date(attempt.started_at).toLocaleString()}</time></li>)}{!attempts?.length && <li>No schedule activity recorded yet.</li>}</ul></section>

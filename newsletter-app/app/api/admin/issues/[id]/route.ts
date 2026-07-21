@@ -15,3 +15,14 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
   const { data, error } = await db.from("newsletter_issues").update({ ...toDbRow(parsed.data), status: "draft", approved_at: null, scheduled_for: null, updated_at: new Date().toISOString() }).eq("id", id).select("*").single();
   return error ? NextResponse.json({ error: error.message }, { status: 500 }) : NextResponse.json(data);
 }
+
+export async function DELETE(_request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  if (!await requireAdminApi()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { id } = await context.params;
+  const db = createAdminClient();
+  const { data: current } = await db.from("newsletter_issues").select("status").eq("id", id).single();
+  if (!current) return NextResponse.json({ error: "Issue not found." }, { status: 404 });
+  if (current.status === "sent" || current.status === "sending") return NextResponse.json({ error: "Cannot delete a sent or sending issue." }, { status: 409 });
+  const { error } = await db.from("newsletter_issues").delete().eq("id", id);
+  return error ? NextResponse.json({ error: error.message }, { status: 500 }) : NextResponse.json({ ok: true });
+}
