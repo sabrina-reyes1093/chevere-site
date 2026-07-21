@@ -1,11 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImageField } from "@/components/image-field";
 import { CATEGORIES, slugify, type Post, type PostInput } from "@/lib/post-schema";
 
 const today = () => new Date().toISOString().slice(0, 10);
+
+function InlineImageUpload({ onInsert }: { onInsert: (markdown: string) => void }) {
+  const [busy, setBusy] = useState(false);
+  const picker = useRef<HTMLInputElement>(null);
+
+  async function upload(file: File) {
+    setBusy(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const response = await fetch("/api/admin/upload", { method: "POST", body });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "Upload failed.");
+      onInsert(`\n\n![${file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ")}](${data.url})\n`);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Upload failed.");
+    } finally { setBusy(false); }
+  }
+
+  return (
+    <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12 }}>
+      <button type="button" className="secondary" onClick={() => picker.current?.click()} disabled={busy} style={{ fontSize: 13, padding: "7px 14px", minHeight: 36 }}>
+        {busy ? "Uploading image…" : "Insert image"}
+      </button>
+      <span className="image-field-hint">Upload and place at cursor position in the body</span>
+      <input ref={picker} type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
+    </div>
+  );
+}
 
 const empty: PostInput = {
   slug: "", title: "", category: "culture", dek: "", body: "",
@@ -118,8 +147,8 @@ export function PostEditor({ initial }: { initial?: Post }) {
 
         <fieldset disabled={busy}>
           <legend>Body</legend>
-          <label>Post content<textarea className="body-input" rows={22} value={post.body} onChange={(e) => field("body", e.target.value)} /></label>
-          <details className="formatting-help">
+          <label>Post content<textarea className="body-input" rows={22} value={post.body} onChange={(e) => field("body", e.target.value)} id="post-body-input" /></label>
+          <details className="formatting-help" style={{ marginBottom: 12 }}>
             <summary>Formatting cheatsheet</summary>
             <ul>
               <li><code>## Heading</code> — a section heading</li>
@@ -130,6 +159,17 @@ export function PostEditor({ initial }: { initial?: Post }) {
               <li>Leave a blank line between paragraphs.</li>
             </ul>
           </details>
+          <InlineImageUpload onInsert={(markdown) => {
+            const textarea = document.getElementById("post-body-input") as HTMLTextAreaElement | null;
+            if (!textarea) return;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const before = post.body.slice(0, start);
+            const after = post.body.slice(end);
+            const newBody = before + markdown + (after ? "\n" + after : "");
+            field("body", newBody);
+            requestAnimationFrame(() => { textarea.focus(); textarea.setSelectionRange(start + markdown.length, start + markdown.length); });
+          }} />
           <label>Sign-off (optional)<input value={post.signoff} onChange={(e) => field("signoff", e.target.value)} /></label>
         </fieldset>
 
