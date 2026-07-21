@@ -14,6 +14,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
         <label>Username<input name="username" type="text" autoComplete="username" required /></label>
         <label>Password<input name="password" type="password" autoComplete="current-password" required /></label>
         <button className="primary">Sign in</button>
+        <p style={{marginTop:16,fontSize:14,textAlign:'center'}}><a href="/admin/forgot-password" style={{color:'var(--brown)',textDecoration:'underline'}}>Forgot password?</a></p>
       </form>
     </section>
   </main>;

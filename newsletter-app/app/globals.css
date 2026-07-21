@@ -57,6 +57,7 @@ textarea { resize:vertical; }
 input:focus,textarea:focus,select:focus { outline:2px solid rgba(107,74,54,.18); border-color:var(--brown); }
 .message { padding:13px 16px; border-radius:10px; margin:0 0 22px; }
 .message.error { background:#f7e2df; color:#7b2f2a; }
+.message.ok,
 .message.success { background:#e2ece2; color:#315234; }
 .error-text { color:var(--red); }
 .editor-layout { display:grid; grid-template-columns:minmax(0,760px) minmax(380px,1fr); gap:24px; align-items:start; }

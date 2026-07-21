@@ -1,0 +1,51 @@
+[
+  {
+    "id": "30b9be4f-e147-48d1-8241-f04741d1818b",
+    "title": "Issue 001 - Welcome",
+    "subject": "Welcome to Chévere. 🤍",
+    "preview_text": "A thoughtful place for culture, style, books, film, travel, and everything worth discovering.",
+    "note_from_sabrina": "Hi,\n\nI'm so happy you're here.\n\nThank you for subscribing to The Chévere Letter.\n\nI started Chévere because I wanted to create the kind of place I was always searching for—a thoughtful corner of the internet where books, films, travel, food, style, and culture all come together.\n\nEvery Friday you'll receive a curated edit filled with recommendations, stories, and discoveries that I genuinely think are worth your time.\n\nThink of this as your favorite magazine arriving in your inbox every week.\n\nNo endless scrolling.\n\nJust good finds.\n\nI'm so glad you're here.\n\n— Sabrina",
+    "recommendations": [
+      {
+        "url": "https://www.itschevere.com/about.html",
+        "text": "New here? Learn why I created Chévere, what the name means, and what you can expect every Friday.",
+        "title": "Read Our Story",
+        "image_url": "https://chatgpt.com/s/m_6a5d6430de188191b39174a7dfe828a0"
+      },
+      {
+        "url": "https://www.itschevere.com/posts/chevere-summer-reading-edit.html",
+        "text": "Whether you're looking for literary fiction, thrillers, romance, or fantasy, here's a curated list of books worth adding to your shelf.",
+        "title": "Build Your Summer Reading List",
+        "image_url": "https://www.itschevere.com/assets/chevere-summer-reading-edit.png"
+      },
+      {
+        "url": "https://www.itschevere.com/posts/dua-lipa-vacation.html",
+        "text": "Travel and street-style guide inspired by Dua's vacation energy: Mediterranean destinations, city-break outfits, beach-to-dinner and hot-girl itinerary ideas.",
+        "title": "How to vacation like Dua Lipa: A Summer travel Moodboard",
+        "image_url": "https://www.itschevere.com/assets/amalfi-coast.jpg"
+      }
+    ],
+    "featured_title": "My Current Obsessions",
+    "featured_preview": "There's something about summer that makes everything feel a little more indulgent — the shows are bigger, the books are steamier, and the snacks require a picnic blanket. Here's what's currently living in my rotation.",
+    "featured_url": "https://www.itschevere.com/posts/my-current-obsessions.html",
+    "featured_image_url": "",
+    "obsessed_title": "Sunday Rituals",
+    "obsessed_text": "Every Sunday lately has looked the same in the best way: I catch up on the latest episode of The Therapuss Podcast by Jake Shane (which airs every Wednesday), followed by House of the Dragon on HBO, in which a new episode airs every Sunday. It's become my favorite way to slow down, reset for the week ahead, and end the weekend with something worth talking about.",
+    "obsessed_url": "https://open.spotify.com/show/1BHDdC0OVuHqZ706FobfOF?si=f5fad64fd2bf4c46",
+    "weekend_title": "A Summer Saturday, Simplified",
+    "weekend_text": "Make a fresh summer tomato pasta, then head out for a long walk, whether that's through your favorite city neighborhood or around your local suburb. Wander without a destination, stop into a coffee shop you've never tried, browse a small independent bookstore, or simply see what you discover along the way. Sometimes the best weekends don't need a plan.",
+    "weekend_url": "",
+    "last_thing": "This week's reminder\n\nCuriosity makes life bigger.\n\nStay curious this weekend—you never know what you'll discover.\n\nUntil next Friday,\nStay Chévere,\nSabrina",
+    "status": "draft",
+    "approved_at": null,
+    "scheduled_for": null,
+    "sent_at": null,
+    "recipient_count": 0,
+    "attempt_count": 0,
+    "next_retry_at": null,
+    "last_error": null,
+    "created_by": "c57b8c71-e09a-48d6-aea7-6a0ad821c118",
+    "created_at": "2026-07-19T21:56:00.68254+00:00",
+    "updated_at": "2026-07-20T01:09:57.05+00:00"
+  }
+]
