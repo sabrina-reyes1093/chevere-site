@@ -59,7 +59,7 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
           <option value={sections.length + 1}>At the very bottom</option>
         </select>
         <span className="image-field-hint">Pick where to insert the image</span>
-        <input ref={picker} type="file" accept="image/*" capture="environment" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
+        <input ref={picker} type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
       </div>
       {error && <p className="error-text" style={{ margin: "8px 0 0", fontSize: 13 }}>{error}</p>}
     </div>
