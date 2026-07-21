@@ -10,11 +10,13 @@ const today = () => new Date().toISOString().slice(0, 10);
 function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: string) => void; bodyContent: string }) {
   const [busy, setBusy] = useState(false);
   const [position, setPosition] = useState("cursor");
+  const [error, setError] = useState("");
   const picker = useRef<HTMLInputElement>(null);
 
   async function upload(file: File) {
-    setBusy(true);
+    setBusy(true); setError("");
     try {
+      if (file.size > 5 * 1024 * 1024) throw new Error("Images must be 5 MB or smaller. Try a smaller photo.");
       const formData = new FormData();
       formData.append("file", file);
       const response = await fetch("/api/admin/upload", { method: "POST", body: formData });
@@ -25,23 +27,26 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
       if (position === "top") onInsert(imgMarkdown + bodyContent);
       else if (position === "bottom") onInsert(bodyContent + "\n\n" + imgMarkdown);
       else onInsert(imgMarkdown);
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Upload failed.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed.");
     } finally { setBusy(false); }
   }
 
   return (
-    <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12, flexWrap: "wrap" }}>
-      <button type="button" className="secondary" onClick={() => picker.current?.click()} disabled={busy} style={{ fontSize: 13, padding: "7px 14px", minHeight: 36 }}>
-        {busy ? "Uploading image\u2026" : "Insert image"}
-      </button>
-      <select value={position} onChange={(e) => setPosition(e.target.value)} style={{ fontSize: 13, padding: "7px 10px", borderRadius: 8, border: "1px solid var(--line)", background: "var(--paper)", color: "var(--ink)", minHeight: 36, width: "auto", maxWidth: 160 }}>
-        <option value="cursor">At cursor</option>
-        <option value="top">At top of body</option>
-        <option value="bottom">At bottom of body</option>
-      </select>
-      <span className="image-field-hint">Upload and place in the body</span>
-      <input ref={picker} type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <button type="button" className="secondary" onClick={() => picker.current?.click()} disabled={busy} style={{ fontSize: 13, padding: "7px 14px", minHeight: 36 }}>
+          {busy ? "Uploading image\u2026" : "Insert image"}
+        </button>
+        <select value={position} onChange={(e) => setPosition(e.target.value)} style={{ fontSize: 13, padding: "7px 10px", borderRadius: 8, border: "1px solid var(--line)", background: "var(--paper)", color: "var(--ink)", minHeight: 36, width: "auto", maxWidth: 160 }}>
+          <option value="cursor">At cursor</option>
+          <option value="top">At top of body</option>
+          <option value="bottom">At bottom of body</option>
+        </select>
+        <span className="image-field-hint">Upload and place in the body</span>
+        <input ref={picker} type="file" accept="image/*" capture="environment" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
+      </div>
+      {error && <p className="error-text" style={{ margin: "8px 0 0", fontSize: 13 }}>{error}</p>}
     </div>
   );
 }

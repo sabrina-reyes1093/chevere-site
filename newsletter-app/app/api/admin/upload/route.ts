@@ -9,6 +9,9 @@ const EXTENSIONS: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/gif": "gif",
   "image/webp": "webp",
+  "image/heic": "heic",
+  "image/heif": "heif",
+  "image/avif": "avif",
 };
 
 export async function POST(request: NextRequest) {
