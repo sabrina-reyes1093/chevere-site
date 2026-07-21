@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImageField } from "@/components/image-field";
 import { CATEGORIES, slugify, type Post, type PostInput } from "@/lib/post-schema";
@@ -81,12 +81,38 @@ export function PostEditor({ initial }: { initial?: Post }) {
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState("");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
+  const [dirty, setDirty] = useState(false);
+  const dirtyRef = useRef(false);
+  const idRef = useRef(id);
+  const postRef = useRef(post);
+  useEffect(() => { idRef.current = id; }, [id]);
+  useEffect(() => { postRef.current = post; }, [post]);
 
-  const field = (name: keyof PostInput, value: string) => setPost((current) => ({ ...current, [name]: value }));
+  const markDirty = () => { setDirty(true); dirtyRef.current = true; };
+
+  const field = (name: keyof PostInput, value: string) => { setPost((current) => ({ ...current, [name]: value })); markDirty(); };
 
   function changeTitle(value: string) {
     setPost((current) => ({ ...current, title: value, slug: slugTouched ? current.slug : slugify(value) }));
+    markDirty();
   }
+
+  // Auto-save every 30 seconds and on navigate away
+  useEffect(() => {
+    const timer = setInterval(async () => {
+      if (!dirtyRef.current || !idRef.current) return;
+      dirtyRef.current = false; setDirty(false);
+      try { await request(`/api/admin/posts/${idRef.current}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(postRef.current) }); }
+      catch { dirtyRef.current = true; setDirty(true); }
+    }, 30000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const onUnload = (e: BeforeUnloadEvent) => { if (dirtyRef.current) { e.preventDefault(); e.returnValue = ""; } };
+    window.addEventListener("beforeunload", onUnload);
+    return () => window.removeEventListener("beforeunload", onUnload);
+  }, []);
 
   async function request(url: string, options: RequestInit) {
     setBusy(true); setMessage("");
@@ -106,6 +132,7 @@ export function PostEditor({ initial }: { initial?: Post }) {
       body: JSON.stringify(post),
     });
     setId(data.id); setStatus(data.status); setMessage("Draft saved.");
+    setDirty(false); dirtyRef.current = false;
     if (!id) router.replace(`/admin/posts/${data.id}`);
   }
 

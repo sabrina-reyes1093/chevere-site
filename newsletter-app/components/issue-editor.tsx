@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Issue, IssueInput, RoundupItem } from "@/lib/types";
 import { ImageField } from "@/components/image-field";
@@ -38,14 +38,25 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
   const [approved, setApproved] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const [search, setSearch] = useState("");
+  const [dirty, setDirty] = useState(false);
+  const dirtyRef = useRef(false);
+  const idRef = useRef(id);
+  const issueRef = useRef(issue);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Keep refs in sync
+  useEffect(() => { idRef.current = id; }, [id]);
+  useEffect(() => { issueRef.current = issue; }, [issue]);
+
+  const markDirty = () => { setDirty(true); dirtyRef.current = true; };
 
   useEffect(() => { fetch("/api/articles").then((r) => r.ok ? r.json() : []).then(setArticles).catch(() => setArticles([])); }, []);
 
-  const field = (name: keyof IssueInput, value: string) => setIssue((current) => ({ ...current, [name]: value }));
+  const field = (name: keyof IssueInput, value: string) => { setIssue((current) => ({ ...current, [name]: value })); markDirty(); };
 
-  const updateRoundupItem = (index: number, key: keyof RoundupItem, value: string) => setIssue((current) => ({
+  const updateRoundupItem = (index: number, key: keyof RoundupItem, value: string) => { setIssue((current) => ({
     ...current, roundup_items: current.roundup_items.map((item, i) => i === index ? { ...item, [key]: value } : item),
-  }));
+  })); markDirty(); };
 
   const removeRoundupItem = (index: number) => setIssue((current) => ({
     ...current, roundup_items: current.roundup_items.filter((_, i) => i !== index),
@@ -79,6 +90,7 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
   async function save() {
     const data = await request(id ? `/api/admin/issues/${id}` : "/api/admin/issues", { method: id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(issue) });
     setId(data.id); setStatus(data.status); setMessage("Draft saved.");
+    setDirty(false); dirtyRef.current = false;
     if (!id) router.replace(`/admin/issues/${data.id}`);
   }
 
@@ -107,6 +119,45 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
   }
 
   const locked = status === "sent" || status === "sending";
+
+  // Auto-save: every 30 seconds if dirty, and on beforeunload
+  useEffect(() => {
+    const autoSave = async () => {
+      if (!dirtyRef.current || locked) return;
+      const currentId = idRef.current;
+      if (!currentId) return; // Wait for first manual save to create the issue
+      try {
+        dirtyRef.current = false;
+        setDirty(false);
+        await request(`/api/admin/issues/${currentId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(issueRef.current) });
+      } catch { dirtyRef.current = true; setDirty(true); } // Re-mark dirty on failure
+    };
+    saveTimerRef.current = setInterval(autoSave, 30000);
+    return () => { if (saveTimerRef.current) clearInterval(saveTimerRef.current); };
+  }, [locked]);
+
+  useEffect(() => {
+    const onUnload = (e: BeforeUnloadEvent) => {
+      if (dirtyRef.current) { e.preventDefault(); e.returnValue = ""; }
+    };
+    const onLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest("a");
+      if (!link || !dirtyRef.current || locked || !idRef.current) return;
+      if (link.getAttribute("href")?.startsWith("/admin/issues/") || link.getAttribute("href") === "/admin" || link.getAttribute("href")?.startsWith("/admin/issues/new")) {
+        e.preventDefault();
+        const href = link.getAttribute("href") || "/admin";
+        (async () => {
+          try { await request(`/api/admin/issues/${idRef.current}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(issueRef.current) }); } catch {}
+          window.location.href = href;
+        })();
+      }
+    };
+    window.addEventListener("beforeunload", onUnload);
+    document.addEventListener("click", onLinkClick);
+    return () => { window.removeEventListener("beforeunload", onUnload); document.removeEventListener("click", onLinkClick); };
+  }, [locked]);
+
   const filteredArticles = articles.filter((a) => !search || a.title.toLowerCase().includes(search.toLowerCase()));
 
   return <>
