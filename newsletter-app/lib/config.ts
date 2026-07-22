@@ -16,7 +16,7 @@ export const config = {
   get from() { return required("NEWSLETTER_FROM"); },
   get replyTo() { return required("NEWSLETTER_REPLY_TO"); },
   get postalAddress() { return process.env.NEWSLETTER_POSTAL_ADDRESS || ""; },
-  get businessAddress() { return process.env.BUSINESS_MAILING_ADDRESS || process.env.NEWSLETTER_POSTAL_ADDRESS || "P.O. Box 500, Fullerton Pkwy, Chicago, IL 60614"; },
+  get businessAddress() { return process.env.BUSINESS_MAILING_ADDRESS || process.env.NEWSLETTER_POSTAL_ADDRESS || "401 W. Fullerton Pkwy. Chicago, IL 60614"; },
   get sendTime() { return process.env.NEWSLETTER_SEND_TIME || "08:30"; },
   get resendWebhookSecret() { return required("RESEND_WEBHOOK_SECRET"); },
   get tokenSecret() { return required("TOKEN_SECRET"); },
