@@ -24,13 +24,12 @@ test("live delivery remains disabled by default and requires approval", () => {
   assert.match(read("components/issue-editor.tsx"), /I reviewed this specific issue and approve it for delivery/);
 });
 
-test("emails include mobile styles, management, unsubscribe, and business footer", () => {
+test("emails include mobile styles, unsubscribe, and business footer", () => {
   const template = read("lib/email-template.ts");
   assert.match(template, /@media\(max-width:600px\)/);
-  assert.match(template, /Manage subscription/);
   assert.match(template, /Unsubscribe/);
   assert.match(template, /<strong>Chévere<\/strong>/);
-  assert.match(template, /config\.postalAddress/);
+  assert.match(template, /config\.businessAddress/);
 });
 
 test("provider events are signature-verified and deduplicated", () => {

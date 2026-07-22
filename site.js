@@ -6,8 +6,8 @@
 
   var section = [
     '<section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">',
-    '  <h2 id="newsletter-heading">The Edit, Delivered</h2>',
-    '  <p class="newsletter-sub">Get Chévere in your inbox&mdash;a weekly curation of finds worth discovering.</p>',
+    '  <h2 id="newsletter-heading">CHÉVERE WEEKLY</h2>',
+    '  <p class="newsletter-sub">A weekly curation of culture, style, and discoveries worth your attention&mdash;delivered to your inbox.</p>',
     '  <form id="newsletter-form">',
     '    <label class="sr-only" for="newsletter-email">Email address</label>',
     '    <input id="newsletter-email" name="email" type="email" placeholder="Email address" autocomplete="email" required />',
@@ -20,7 +20,7 @@
     '<div id="newsletter-popup" class="newsletter-popup" role="status" aria-live="polite">',
     '  <button id="newsletter-popup-close" class="newsletter-popup-close" aria-label="Close">&times;</button>',
     '  <h3>You&rsquo;re in</h3>',
-    '  <p>You&rsquo;re subscribed to The Edit, Delivered.</p>',
+    '  <p>You&rsquo;re subscribed to Chévere Weekly.</p>',
     '  <p class="newsletter-popup-signoff">Stay <em>chévere</em></p>',
     '</div>'
   ].join('');

@@ -17,7 +17,7 @@ const defaultRoundup: RoundupItem[] = [
 function isDefault(cat: string) { return DEFAULT_CATS.has(cat); }
 
 const empty: IssueInput = {
-  note_from_sabrina: "", title: "", subject: "", preview_text: "", scheduled_for: "",
+  note_from_sabrina: "", title: "Welcome to Chévere Weekly", subject: "Welcome to Chévere Weekly", preview_text: "A first look at Chévere, plus a few things worth watching, reading, and discovering.", scheduled_for: "",
   featured_title: "", featured_preview: "", featured_url: "", featured_image_url: "",
   roundup_items: defaultRoundup,
   closing_note: "", signoff: "Until next week,\nStay CHÉVERE",
@@ -38,7 +38,7 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
   const [approved, setApproved] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const [search, setSearch] = useState("");
-  const [dirty, setDirty] = useState(false);
+  const [, setDirty] = useState(false);
   const dirtyRef = useRef(false);
   const idRef = useRef(id);
   const issueRef = useRef(issue);
@@ -161,7 +161,7 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
   const filteredArticles = articles.filter((a) => !search || a.title.toLowerCase().includes(search.toLowerCase()));
 
   return <>
-    <div className="page-heading"><div><p className="eyebrow">The Edit, Delivered</p><h1>{id ? issue.title || "Untitled issue" : "New weekly issue"}</h1><p><span className={`status ${status}`}>{status}</span>{initial?.scheduled_for && ` Scheduled ${new Date(initial.scheduled_for).toLocaleString("en-US", { timeZone: "America/Chicago" })} CT`}</p></div><a href="/admin" className="secondary link-button">Back to issues</a></div>
+    <div className="page-heading"><div><p className="eyebrow">Chévere Weekly</p><h1>{id ? issue.title || "Untitled issue" : "New weekly issue"}</h1><p><span className={`status ${status}`}>{status}</span>{initial?.scheduled_for && ` Scheduled ${new Date(initial.scheduled_for).toLocaleString("en-US", { timeZone: "America/Chicago" })} CT`}</p></div><a href="/admin" className="secondary link-button">Back to issues</a></div>
     {message && <p className={`message ${/failed|error|unable|review|complete|Select|Add/i.test(message) ? "error" : "success"}`}>{message}</p>}
     <div className="editor-layout">
       <form className="editor stack" onSubmit={(event) => { event.preventDefault(); void save(); }}>

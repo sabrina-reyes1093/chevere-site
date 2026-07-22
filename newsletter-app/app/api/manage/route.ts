@@ -14,5 +14,5 @@ export async function GET(request: NextRequest) {
   const { data } = await createAdminClient().from("newsletter_subscribers").select("status").eq("id", verified.subscriberId).maybeSingle();
   if (!data) return page("<p>This subscription could not be found.</p>", 404);
   if (data.status === "unsubscribed") return page("<p>You are currently unsubscribed.</p><p>You can rejoin anytime from the signup form on the Chévere website.</p>");
-  return page(`<p>You are subscribed to <strong>The Edit, Delivered</strong>.</p><form method="post" action="/api/unsubscribe"><input type="hidden" name="token" value="${token}"><button style="padding:13px 20px;background:#6b4a36;color:#fff;border:0;border-radius:8px;font-weight:bold">Unsubscribe</button></form>`);
+  return page(`<p>You are subscribed to <strong>Chévere Weekly</strong>.</p><form method="post" action="/api/unsubscribe"><input type="hidden" name="token" value="${token}"><button style="padding:13px 20px;background:#6b4a36;color:#fff;border:0;border-radius:8px;font-weight:bold">Unsubscribe</button></form>`);
 }

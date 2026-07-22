@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ImageField } from "@/components/image-field";
 import { CATEGORIES, slugify, type Post, type PostInput } from "@/lib/post-schema";
@@ -100,7 +101,7 @@ export function PostEditor({ initial }: { initial?: Post }) {
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState("");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
-  const [dirty, setDirty] = useState(false);
+  const [, setDirty] = useState(false);
   const dirtyRef = useRef(false);
   const idRef = useRef(id);
   const postRef = useRef(post);
@@ -185,11 +186,11 @@ export function PostEditor({ initial }: { initial?: Post }) {
   return <>
     <div className="page-heading">
       <div>
-        <p className="eyebrow">The Chévere Edit</p>
+        <p className="eyebrow">Chévere Weekly</p>
         <h1>{id ? post.title || "Untitled post" : "New blog post"}</h1>
         <p><span className={`status ${status === "published" ? "sent" : status}`}>{status}</span>{post.slug && ` /posts/${post.slug}.html`}</p>
       </div>
-      <a href="/admin/posts" className="secondary link-button">Back to posts</a>
+      <Link href="/admin/posts" className="secondary link-button">Back to posts</Link>
     </div>
     {message && <p className={`message ${/failed|error|unable|review|before|already/i.test(message) ? "error" : "success"}`}>{message}</p>}
 

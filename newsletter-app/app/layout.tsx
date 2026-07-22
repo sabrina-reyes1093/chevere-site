@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "The Edit, Delivered — Chévere",
+  title: "Chévere Weekly — Admin",
   description: "Create and schedule Chévere’s weekly newsletter.",
 };
 

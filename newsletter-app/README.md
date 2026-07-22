@@ -1,4 +1,4 @@
-# The Edit, Delivered
+# Chévere Weekly
 
 Companion Next.js service for Chévere's immediate subscriber list, weekly issue editor, email rendering, test sends, subscription management, provider-event logging, and Friday scheduling.
 

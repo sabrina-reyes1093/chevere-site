@@ -12,14 +12,20 @@ export async function POST(request: NextRequest) {
     const issue: IssueInput = {
       note_from_sabrina: body.note_from_sabrina || "",
       title: body.title || "Untitled issue",
-      subject: body.subject || "The Edit, Delivered",
+      subject: body.subject || "Chévere Weekly",
       preview_text: body.preview_text || "",
       scheduled_for: body.scheduled_for || "",
       featured_title: body.featured_title || "",
       featured_preview: body.featured_preview || "",
       featured_url: body.featured_url || "",
       featured_image_url: body.featured_image_url || "",
-      roundup_items: Array.isArray(body.roundup_items) ? body.roundup_items.map((item: any) => ({ category: item?.category || "", title: item?.title || "", text: item?.text || "", url: item?.url || "", image_url: item?.image_url || "" })) : [],
+      roundup_items: Array.isArray(body.roundup_items) ? body.roundup_items.map((item: Record<string, unknown>) => ({
+        category: typeof item?.category === "string" ? item.category : "",
+        title: typeof item?.title === "string" ? item.title : "",
+        text: typeof item?.text === "string" ? item.text : "",
+        url: typeof item?.url === "string" ? item.url : "",
+        image_url: typeof item?.image_url === "string" ? item.image_url : "",
+      })) : [],
       closing_note: body.closing_note || "",
       signoff: body.signoff || "Until next week,\nStay CHÉVERE",
     };

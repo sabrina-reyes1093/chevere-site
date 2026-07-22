@@ -17,7 +17,7 @@ test("the subscribe API activates an address without sending confirmation", () =
 test("the public form reports immediate subscription", () => {
   const site = fs.readFileSync(path.resolve(projectRoot, "../site.js"), "utf8");
 
-  assert.match(site, /You&(?:rsquo|#39);re subscribed to The Edit, Delivered\./);
+  assert.match(site, /You&(?:rsquo|#39);re subscribed to Ch(?:é|&eacute;)vere Weekly\./);
   assert.match(site, /cache: 'no-store'/);
   assert.match(site, /response\.json\(\)/);
   assert.doesNotMatch(site, /Something went wrong/);

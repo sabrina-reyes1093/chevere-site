@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get("token");
   const valid = token && await verifyUnsubscribeToken(token);
   if (!valid) return new NextResponse("This unsubscribe link is invalid.", { status: 400 });
-  return new NextResponse(`<!doctype html><html><body style="font-family:Arial,sans-serif;background:#f4efe7;color:#3d3830;text-align:center;padding:80px 20px"><h1 style="font-family:Georgia,serif">Unsubscribe</h1><p>You’ll stop receiving The Edit, Delivered immediately.</p><form method="post"><input type="hidden" name="token" value="${token}"><button style="padding:14px 24px;background:#6b4a36;color:white;border:0;border-radius:8px">Unsubscribe me</button></form></body></html>`, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+  return new NextResponse(`<!doctype html><html><body style="font-family:Arial,sans-serif;background:#f4efe7;color:#3d3830;text-align:center;padding:80px 20px"><h1 style="font-family:Georgia,serif">Unsubscribe</h1><p>You’ll stop receiving Chévere Weekly immediately.</p><form method="post"><input type="hidden" name="token" value="${token}"><button style="padding:14px 24px;background:#6b4a36;color:white;border:0;border-radius:8px">Unsubscribe me</button></form></body></html>`, { headers: { "Content-Type": "text/html; charset=utf-8" } });
 }
 
 export async function POST(request: NextRequest) {

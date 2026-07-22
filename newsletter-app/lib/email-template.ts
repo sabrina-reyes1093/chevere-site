@@ -12,7 +12,7 @@ function paragraphs(value: string) {
   return escape(value).split(/\n{2,}/).filter(Boolean).map((text) => `<p style="margin:0 0 16px;line-height:1.7">${text.replace(/\n/g, "<br>")}</p>`).join("");
 }
 
-export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string, manageUrl = unsubscribeUrl) {
+export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string) {
   const items = (issue.roundup_items || []).filter((item) => item.title && item.text).map((item) => `
     <tr><td style="padding:0 0 24px">
       ${item.image_url ? `<img src="${escape(item.image_url)}" alt="" width="552" style="display:block;width:100%;height:auto;margin:0 0 14px;border-radius:8px">` : ""}
@@ -27,7 +27,7 @@ export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string, mana
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f4efe7"><tr><td align="center" style="padding:28px 12px">
     <table class="email-shell" role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:#fffdf8;border:1px solid #ded3c7">
       <tr><td class="email-pad" style="padding:42px 44px 34px;text-align:center;border-bottom:1px solid #ded3c7">
-        <div class="email-title" style="font-family:Georgia,serif;font-size:38px;font-weight:bold">The Edit, Delivered</div>
+        <div class="email-title" style="font-family:Georgia,serif;font-size:38px;font-weight:bold">Chévere Weekly</div>
         <div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-top:10px;color:#7b6658">A weekly curation by Chévere</div>
       </td></tr>
       <tr><td class="email-pad" style="padding:40px 44px">

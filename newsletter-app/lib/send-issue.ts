@@ -61,13 +61,12 @@ export async function sendIssue(issue: Issue) {
     const messages = await Promise.all(pending.map(async (subscriber) => {
       const token = await createUnsubscribeToken(subscriber.id, issue.id);
       const unsubscribeUrl = `${config.newsletterUrl}/api/unsubscribe?token=${encodeURIComponent(token)}`;
-      const manageUrl = `${config.newsletterUrl}/api/manage?token=${encodeURIComponent(token)}`;
       return {
         from: config.from,
         to: subscriber.email,
         replyTo: config.replyTo,
         subject: issue.subject,
-        html: renderNewsletter(issueData, unsubscribeUrl, manageUrl),
+        html: renderNewsletter(issueData, unsubscribeUrl),
         headers: {
           "List-Unsubscribe": `<${unsubscribeUrl}>`,
           "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",

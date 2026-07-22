@@ -17,7 +17,7 @@ export default async function BlogPosts() {
   return <AdminShell>
     <div className="page-heading">
       <div>
-        <p className="eyebrow">The Chévere Edit</p>
+        <p className="eyebrow">Chévere Weekly</p>
         <h1>Blog posts</h1>
         <p>Publishing writes the page into your site folder. Commit and push to put it live.</p>
       </div>
