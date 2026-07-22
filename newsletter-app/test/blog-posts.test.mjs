@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { slugify, displayDate, categoryLabel, validateForPublish } from "../lib/post-schema.ts";
+import { CATEGORY_GROUPS, slugify, displayDate, categoryLabel, categorySection, normalizeCategory, normalizePostCategory, validateForPublish } from "../lib/post-schema.ts";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => fs.readFileSync(path.join(projectRoot, file), "utf8");
@@ -14,7 +14,12 @@ test("slugs and dates match the conventions already used on the site", () => {
   assert.equal(slugify("  Trailing & Symbols!  "), "trailing-symbols");
   assert.equal(displayDate("2026-07-18"), "Jul 18, 2026");
   assert.equal(displayDate("2026-01-02"), "Jan 2, 2026");
-  assert.equal(categoryLabel("tv-film"), "TV & Film");
+  assert.equal(categoryLabel("film-tv"), "Film & TV");
+  assert.equal(categoryLabel("tv-film"), "Film & TV");
+  assert.equal(categorySection("reading-lists"), "guides");
+  assert.equal(normalizeCategory("food-drink"), "food");
+  assert.equal(normalizePostCategory("food-drink", "best-chicago-patios-2026"), "restaurant-roundups");
+  assert.deepEqual(CATEGORY_GROUPS.map((group) => group.label), ["Culture", "Style", "Life", "Guides"]);
 });
 
 test("a post cannot be published until it would render correctly", () => {
@@ -36,6 +41,12 @@ test("generated pages carry the same shell as the hand-written posts", () => {
   assert.match(template, /\.\.\/site\.js\?v=/);
   assert.match(template, /class="site-header"/);
   assert.match(template, /class="site-nav"/);
+  assert.match(template, />CULTURE</);
+  assert.match(template, />STYLE</);
+  assert.match(template, />LIFE</);
+  assert.match(template, />GUIDES</);
+  assert.match(template, /JOIN THE LIST/);
+  assert.match(template, /mobile-menu-toggle/);
   assert.match(template, /class="page-main"/);
   assert.match(template, /class="post-body"/);
   assert.match(template, /Back to Blog/);

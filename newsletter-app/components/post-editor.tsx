@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ImageField } from "@/components/image-field";
-import { CATEGORIES, slugify, type Post, type PostInput } from "@/lib/post-schema";
+import { CATEGORY_GROUPS, normalizePostCategory, slugify, type Post, type PostInput } from "@/lib/post-schema";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -87,14 +87,14 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
 }
 
 const empty: PostInput = {
-  slug: "", title: "", category: "culture", dek: "", body: "",
+  slug: "", title: "", category: "pop-culture", dek: "", body: "",
   cover_image_url: "", hero_image_url: "", signoff: "Until next week — stay *chévere*",
   published_on: today(),
 };
 
 export function PostEditor({ initial }: { initial?: Post }) {
   const router = useRouter();
-  const [post, setPost] = useState<PostInput>(initial ? { ...initial } : empty);
+  const [post, setPost] = useState<PostInput>(initial ? { ...initial, category: normalizePostCategory(initial.category, initial.slug) } : empty);
   const [id, setId] = useState(initial?.id || "");
   const [status, setStatus] = useState(initial?.status || "draft");
   const [message, setMessage] = useState("");
@@ -202,7 +202,9 @@ export function PostEditor({ initial }: { initial?: Post }) {
           <div className="two-col">
             <label>Category
               <select value={post.category} onChange={(e) => field("category", e.target.value)}>
-                {CATEGORIES.map((item) => <option key={item.slug} value={item.slug}>{item.label}</option>)}
+                {CATEGORY_GROUPS.map((group) => <optgroup key={group.slug} label={group.label}>
+                  {group.categories.map((item) => <option key={item.slug} value={item.slug}>{item.label}</option>)}
+                </optgroup>)}
               </select>
             </label>
             <label>Date<input type="date" value={post.published_on} onChange={(e) => field("published_on", e.target.value)} /></label>

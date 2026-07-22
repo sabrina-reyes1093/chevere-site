@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
-  <link rel="stylesheet" href="styles.css?v=20260722-1" />
+  <link rel="stylesheet" href="styles.css?v=20260722-2" />
 </head>
 <body class="home">
 
@@ -17,16 +17,15 @@
     <a class="header-logo" href="index.html" aria-label="chévere home">
       <img src="assets/logo.png" alt="chévere" />
     </a>
-    <div class="header-actions">
+        <div class="header-actions">
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="Open menu" aria-controls="site-navigation" aria-expanded="false"><i data-lucide="menu" stroke-width="1.8" aria-hidden="true"></i></button>
       <button id="search-toggle" aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
-      <a href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+      <a class="join-list-button" href="index.html#newsletter">JOIN THE LIST</a>
+      <a class="header-social" href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
       </a>
-      <a href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+      <a class="header-social" href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
         <svg class="tiktok-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="19" height="19"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.87.13v-3.5a6.37 6.37 0 0 0-.87-.06A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.46a8.23 8.23 0 0 0 4.77 1.48v-3.4a4.86 4.86 0 0 1-1.01.15z"/></svg>
-      </a>
-      <a href="#newsletter" aria-label="Newsletter sign-up" title="Newsletter">
-        <i data-lucide="mail" stroke-width="1.8" aria-hidden="true"></i>
       </a>
     </div>
     <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
@@ -44,22 +43,49 @@
     </div>
   </header>
 
-  <nav class="site-nav">
-    <a href="index.html" class="active">Home</a>
+    <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
+    <a href="index.html" class="active">HOME</a>
     <div class="nav-item has-dropdown">
-      <a href="blog.html">Blog<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <a href="blog.html?cat=culture">CULTURE<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
       <div class="dropdown">
-        <a href="blog.html">All Blogs</a>
         <a href="blog.html?cat=books">Books</a>
-        <a href="blog.html?cat=tv-film">TV &amp; Film</a>
-        <a href="blog.html?cat=travel">Travel</a>
-        <a href="blog.html?cat=food-drink">Food &amp; Drink</a>
-        <a href="blog.html?cat=fashion">Fashion</a>
+        <a href="blog.html?cat=film-tv">Film &amp; TV</a>
+        <a href="blog.html?cat=music">Music</a>
         <a href="blog.html?cat=sports">Sports</a>
-        <a href="blog.html?cat=culture">Culture</a>
+        <a href="blog.html?cat=pop-culture">Pop Culture</a>
       </div>
     </div>
-    <a href="about.html">About</a>
+    <div class="nav-item has-dropdown">
+      <a href="blog.html?cat=style">STYLE<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="blog.html?cat=fashion">Fashion</a>
+        <a href="blog.html?cat=beauty">Beauty</a>
+        <a href="blog.html?cat=interiors">Interiors</a>
+        <a href="blog.html?cat=design">Design</a>
+      </div>
+    </div>
+    <div class="nav-item has-dropdown">
+      <a href="blog.html?cat=life">LIFE<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="blog.html?cat=food">Food</a>
+        <a href="blog.html?cat=travel">Travel</a>
+        <a href="blog.html?cat=hosting">Hosting</a>
+        <a href="blog.html?cat=wellness">Wellness</a>
+        <a href="blog.html?cat=everyday-favorites">Everyday Favorites</a>
+      </div>
+    </div>
+    <div class="nav-item has-dropdown">
+      <a href="blog.html?cat=guides">GUIDES<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="blog.html?cat=reading-lists">Reading Lists</a>
+        <a href="blog.html?cat=city-guides">City Guides</a>
+        <a href="blog.html?cat=seasonal-recommendations">Seasonal Recommendations</a>
+        <a href="blog.html?cat=restaurant-roundups">Restaurant Roundups</a>
+        <a href="blog.html?cat=gift-guides">Gift Guides</a>
+        <a href="blog.html?cat=evergreen-guides">Evergreen Guides</a>
+      </div>
+    </div>
+    <a href="about.html">ABOUT</a>
   </nav>
 
   <main class="home-main">
@@ -140,7 +166,7 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-  <script src="site.js?v=20260722-2"></script>
+  <script src="site.js?v=20260722-3"></script>
 
 </body>
 </html>

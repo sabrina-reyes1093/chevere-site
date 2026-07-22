@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260722-1" />
+  <link rel="stylesheet" href="styles.css?v=20260722-2" />
 </head>
 <body class="blog-page">
 
@@ -16,16 +16,15 @@
     <a class="header-logo" href="index.html" aria-label="chevere home">
       <img src="assets/logo.png" alt="chevere" />
     </a>
-    <div class="header-actions">
+        <div class="header-actions">
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="Open menu" aria-controls="site-navigation" aria-expanded="false"><i data-lucide="menu" stroke-width="1.8" aria-hidden="true"></i></button>
       <button id="search-toggle" aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
-      <a href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+      <a class="join-list-button" href="index.html#newsletter">JOIN THE LIST</a>
+      <a class="header-social" href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
       </a>
-      <a href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+      <a class="header-social" href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
         <svg class="tiktok-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="19" height="19"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.87.13v-3.5a6.37 6.37 0 0 0-.87-.06A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.46a8.23 8.23 0 0 0 4.77 1.48v-3.4a4.86 4.86 0 0 1-1.01.15z"/></svg>
-      </a>
-      <a href="index.html#newsletter" aria-label="Newsletter sign-up" title="Newsletter">
-        <i data-lucide="mail" stroke-width="1.8" aria-hidden="true"></i>
       </a>
     </div>
     <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
@@ -43,22 +42,49 @@
     </div>
   </header>
 
-  <nav class="site-nav">
-    <a href="index.html">Home</a>
+    <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
+    <a href="index.html">HOME</a>
     <div class="nav-item has-dropdown">
-      <a href="blog.html" class="active">Chévere Weekly<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <a href="blog.html?cat=culture">CULTURE<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
       <div class="dropdown">
-        <a href="blog.html">All Blogs</a>
         <a href="blog.html?cat=books">Books</a>
-        <a href="blog.html?cat=tv-film">TV &amp; Film</a>
-        <a href="blog.html?cat=travel">Travel</a>
-        <a href="blog.html?cat=food-drink">Food &amp; Drink</a>
-        <a href="blog.html?cat=fashion">Fashion</a>
+        <a href="blog.html?cat=film-tv">Film &amp; TV</a>
+        <a href="blog.html?cat=music">Music</a>
         <a href="blog.html?cat=sports">Sports</a>
-        <a href="blog.html?cat=culture">Culture</a>
+        <a href="blog.html?cat=pop-culture">Pop Culture</a>
       </div>
     </div>
-    <a href="about.html">About</a>
+    <div class="nav-item has-dropdown">
+      <a href="blog.html?cat=style">STYLE<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="blog.html?cat=fashion">Fashion</a>
+        <a href="blog.html?cat=beauty">Beauty</a>
+        <a href="blog.html?cat=interiors">Interiors</a>
+        <a href="blog.html?cat=design">Design</a>
+      </div>
+    </div>
+    <div class="nav-item has-dropdown">
+      <a href="blog.html?cat=life">LIFE<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="blog.html?cat=food">Food</a>
+        <a href="blog.html?cat=travel">Travel</a>
+        <a href="blog.html?cat=hosting">Hosting</a>
+        <a href="blog.html?cat=wellness">Wellness</a>
+        <a href="blog.html?cat=everyday-favorites">Everyday Favorites</a>
+      </div>
+    </div>
+    <div class="nav-item has-dropdown">
+      <a href="blog.html?cat=guides">GUIDES<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
+      <div class="dropdown">
+        <a href="blog.html?cat=reading-lists">Reading Lists</a>
+        <a href="blog.html?cat=city-guides">City Guides</a>
+        <a href="blog.html?cat=seasonal-recommendations">Seasonal Recommendations</a>
+        <a href="blog.html?cat=restaurant-roundups">Restaurant Roundups</a>
+        <a href="blog.html?cat=gift-guides">Gift Guides</a>
+        <a href="blog.html?cat=evergreen-guides">Evergreen Guides</a>
+      </div>
+    </div>
+    <a href="about.html">ABOUT</a>
   </nav>
 
   <main class="blog-main">
@@ -69,89 +95,86 @@
 
     <div class="cat-pills" aria-label="Filter posts by category">
       <button data-cat="all" class="active">All</button>
-      <button data-cat="books">Books</button>
-      <button data-cat="tv-film">TV &amp; Film</button>
-      <button data-cat="travel">Travel</button>
-      <button data-cat="food-drink">Food &amp; Drink</button>
-      <button data-cat="fashion">Fashion</button>
-      <button data-cat="sports">Sports</button>
       <button data-cat="culture">Culture</button>
+      <button data-cat="style">Style</button>
+      <button data-cat="life">Life</button>
+      <button data-cat="guides">Guides</button>
     </div>
 
     <div class="post-grid" id="post-grid">
-      <a class="post-card" data-cat="culture" href="posts/about-chevere.html">
+      <a class="post-card" data-cat="pop-culture" data-section="culture" href="posts/about-chevere.html">
         <div class="thumb" style="background-image:url(https://xjtnfwnntzonmumlxbyg.supabase.co/storage/v1/object/public/newsletter-images/2026-07/40259267-40c4-4b1e-a628-34dde36daccb.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">Culture</span>
+        <span class="kicker">Pop Culture</span>
         <h2>About Chévere</h2>
         <p class="dek">A curation of beautiful things.</p>
         <p class="date">Jul 21, 2026</p>
       </a>
-      <a class="post-card" data-cat="sports" href="posts/spain-wins-the-2026-world-cup.html">
+      <a class="post-card" data-cat="sports" data-section="culture" href="posts/spain-wins-the-2026-world-cup.html">
         <div class="thumb" style="background-image:url(https://xjtnfwnntzonmumlxbyg.supabase.co/storage/v1/object/public/newsletter-images/2026-07/a87c361e-28cf-4680-ba55-0d4b62ef30b8.png);background-size:cover;background-position:center"></div>
         <span class="kicker">Sports</span>
         <h2>Spain Wins the 2026 World Cup</h2>
         <p class="dek">Ferran Torres scored in extra time as Spain defeated Argentina 1–0 to claim its second men’s World Cup title.</p>
         <p class="date">Jul 20, 2026</p>
       </a>
-      <a class="post-card" data-cat="books" href="posts/chevere-summer-reading-edit.html">
+      <a class="post-card" data-cat="reading-lists" data-section="guides" href="posts/chevere-summer-reading-edit.html">
         <div class="thumb" style="background-image:url(assets/chevere-summer-reading-edit.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">Books</span>
+        <span class="kicker">Reading Lists</span>
         <h2>The Ch&eacute;vere Summer Reading Guide</h2>
         <p class="dek">The books we'd recommend to a friend&mdash;from literary favorites and addictive thrillers to romance, fantasy, and unforgettable standouts.</p>
         <p class="date">Jul 18, 2026</p>
       </a>
-      <a class="post-card" data-cat="culture" href="posts/maybe-women-should-be-more-difficult.html">
+      <a class="post-card" data-cat="pop-culture" data-section="culture" href="posts/maybe-women-should-be-more-difficult.html">
         <div class="thumb" style="background-image:url(assets/maybe-women-should-be-more-difficult.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">Culture</span>
+        <span class="kicker">Pop Culture</span>
         <h2>Maybe Women Should Be More Difficult</h2>
         <p class="dek">Why being clear, vocal, and protective of your boundaries is not a character flaw.</p>
         <p class="date">Jul 18, 2026</p>
       </a>
-      <a class="post-card" data-cat="food-drink" href="posts/best-chicago-patios-2026.html">
+      <a class="post-card" data-cat="restaurant-roundups" data-section="guides" href="posts/best-chicago-patios-2026.html">
         <div class="thumb" style="background-image:url(assets/chicago-patio-guide-cover.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">Food &amp; Drink</span>
+        <span class="kicker">Restaurant Roundups</span>
         <h2>The Ch&eacute;vere Guide to Chicago Patio Season</h2>
         <p class="dek">Five Chicago patios for summer: romantic garden dinners, greenery-filled rooftops, music-driven hangouts, and sunset drinks with skyline views.</p>
         <p class="date">Jul 17, 2026</p>
       </a>
-      <a class="post-card" data-cat="travel fashion" href="posts/dua-lipa-vacation.html">
+      <a class="post-card" data-cat="travel" data-section="life" href="posts/dua-lipa-vacation.html">
         <div class="thumb" style="background-image:url(assets/dua-lipa-cover-collage.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">Travel &amp; Fashion</span>
+        <span class="kicker">Travel</span>
         <h2>How to Vacation Like Dua Lipa</h2>
         <p class="dek">A summer travel and street-style guide inspired by Dua Lipa's vacation energy: Mediterranean destinations, city-break outfits, beach-to-dinner packing tips, and hot-girl itinerary ideas.</p>
         <p class="date">Jul 16, 2026</p>
       </a>
-      <a class="post-card" data-cat="fashion" href="posts/zendaya-modern-muse.html">
+      <a class="post-card" data-cat="fashion" data-section="style" href="posts/zendaya-modern-muse.html">
         <div class="thumb" style="background-image:url(assets/zendaya-cover.png);background-size:cover;background-position:center"></div>
         <span class="kicker">Fashion</span>
         <h2>Zendaya: The Modern Muse and Turning Fashion Into Story</h2>
         <p class="dek">From red-carpet glamour to carefully crafted character dressing, Zendaya uses fashion to extend the stories she tells on screen.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="sports" href="posts/final-four.html">
+      <a class="post-card" data-cat="sports" data-section="culture" href="posts/final-four.html">
         <div class="thumb" style="background-image:url(assets/final-four.png);background-size:contain;background-position:center;background-repeat:no-repeat;background-color:var(--skeleton)"></div>
         <span class="kicker">Sports</span>
         <h2>The Final Four Is Here</h2>
         <p class="dek">France, Spain, England, and Argentina have officially reached the World Cup semifinals &mdash; and each team has taken a very different route to get here.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="sports" href="posts/world-cup-mood.html">
+      <a class="post-card" data-cat="sports" data-section="culture" href="posts/world-cup-mood.html">
         <div class="thumb" style="background-image:url(assets/world-cup-2026.jpg);background-size:cover;background-position:center"></div>
         <span class="kicker">Sports</span>
         <h2>The World Cup Isn't Just Soccer, It's a Whole Mood</h2>
         <p class="dek">The 2026 World Cup is already in knockout-stage mode, with the Round of 16 underway and major matchups like Mexico vs. England, Portugal vs. Spain, USA vs. Belgium, Argentina vs. Egypt, and Switzerland vs. Colombia on the schedule.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="tv-film" href="posts/gen-z-horror.html">
+      <a class="post-card" data-cat="film-tv" data-section="culture" href="posts/gen-z-horror.html">
         <div class="thumb" style="background-image:url(assets/genz-horror-cover.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">TV &amp; Film</span>
+        <span class="kicker">Film &amp; TV</span>
         <h2>Gen Z and the New Wave of Horror &amp; Thriller Films</h2>
         <p class="dek">Obsession and The Backrooms capture two sides of modern horror &mdash; the psychological thriller and the internet-born nightmare.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="tv-film" href="posts/my-current-obsessions.html">
+      <a class="post-card" data-cat="everyday-favorites" data-section="life" href="posts/my-current-obsessions.html">
         <div class="thumb" style="background-image:url(assets/my-current-obsessions-cover.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">TV &amp; Film</span>
+        <span class="kicker">Everyday Favorites</span>
         <h2>My Current Obsessions</h2>
         <p class="dek">There's something about summer that makes everything feel a little more indulgent &mdash; the shows are bigger, the books are steamier, and the snacks require a picnic blanket. Here's what's currently living in my rotation.</p>
         <p class="date">Jul 5, 2026</p>
@@ -166,7 +189,7 @@
   </main>
 
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="site.js?v=20260722-2"></script>
+  <script src="site.js?v=20260722-3"></script>
   <script>
     (function () {
       var cards = Array.prototype.slice.call(document.querySelectorAll('.post-card'));
@@ -175,26 +198,57 @@
       var empty = document.getElementById('blog-empty');
       var names = {
         'all': 'Chévere Weekly',
+        'culture': 'Culture',
+        'style': 'Style',
+        'life': 'Life',
+        'guides': 'Guides',
         'books': 'Books',
-        'tv-film': 'TV & Film',
-        'travel': 'Travel',
-        'food-drink': 'Food & Drink',
-        'fashion': 'Fashion',
+        'film-tv': 'Film & TV',
+        'music': 'Music',
         'sports': 'Sports',
-        'culture': 'Culture'
+        'pop-culture': 'Pop Culture',
+        'fashion': 'Fashion',
+        'beauty': 'Beauty',
+        'interiors': 'Interiors',
+        'design': 'Design',
+        'food': 'Food',
+        'travel': 'Travel',
+        'hosting': 'Hosting',
+        'wellness': 'Wellness',
+        'everyday-favorites': 'Everyday Favorites',
+        'reading-lists': 'Reading Lists',
+        'city-guides': 'City Guides',
+        'seasonal-recommendations': 'Seasonal Recommendations',
+        'restaurant-roundups': 'Restaurant Roundups',
+        'gift-guides': 'Gift Guides',
+        'evergreen-guides': 'Evergreen Guides'
       };
+      var sections = {
+        'books': 'culture', 'film-tv': 'culture', 'music': 'culture', 'sports': 'culture', 'pop-culture': 'culture',
+        'fashion': 'style', 'beauty': 'style', 'interiors': 'style', 'design': 'style',
+        'food': 'life', 'travel': 'life', 'hosting': 'life', 'wellness': 'life', 'everyday-favorites': 'life',
+        'reading-lists': 'guides', 'city-guides': 'guides', 'seasonal-recommendations': 'guides',
+        'restaurant-roundups': 'guides', 'gift-guides': 'guides', 'evergreen-guides': 'guides'
+      };
+      var aliases = { 'tv-film': 'film-tv', 'food-drink': 'restaurant-roundups' };
       function apply(cat) {
+        cat = aliases[cat] || cat;
         var visible = 0;
         cards.forEach(function (c) {
           var categories = (c.getAttribute('data-cat') || '').split(/\s+/);
-          var hide = cat !== 'all' && categories.indexOf(cat) === -1;
+          var section = c.getAttribute('data-section') || '';
+          var hide = cat !== 'all' && categories.indexOf(cat) === -1 && section !== cat;
           c.classList.toggle('hidden', hide);
           if (!hide) visible++;
         });
+        var activeSection = sections[cat] || cat;
         pills.forEach(function (p) {
-          p.classList.toggle('active', p.getAttribute('data-cat') === cat);
+          p.classList.toggle('active', p.getAttribute('data-cat') === activeSection);
         });
         heading.textContent = names[cat] || 'Chévere Weekly';
+        document.querySelectorAll('.site-nav a.active').forEach(function (link) { link.classList.remove('active'); });
+        var navLink = document.querySelector('.site-nav a[href$="cat=' + activeSection + '"]');
+        if (navLink) navLink.classList.add('active');
         empty.hidden = visible > 0;
       }
       pills.forEach(function (p) {
@@ -205,6 +259,7 @@
         });
       });
       var q = new URLSearchParams(location.search).get('cat') || location.hash.slice(1) || 'all';
+      q = aliases[q] || q;
       apply(names[q] ? q : 'all');
     })();
   </script>

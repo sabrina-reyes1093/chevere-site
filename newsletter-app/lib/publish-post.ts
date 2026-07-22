@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { renderPostPage } from "@/lib/post-template";
-import { categoryLabel, displayDate, type PostInput } from "@/lib/post-schema";
+import { categoryLabel, categorySection, displayDate, type PostInput } from "@/lib/post-schema";
 
 /** The site repo is the parent of the newsletter app. */
 export function siteRoot() {
@@ -16,7 +16,7 @@ function escapeAttr(value: string) {
 
 /** One card in the #post-grid of blog.html, matching the hand-written ones. */
 export function cardMarkup(post: PostInput) {
-  return `      <a class="post-card" data-cat="${escapeAttr(post.category)}" href="posts/${escapeAttr(post.slug)}.html">
+  return `      <a class="post-card" data-cat="${escapeAttr(post.category)}" data-section="${escapeAttr(categorySection(post.category))}" href="posts/${escapeAttr(post.slug)}.html">
         <div class="thumb" style="background-image:url(${escapeAttr(post.cover_image_url)});background-size:cover;background-position:center"></div>
         <span class="kicker">${escapeAttr(categoryLabel(post.category))}</span>
         <h2>${escapeAttr(post.title)}</h2>

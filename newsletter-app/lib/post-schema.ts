@@ -1,15 +1,71 @@
 import { z } from "zod";
 
-/** Categories match the filter pills in blog.html. */
-export const CATEGORIES = [
-  { slug: "books", label: "Books" },
-  { slug: "tv-film", label: "TV & Film" },
-  { slug: "travel", label: "Travel" },
-  { slug: "food-drink", label: "Food & Drink" },
-  { slug: "fashion", label: "Fashion" },
-  { slug: "sports", label: "Sports" },
-  { slug: "culture", label: "Culture" },
+/** Public taxonomy shared by the navigation, blog filters, and admin editor. */
+export const CATEGORY_GROUPS = [
+  {
+    slug: "culture",
+    label: "Culture",
+    categories: [
+      { slug: "books", label: "Books" },
+      { slug: "film-tv", label: "Film & TV" },
+      { slug: "music", label: "Music" },
+      { slug: "sports", label: "Sports" },
+      { slug: "pop-culture", label: "Pop Culture" },
+    ],
+  },
+  {
+    slug: "style",
+    label: "Style",
+    categories: [
+      { slug: "fashion", label: "Fashion" },
+      { slug: "beauty", label: "Beauty" },
+      { slug: "interiors", label: "Interiors" },
+      { slug: "design", label: "Design" },
+    ],
+  },
+  {
+    slug: "life",
+    label: "Life",
+    categories: [
+      { slug: "food", label: "Food" },
+      { slug: "travel", label: "Travel" },
+      { slug: "hosting", label: "Hosting" },
+      { slug: "wellness", label: "Wellness" },
+      { slug: "everyday-favorites", label: "Everyday Favorites" },
+    ],
+  },
+  {
+    slug: "guides",
+    label: "Guides",
+    categories: [
+      { slug: "reading-lists", label: "Reading Lists" },
+      { slug: "city-guides", label: "City Guides" },
+      { slug: "seasonal-recommendations", label: "Seasonal Recommendations" },
+      { slug: "restaurant-roundups", label: "Restaurant Roundups" },
+      { slug: "gift-guides", label: "Gift Guides" },
+      { slug: "evergreen-guides", label: "Evergreen Guides" },
+    ],
+  },
 ] as const;
+
+export const CATEGORIES = CATEGORY_GROUPS.flatMap((group) =>
+  group.categories.map((category) => ({ ...category, section: group.slug, sectionLabel: group.label })),
+);
+
+export type CategorySlug = (typeof CATEGORIES)[number]["slug"];
+
+const LEGACY_CATEGORY_ALIASES: Record<string, CategorySlug> = {
+  "tv-film": "film-tv",
+  "food-drink": "food",
+  culture: "pop-culture",
+};
+
+const EXISTING_POST_CATEGORY_OVERRIDES: Record<string, CategorySlug> = {
+  "chevere-summer-reading-edit": "reading-lists",
+  "best-chicago-patios-2026": "restaurant-roundups",
+  "my-current-obsessions": "everyday-favorites",
+  "dua-lipa-vacation": "travel",
+};
 
 const categorySlugs = CATEGORIES.map((item) => item.slug) as unknown as [string, ...string[]];
 
@@ -36,7 +92,22 @@ export type Post = PostInput & {
 };
 
 export function categoryLabel(slug: string) {
-  return CATEGORIES.find((item) => item.slug === slug)?.label || "Culture";
+  const normalized = normalizeCategory(slug);
+  return CATEGORIES.find((item) => item.slug === normalized)?.label || "Pop Culture";
+}
+
+export function normalizeCategory(slug: string): CategorySlug {
+  const normalized = LEGACY_CATEGORY_ALIASES[slug] || slug;
+  return (CATEGORIES.some((item) => item.slug === normalized) ? normalized : "pop-culture") as CategorySlug;
+}
+
+export function normalizePostCategory(category: string, postSlug?: string): CategorySlug {
+  return (postSlug && EXISTING_POST_CATEGORY_OVERRIDES[postSlug]) || normalizeCategory(category);
+}
+
+export function categorySection(slug: string) {
+  const normalized = normalizeCategory(slug);
+  return CATEGORIES.find((item) => item.slug === normalized)?.section || "culture";
 }
 
 /** Turn a title into a URL-safe slug, matching the existing files in posts/. */

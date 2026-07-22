@@ -91,11 +91,44 @@
 
 lucide.createIcons();
 
+/* mobile navigation: keep the full taxonomy behind a compact menu button */
+(function () {
+  var toggle = document.getElementById('mobile-menu-toggle');
+  var nav = document.getElementById('site-navigation');
+  if (!toggle || !nav) return;
+
+  function closeMenu() {
+    nav.classList.remove('mobile-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    nav.querySelectorAll('.nav-item.open').forEach(function (item) { item.classList.remove('open'); });
+  }
+
+  toggle.addEventListener('click', function () {
+    var open = !nav.classList.contains('mobile-open');
+    nav.classList.toggle('mobile-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+
+  nav.addEventListener('click', function (event) {
+    if (event.target.closest('a') && !event.target.closest('.has-dropdown > a')) closeMenu();
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeMenu();
+  });
+
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 820) closeMenu();
+  });
+})();
+
 /* nav dropdown: tap-to-open on touch devices (hover handles desktop via CSS) */
 document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   a.addEventListener('click', function (e) {
     var item = a.parentElement;
-    if (window.matchMedia('(hover: none)').matches && !item.classList.contains('open')) {
+    if ((window.innerWidth <= 820 || window.matchMedia('(hover: none)').matches) && !item.classList.contains('open')) {
       e.preventDefault();
       item.classList.add('open');
       document.addEventListener('click', function (ev) {
@@ -117,12 +150,15 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
 
   var index = null;
   var loading = false;
+  var headerHome = document.querySelector('.header-logo');
+  var pagePrefix = headerHome && (headerHome.getAttribute('href') || '').indexOf('../') === 0 ? '../' : '';
+  var blogUrl = pagePrefix + 'blog.html';
 
   function loadIndex(cb) {
     if (index) return cb(index);
     if (loading) { setTimeout(function () { loadIndex(cb); }, 200); return; }
     loading = true;
-    fetch('blog.html')
+    fetch(blogUrl)
       .then(function (r) { return r.text(); })
       .then(function (t) {
         var doc = new DOMParser().parseFromString(t, 'text/html');
@@ -136,7 +172,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
             dek: grab('.dek'),
             kicker: grab('.kicker'),
             cat: c.getAttribute('data-cat') || '',
-            url: c.getAttribute('href') || 'blog.html'
+            url: pagePrefix + (c.getAttribute('href') || 'blog.html')
           };
         });
         loading = false;
