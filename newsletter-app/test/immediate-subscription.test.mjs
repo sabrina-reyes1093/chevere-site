@@ -33,7 +33,7 @@ test("every public page loads the current signup script version", () => {
 
   for (const file of htmlFiles) {
     const html = fs.readFileSync(file, "utf8");
-    if (html.includes("site.js")) assert.match(html, /site\.js\?v=20260719-5/);
+    if (html.includes("site.js")) assert.match(html, /site\.js\?v=20260722-1/);
   }
 });
 
