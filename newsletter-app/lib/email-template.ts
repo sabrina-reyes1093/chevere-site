@@ -44,10 +44,11 @@ export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string, mana
         <p style="font-family:Georgia,serif;font-size:20px;font-style:italic;margin:28px 0 0">${escape(issue.signoff || "Until next week,\nStay CHÉVERE").replace(/\n/g, "<br>")}</p>
       </td></tr>
       <tr><td class="email-pad" style="padding:28px 44px;text-align:center;background:#afa095;font-family:Arial,sans-serif;font-size:12px;line-height:1.65;color:#3d3830">
-        <p style="margin:0 0 10px">Get Chévere in your inbox—a weekly curation of finds worth discovering.</p>
-        <p style="margin:0 0 10px"><a href="${config.siteUrl}" style="color:#3d3830">Visit Chévere</a> &nbsp;·&nbsp; <a href="mailto:${escape(config.replyTo)}" style="color:#3d3830">Reply to Sabrina</a></p>
-        <p style="margin:0 0 10px"><strong>Chévere</strong><br>${escape(config.postalAddress)}</p>
-        <p style="margin:0"><a href="${escape(manageUrl)}" style="color:#3d3830">Manage subscription</a> &nbsp;·&nbsp; <a href="${escape(unsubscribeUrl)}" style="color:#3d3830">Unsubscribe</a></p>
+        <p style="margin:0 0 10px">Get Chévere in your inbox — a weekly curation of finds worth discovering.</p>
+        <p style="margin:0 0 10px"><a href="${config.siteUrl}" style="color:#3d3830">Visit Chévere</a></p>
+        <p style="margin:0 0 10px"><strong>Chévere</strong></p>
+        <p style="margin:0 0 10px">${escape(config.businessAddress)}</p>
+        <p style="margin:0"><a href="${escape(unsubscribeUrl)}" style="color:#3d3830">Unsubscribe</a></p>
       </td></tr>
     </table>
   </td></tr></table></body></html>`;
