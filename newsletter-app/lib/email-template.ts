@@ -28,7 +28,7 @@ export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string) {
     <table class="email-shell" role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:#fffdf8;border:1px solid #ded3c7">
       <tr><td class="email-pad" style="padding:42px 44px 34px;text-align:center;border-bottom:1px solid #ded3c7">
         <div class="email-title" style="font-family:Georgia,serif;font-size:38px;font-weight:bold">Chévere Weekly</div>
-        <div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-top:10px;color:#7b6658">A weekly curation by Chévere</div>
+        <div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-top:10px;color:#7b6658">A weekly curation</div>
       </td></tr>
       <tr><td class="email-pad" style="padding:40px 44px">
         ${issue.note_from_sabrina ? `<h2 style="font-family:Georgia,serif;font-size:27px;margin:0 0 16px">From the Editor</h2><div style="font-family:Arial,sans-serif;font-size:16px;color:#544b43">${paragraphs(issue.note_from_sabrina)}</div><hr style="border:0;border-top:1px solid #ded3c7;margin:32px 0">` : ""}
