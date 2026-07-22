@@ -6,12 +6,12 @@
 
   var section = [
     '<section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">',
-    '  <h2 id="newsletter-heading">Chévere Weekly</h2>',
-    '  <p class="newsletter-sub">A weekly curation of culture, style, and discoveries worth your attention&mdash;delivered to your inbox.</p>',
+    '  <h2 id="newsletter-heading">Chévere, Delivered</h2>',
+    '  <p class="newsletter-sub">Weekly recommendations chosen with intention, plus discoveries worth sharing&mdash;straight to your inbox.</p>',
     '  <form id="newsletter-form">',
     '    <label class="sr-only" for="newsletter-email">Email address</label>',
     '    <input id="newsletter-email" name="email" type="email" placeholder="Email address" autocomplete="email" required />',
-    '    <button type="submit">I&rsquo;M IN</button>',
+    '    <button type="submit">JOIN THE LIST</button>',
     '  </form>',
     '</section>'
   ].join('');
