@@ -248,9 +248,9 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
           <button type="button" className="secondary" onClick={addRoundupItem} style={{ fontSize: 13, padding: "7px 14px" }}>+ Add item</button>
         </fieldset>
 
-        {/* Section 5: Closing */}
+        {/* Section 5: Before You Go */}
         <fieldset disabled={busy || locked}>
-          <legend>5. Closing</legend>
+          <legend>5. Before You Go</legend>
           <label>Closing note<textarea rows={5} value={issue.closing_note} onChange={(e) => field("closing_note", e.target.value)} placeholder="End the issue with a personal thought, question, or invitation to reply." /></label>
           <label>Sign-off<textarea rows={2} value={issue.signoff} onChange={(e) => field("signoff", e.target.value)} placeholder="Until next week,&#10;Stay CHÉVERE" /></label>
         </fieldset>
