@@ -39,7 +39,8 @@ export function renderNewsletter(issue: IssueInput, unsubscribeUrl: string, mana
         ${items ? `<hr style="border:0;border-top:1px solid #ded3c7;margin:0 0 34px">
         <h2 style="font-family:Georgia,serif;font-size:27px;margin:0 0 22px">Weekly Chévere Picks</h2>
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${items}</table>` : ""}
-        <hr style="border:0;border-top:1px solid #ded3c7;margin:0 0 34px">
+        ${items ? '<hr style="border:0;border-top:1px solid #ded3c7;margin:0 0 34px">' : ""}
+        <h2 style="font-family:Georgia,serif;font-size:27px;margin:0 0 16px">Before You Go</h2>
         <div style="font-family:Arial,sans-serif;font-size:16px;color:#544b43">${paragraphs(issue.closing_note)}</div>
         <p style="font-family:Georgia,serif;font-size:20px;font-style:italic;margin:28px 0 0">${escape(issue.signoff || "Until next week,\nStay CHÉVERE").replace(/\n/g, "<br>")}</p>
       </td></tr>

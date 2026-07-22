@@ -52,7 +52,7 @@ button:disabled { cursor:not-allowed; opacity:.52; }
 .login-card>p { line-height:1.6; }
 .stack { display:grid; gap:20px; }
 label { display:grid; gap:8px; font-size:13px; font-weight:600; letter-spacing:.02em; }
-input,textarea,select { width:100%; padding:12px 14px; border:1px solid #cfc1b4; border-radius:9px; background:#fff; color:var(--ink); line-height:1.45; }
+input,textarea,select { width:100%; padding:12px 14px; border:1px solid #cfc1b4; border-radius:9px; background:#fff; color:var(--ink); line-height:1.45; font-size:16px; }
 textarea { resize:vertical; }
 input:focus,textarea:focus,select:focus { outline:2px solid rgba(107,74,54,.18); border-color:var(--brown); }
 .message { padding:13px 16px; border-radius:10px; margin:0 0 22px; }
