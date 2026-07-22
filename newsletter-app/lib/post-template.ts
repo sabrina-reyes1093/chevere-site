@@ -2,7 +2,7 @@ import { categoryLabel, displayDate, type PostInput } from "@/lib/post-schema";
 
 /** Cache-busting suffixes used by the published pages. Keep in step with the
  *  values in blog.html and index.html when those are bumped. */
-export const ASSET_VERSIONS = { styles: "20260722-2", site: "20260722-3" };
+export const ASSET_VERSIONS = { styles: "20260722-2", site: "20260722-4" };
 
 function escape(value: string) {
   return value.replace(/[&<>"']/g, (char) => ({
@@ -95,9 +95,7 @@ const HEADER = `  <header class="site-header">
       <div class="dropdown">
         <a href="../blog.html?cat=food">Food</a>
         <a href="../blog.html?cat=travel">Travel</a>
-        <a href="../blog.html?cat=hosting">Hosting</a>
-        <a href="../blog.html?cat=wellness">Wellness</a>
-        <a href="../blog.html?cat=everyday-favorites">Everyday Favorites</a>
+        <a href="../blog.html?cat=life-wellness">Life &amp; Wellness</a>
       </div>
     </div>
     <div class="nav-item has-dropdown">
@@ -108,7 +106,6 @@ const HEADER = `  <header class="site-header">
         <a href="../blog.html?cat=seasonal-recommendations">Seasonal Recommendations</a>
         <a href="../blog.html?cat=restaurant-roundups">Restaurant Roundups</a>
         <a href="../blog.html?cat=gift-guides">Gift Guides</a>
-        <a href="../blog.html?cat=evergreen-guides">Evergreen Guides</a>
       </div>
     </div>
     <a href="../about.html">ABOUT</a>

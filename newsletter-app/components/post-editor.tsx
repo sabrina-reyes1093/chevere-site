@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ImageField } from "@/components/image-field";
-import { CATEGORY_GROUPS, normalizePostCategory, slugify, type Post, type PostInput } from "@/lib/post-schema";
+import { CATEGORY_GROUPS, normalizePostCategory, slugify, STANDALONE_POST_CATEGORY, type Post, type PostInput } from "@/lib/post-schema";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -202,6 +202,9 @@ export function PostEditor({ initial }: { initial?: Post }) {
           <div className="two-col">
             <label>Category
               <select value={post.category} onChange={(e) => field("category", e.target.value)}>
+                <optgroup label="Standalone">
+                  <option value={STANDALONE_POST_CATEGORY.slug}>{STANDALONE_POST_CATEGORY.label}</option>
+                </optgroup>
                 {CATEGORY_GROUPS.map((group) => <optgroup key={group.slug} label={group.label}>
                   {group.categories.map((item) => <option key={item.slug} value={item.slug}>{item.label}</option>)}
                 </optgroup>)}

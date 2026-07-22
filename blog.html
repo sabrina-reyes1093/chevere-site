@@ -68,9 +68,7 @@
       <div class="dropdown">
         <a href="blog.html?cat=food">Food</a>
         <a href="blog.html?cat=travel">Travel</a>
-        <a href="blog.html?cat=hosting">Hosting</a>
-        <a href="blog.html?cat=wellness">Wellness</a>
-        <a href="blog.html?cat=everyday-favorites">Everyday Favorites</a>
+        <a href="blog.html?cat=life-wellness">Life &amp; Wellness</a>
       </div>
     </div>
     <div class="nav-item has-dropdown">
@@ -81,7 +79,6 @@
         <a href="blog.html?cat=seasonal-recommendations">Seasonal Recommendations</a>
         <a href="blog.html?cat=restaurant-roundups">Restaurant Roundups</a>
         <a href="blog.html?cat=gift-guides">Gift Guides</a>
-        <a href="blog.html?cat=evergreen-guides">Evergreen Guides</a>
       </div>
     </div>
     <a href="about.html">ABOUT</a>
@@ -102,9 +99,9 @@
     </div>
 
     <div class="post-grid" id="post-grid">
-      <a class="post-card" data-cat="pop-culture" data-section="culture" href="posts/about-chevere.html">
+      <a class="post-card featured" data-cat="" data-section="" data-featured="true" href="posts/about-chevere.html">
         <div class="thumb" style="background-image:url(https://xjtnfwnntzonmumlxbyg.supabase.co/storage/v1/object/public/newsletter-images/2026-07/40259267-40c4-4b1e-a628-34dde36daccb.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">Pop Culture</span>
+        <span class="kicker">Introduction</span>
         <h2>About Chévere</h2>
         <p class="dek">A curation of beautiful things.</p>
         <p class="date">Jul 21, 2026</p>
@@ -123,9 +120,9 @@
         <p class="dek">The books we'd recommend to a friend&mdash;from literary favorites and addictive thrillers to romance, fantasy, and unforgettable standouts.</p>
         <p class="date">Jul 18, 2026</p>
       </a>
-      <a class="post-card" data-cat="pop-culture" data-section="culture" href="posts/maybe-women-should-be-more-difficult.html">
+      <a class="post-card" data-cat="life-wellness" data-section="life" href="posts/maybe-women-should-be-more-difficult.html">
         <div class="thumb" style="background-image:url(assets/maybe-women-should-be-more-difficult.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">Pop Culture</span>
+        <span class="kicker">Life &amp; Wellness</span>
         <h2>Maybe Women Should Be More Difficult</h2>
         <p class="dek">Why being clear, vocal, and protective of your boundaries is not a character flaw.</p>
         <p class="date">Jul 18, 2026</p>
@@ -172,9 +169,9 @@
         <p class="dek">Obsession and The Backrooms capture two sides of modern horror &mdash; the psychological thriller and the internet-born nightmare.</p>
         <p class="date">Jul 5, 2026</p>
       </a>
-      <a class="post-card" data-cat="everyday-favorites" data-section="life" href="posts/my-current-obsessions.html">
+      <a class="post-card" data-cat="pop-culture" data-section="culture" href="posts/my-current-obsessions.html">
         <div class="thumb" style="background-image:url(assets/my-current-obsessions-cover.png);background-size:cover;background-position:center"></div>
-        <span class="kicker">Everyday Favorites</span>
+        <span class="kicker">Pop Culture</span>
         <h2>My Current Obsessions</h2>
         <p class="dek">There's something about summer that makes everything feel a little more indulgent &mdash; the shows are bigger, the books are steamier, and the snacks require a picnic blanket. Here's what's currently living in my rotation.</p>
         <p class="date">Jul 5, 2026</p>
@@ -189,7 +186,7 @@
   </main>
 
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="site.js?v=20260722-3"></script>
+  <script src="site.js?v=20260722-4"></script>
   <script>
     (function () {
       var cards = Array.prototype.slice.call(document.querySelectorAll('.post-card'));
@@ -213,24 +210,21 @@
         'design': 'Design',
         'food': 'Food',
         'travel': 'Travel',
-        'hosting': 'Hosting',
-        'wellness': 'Wellness',
-        'everyday-favorites': 'Everyday Favorites',
+        'life-wellness': 'Life & Wellness',
         'reading-lists': 'Reading Lists',
         'city-guides': 'City Guides',
         'seasonal-recommendations': 'Seasonal Recommendations',
         'restaurant-roundups': 'Restaurant Roundups',
-        'gift-guides': 'Gift Guides',
-        'evergreen-guides': 'Evergreen Guides'
+        'gift-guides': 'Gift Guides'
       };
       var sections = {
         'books': 'culture', 'film-tv': 'culture', 'music': 'culture', 'sports': 'culture', 'pop-culture': 'culture',
         'fashion': 'style', 'beauty': 'style', 'interiors': 'style', 'design': 'style',
-        'food': 'life', 'travel': 'life', 'hosting': 'life', 'wellness': 'life', 'everyday-favorites': 'life',
+        'food': 'life', 'travel': 'life', 'life-wellness': 'life',
         'reading-lists': 'guides', 'city-guides': 'guides', 'seasonal-recommendations': 'guides',
-        'restaurant-roundups': 'guides', 'gift-guides': 'guides', 'evergreen-guides': 'guides'
+        'restaurant-roundups': 'guides', 'gift-guides': 'guides'
       };
-      var aliases = { 'tv-film': 'film-tv', 'food-drink': 'restaurant-roundups' };
+      var aliases = { 'tv-film': 'film-tv', 'food-drink': 'restaurant-roundups', 'wellness': 'life-wellness' };
       function apply(cat) {
         cat = aliases[cat] || cat;
         var visible = 0;

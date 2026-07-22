@@ -17,9 +17,18 @@ test("slugs and dates match the conventions already used on the site", () => {
   assert.equal(categoryLabel("film-tv"), "Film & TV");
   assert.equal(categoryLabel("tv-film"), "Film & TV");
   assert.equal(categorySection("reading-lists"), "guides");
+  assert.equal(categorySection("introduction"), "");
   assert.equal(normalizeCategory("food-drink"), "food");
+  assert.equal(normalizeCategory("wellness"), "life-wellness");
   assert.equal(normalizePostCategory("food-drink", "best-chicago-patios-2026"), "restaurant-roundups");
+  assert.equal(normalizePostCategory("pop-culture", "about-chevere"), "introduction");
+  assert.equal(normalizePostCategory("pop-culture", "maybe-women-should-be-more-difficult"), "life-wellness");
+  assert.equal(normalizePostCategory("everyday-favorites", "my-current-obsessions"), "pop-culture");
   assert.deepEqual(CATEGORY_GROUPS.map((group) => group.label), ["Culture", "Style", "Life", "Guides"]);
+  const activeCategories = CATEGORY_GROUPS.flatMap((group) => group.categories.map((category) => category.slug));
+  assert.equal(activeCategories.includes("everyday-favorites"), false);
+  assert.equal(activeCategories.includes("hosting"), false);
+  assert.equal(activeCategories.includes("evergreen-guides"), false);
 });
 
 test("a post cannot be published until it would render correctly", () => {
@@ -61,7 +70,8 @@ test("authored markdown is escaped before any formatting is applied", () => {
 test("publishing edits blog.html in place rather than reserialising it", () => {
   const publish = read("lib/publish-post.ts");
   assert.match(publish, /post-grid/);
-  assert.match(publish, /class="post-card"/);
+  assert.match(publish, /post-card/);
+  assert.match(publish, /data-featured/);
   assert.doesNotMatch(publish, /cheerio|\$\.html\(\)/);
   assert.match(publish, /unpublishPost/);
 });

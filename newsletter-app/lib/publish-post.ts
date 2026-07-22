@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { renderPostPage } from "@/lib/post-template";
-import { categoryLabel, categorySection, displayDate, type PostInput } from "@/lib/post-schema";
+import { categoryLabel, categorySection, displayDate, normalizeCategory, type PostInput } from "@/lib/post-schema";
 
 /** The site repo is the parent of the newsletter app. */
 export function siteRoot() {
@@ -16,7 +16,11 @@ function escapeAttr(value: string) {
 
 /** One card in the #post-grid of blog.html, matching the hand-written ones. */
 export function cardMarkup(post: PostInput) {
-  return `      <a class="post-card" data-cat="${escapeAttr(post.category)}" data-section="${escapeAttr(categorySection(post.category))}" href="posts/${escapeAttr(post.slug)}.html">
+  const isStandalone = normalizeCategory(post.category) === "introduction";
+  const className = isStandalone ? "post-card featured" : "post-card";
+  const category = isStandalone ? "" : post.category;
+  const featured = isStandalone ? ' data-featured="true"' : "";
+  return `      <a class="${className}" data-cat="${escapeAttr(category)}" data-section="${escapeAttr(categorySection(category))}"${featured} href="posts/${escapeAttr(post.slug)}.html">
         <div class="thumb" style="background-image:url(${escapeAttr(post.cover_image_url)});background-size:cover;background-position:center"></div>
         <span class="kicker">${escapeAttr(categoryLabel(post.category))}</span>
         <h2>${escapeAttr(post.title)}</h2>
@@ -31,7 +35,7 @@ export function cardMarkup(post: PostInput) {
 export function upsertCard(html: string, post: PostInput) {
   const href = `posts/${post.slug}.html`;
   const existing = new RegExp(
-    `[ \\t]*<a class="post-card"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
+    `[ \\t]*<a class="[^"]*post-card[^"]*"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
   );
   if (existing.test(html)) {
     return { html: html.replace(existing, cardMarkup(post)), action: "updated" as const };
@@ -39,7 +43,11 @@ export function upsertCard(html: string, post: PostInput) {
 
   const gridOpen = html.indexOf('<div class="post-grid" id="post-grid">');
   if (gridOpen === -1) throw new Error('Could not find <div class="post-grid" id="post-grid"> in blog.html.');
-  const insertAt = html.indexOf(">", gridOpen) + 1;
+  let insertAt = html.indexOf(">", gridOpen) + 1;
+  if (normalizeCategory(post.category) !== "introduction") {
+    const featured = html.slice(insertAt).match(/\n[ \t]*<a class="[^"]*post-card[^"]*featured[^"]*"[^>]*data-featured="true"[\s\S]*?<\/a>/);
+    if (featured?.index === 0) insertAt += featured[0].length;
+  }
   return {
     html: html.slice(0, insertAt) + "\n" + cardMarkup(post) + html.slice(insertAt),
     action: "inserted" as const,
@@ -79,7 +87,7 @@ export async function publishPost(post: PostInput): Promise<PublishResult> {
 export function removeCard(html: string, slug: string) {
   const href = `posts/${slug}.html`;
   const card = new RegExp(
-    `\\n?[ \\t]*<a class="post-card"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
+    `\\n?[ \\t]*<a class="[^"]*post-card[^"]*"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
   );
   return html.replace(card, "");
 }

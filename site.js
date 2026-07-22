@@ -415,7 +415,11 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     .then(function (response) { return response.text(); })
     .then(function (html) {
       var doc = new DOMParser().parseFromString(html, 'text/html');
-      var newest = Array.prototype.slice.call(doc.querySelectorAll('.post-card')).slice(0, 4);
+      var cards = Array.prototype.slice.call(doc.querySelectorAll('.post-card'));
+      var featured = cards.filter(function (card) { return card.getAttribute('data-featured') === 'true'; });
+      var newest = featured.concat(cards.filter(function (card) {
+        return card.getAttribute('data-featured') !== 'true';
+      })).slice(0, 4);
       if (newest.length) track.innerHTML = newest.map(cardMarkup).join('');
     })
     .catch(function () { /* Keep the four server-rendered fallback cards. */ })

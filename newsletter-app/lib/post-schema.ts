@@ -29,9 +29,7 @@ export const CATEGORY_GROUPS = [
     categories: [
       { slug: "food", label: "Food" },
       { slug: "travel", label: "Travel" },
-      { slug: "hosting", label: "Hosting" },
-      { slug: "wellness", label: "Wellness" },
-      { slug: "everyday-favorites", label: "Everyday Favorites" },
+      { slug: "life-wellness", label: "Life & Wellness" },
     ],
   },
   {
@@ -43,7 +41,6 @@ export const CATEGORY_GROUPS = [
       { slug: "seasonal-recommendations", label: "Seasonal Recommendations" },
       { slug: "restaurant-roundups", label: "Restaurant Roundups" },
       { slug: "gift-guides", label: "Gift Guides" },
-      { slug: "evergreen-guides", label: "Evergreen Guides" },
     ],
   },
 ] as const;
@@ -52,22 +49,28 @@ export const CATEGORIES = CATEGORY_GROUPS.flatMap((group) =>
   group.categories.map((category) => ({ ...category, section: group.slug, sectionLabel: group.label })),
 );
 
-export type CategorySlug = (typeof CATEGORIES)[number]["slug"];
+export const STANDALONE_POST_CATEGORY = { slug: "introduction", label: "Standalone introduction" } as const;
+
+export type EditorialCategorySlug = (typeof CATEGORIES)[number]["slug"];
+export type CategorySlug = EditorialCategorySlug | typeof STANDALONE_POST_CATEGORY.slug;
 
 const LEGACY_CATEGORY_ALIASES: Record<string, CategorySlug> = {
   "tv-film": "film-tv",
   "food-drink": "food",
+  wellness: "life-wellness",
   culture: "pop-culture",
 };
 
 const EXISTING_POST_CATEGORY_OVERRIDES: Record<string, CategorySlug> = {
   "chevere-summer-reading-edit": "reading-lists",
   "best-chicago-patios-2026": "restaurant-roundups",
-  "my-current-obsessions": "everyday-favorites",
+  "about-chevere": "introduction",
+  "maybe-women-should-be-more-difficult": "life-wellness",
+  "my-current-obsessions": "pop-culture",
   "dua-lipa-vacation": "travel",
 };
 
-const categorySlugs = CATEGORIES.map((item) => item.slug) as unknown as [string, ...string[]];
+const categorySlugs = [...CATEGORIES.map((item) => item.slug), STANDALONE_POST_CATEGORY.slug] as unknown as [string, ...string[]];
 
 export const postSchema = z.object({
   slug: z.string().trim().min(1).max(120).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase words separated by hyphens."),
@@ -93,10 +96,12 @@ export type Post = PostInput & {
 
 export function categoryLabel(slug: string) {
   const normalized = normalizeCategory(slug);
+  if (normalized === STANDALONE_POST_CATEGORY.slug) return "Introduction";
   return CATEGORIES.find((item) => item.slug === normalized)?.label || "Pop Culture";
 }
 
 export function normalizeCategory(slug: string): CategorySlug {
+  if (slug === STANDALONE_POST_CATEGORY.slug) return slug;
   const normalized = LEGACY_CATEGORY_ALIASES[slug] || slug;
   return (CATEGORIES.some((item) => item.slug === normalized) ? normalized : "pop-culture") as CategorySlug;
 }
@@ -107,6 +112,7 @@ export function normalizePostCategory(category: string, postSlug?: string): Cate
 
 export function categorySection(slug: string) {
   const normalized = normalizeCategory(slug);
+  if (normalized === STANDALONE_POST_CATEGORY.slug) return "";
   return CATEGORIES.find((item) => item.slug === normalized)?.section || "culture";
 }
 
