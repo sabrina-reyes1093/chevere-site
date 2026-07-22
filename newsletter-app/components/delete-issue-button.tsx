@@ -23,7 +23,7 @@ export function DeleteIssueButton({ id }: { id: string }) {
   }
 
   return (
-    <button type="button" className="text-button" onClick={handleDelete} disabled={busy} style={{ color: "var(--red)", fontSize: 12 }}>
+    <button type="button" className="secondary" onClick={handleDelete} disabled={busy} style={{ fontSize: 13, padding: "6px 14px", minHeight: 32, borderColor: "var(--red)", color: "var(--red)", marginLeft: 6 }}>
       {busy ? "..." : "Delete"}
     </button>
   );

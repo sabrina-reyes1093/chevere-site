@@ -23,7 +23,7 @@ export function UnpublishPostButton({ id }: { id: string }) {
   }
 
   return (
-    <button type="button" className="text-button" onClick={handleUnpublish} disabled={busy} style={{ color: "var(--red)", fontSize: 12 }}>
+    <button type="button" className="secondary" onClick={handleUnpublish} disabled={busy} style={{ fontSize: 13, padding: "6px 14px", minHeight: 32, borderColor: "var(--red)", color: "var(--red)", marginRight: 6 }}>
       {busy ? "..." : "Unpublish"}
     </button>
   );

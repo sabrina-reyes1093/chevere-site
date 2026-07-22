@@ -40,7 +40,7 @@ export default async function AdminHome() {
           <td>{issueMetrics?.clicks || "—"}</td>
           <td>{issueMetrics?.unsubscribes || "—"}</td>
           <td style={{ whiteSpace: "nowrap" }}>
-            <Link href={`/admin/issues/${issue.id}`} className="text-button" style={{ fontSize: 12, marginRight: 8 }}>Edit</Link>
+            <Link href={`/admin/issues/${issue.id}`} className="secondary" style={{ fontSize: 13, padding: "6px 14px", minHeight: 32, display: "inline-flex", marginRight: 6 }}>Edit</Link>
             {issue.status !== "sent" && issue.status !== "sending" && <DeleteIssueButton id={issue.id} />}
           </td>
         </tr>})}

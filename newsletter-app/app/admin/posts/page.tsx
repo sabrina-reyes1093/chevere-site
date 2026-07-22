@@ -34,7 +34,7 @@ export default async function BlogPosts() {
             <td>{displayDate(post.published_on)}</td>
             <td>{new Date(post.updated_at).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}</td>
             <td style={{ whiteSpace: "nowrap" }}>
-              <Link href={`/admin/posts/${post.id}`} className="text-button" style={{ fontSize: 12, marginRight: 8 }}>Edit</Link>
+              <Link href={`/admin/posts/${post.id}`} className="secondary" style={{ fontSize: 13, padding: "6px 14px", minHeight: 32, display: "inline-flex", marginRight: 6 }}>Edit</Link>
               {post.status === "published" && <UnpublishPostButton id={post.id} />}
               <DeletePostButton id={post.id} published={post.status === "published"} />
             </td>
