@@ -69,7 +69,7 @@ export function ImageField({ label, value, onChange, disabled }: Props) {
       <input
         ref={picker}
         type="file"
-        accept="image/png,image/jpeg,image/gif,image/webp"
+        accept="image/*"
         hidden
         onChange={(event) => { takeFirstImage(event.target.files); event.target.value = ""; }}
       />

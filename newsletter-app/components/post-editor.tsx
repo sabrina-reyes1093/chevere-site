@@ -19,7 +19,9 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
   const [busy, setBusy] = useState(false);
   const [sectionIndex, setSectionIndex] = useState(0);
   const [error, setError] = useState("");
+  const [dragging, setDragging] = useState(false);
   const picker = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const sections = getSections(bodyContent);
 
   async function upload(file: File) {
@@ -47,8 +49,25 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
     } finally { setBusy(false); }
   }
 
+  function takeFirstImage(files: FileList | null | undefined) {
+    const file = Array.from(files || []).find((item) => item.type.startsWith("image/"));
+    if (!file) return false;
+    void upload(file);
+    return true;
+  }
+
+  const idle = !busy;
+
   return (
-    <div style={{ marginBottom: 12 }}>
+    <div
+      ref={containerRef}
+      className={`image-field${dragging ? " dragging" : ""}`}
+      style={{ marginBottom: 12 }}
+      onPaste={(event) => { if (idle && takeFirstImage(event.clipboardData.files)) event.preventDefault(); }}
+      onDragOver={(event) => { if (idle) { event.preventDefault(); setDragging(true); } }}
+      onDragLeave={() => setDragging(false)}
+      onDrop={(event) => { if (idle) { event.preventDefault(); setDragging(false); takeFirstImage(event.dataTransfer.files); } }}
+    >
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <button type="button" className="secondary" onClick={() => picker.current?.click()} disabled={busy} style={{ fontSize: 13, padding: "7px 14px", minHeight: 36 }}>
           {busy ? "Uploading image\u2026" : "Insert image"}
@@ -58,7 +77,7 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
           {sections.map((s) => <option key={s.index} value={s.index + 1}>{s.label}</option>)}
           <option value={sections.length + 1}>At the very bottom</option>
         </select>
-        <span className="image-field-hint">Pick where to insert the image</span>
+        <span className="image-field-hint">Choose file, paste, or drag an image</span>
         <input ref={picker} type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
       </div>
       {error && <p className="error-text" style={{ margin: "8px 0 0", fontSize: 13 }}>{error}</p>}
