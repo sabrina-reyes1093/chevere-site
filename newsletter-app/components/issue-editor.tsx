@@ -186,13 +186,13 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
         {/* Section 3: Featured Blog */}
         <fieldset disabled={busy || locked}>
           <legend>3. Featured Blog</legend>
-          <label>Select a published article
-            <input type="text" placeholder="Search articles..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ marginBottom: 6 }} />
-            <select value="" onChange={(e) => chooseArticle(e.target.value)} size={Math.min(filteredArticles.length + 1, 6)} style={{ height: "auto" }}>
-              <option value="">Choose from the website...</option>
-              {filteredArticles.map((article) => <option key={article.url} value={article.url}>{article.title}</option>)}
-            </select>
-          </label>
+          <label>Select a published article</label>
+          <input type="text" placeholder="Search by title..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ marginBottom: 8 }} />
+          <select value="" onChange={(e) => chooseArticle(e.target.value)} style={{ width: "100%", minHeight: 140 }} size={Math.min(filteredArticles.length + 1, 8)}>
+            <option value="">Choose from the website...</option>
+            {filteredArticles.map((article) => <option key={article.url} value={article.url}>{article.title}</option>)}
+          </select>
+          {filteredArticles.length === 0 && <p style={{ fontSize: 13, color: "#8e8c88", margin: "4px 0 0" }}>No articles found. Publish blog posts first.</p>}
           <label>Article title<input value={issue.featured_title} onChange={(e) => field("featured_title", e.target.value)} placeholder="Auto-filled when you select an article" /></label>
           <label>Short excerpt<textarea rows={3} value={issue.featured_preview} onChange={(e) => field("featured_preview", e.target.value)} placeholder="Preview text for the featured article" /></label>
           <div className="two-col" style={{ textAlign: "center" }}>
