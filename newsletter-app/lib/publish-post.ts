@@ -57,6 +57,9 @@ export function upsertCard(html: string, post: PostInput) {
     `[ \\t]*(?:<article class="[^"]*post-card[^"]*"[^>]*data-url="${escapedHref}"[\\s\\S]*?<\\/article>|<a class="[^"]*post-card[^"]*"[^>]*href="${escapedHref}"[\\s\\S]*?<\\/a>)`
   );
   const hasExisting = existing.test(html);
+  if (normalizePostCategories(post.category, post.slug).includes("introduction")) {
+    return { html: removeCard(html, post.slug), action: "updated" as const };
+  }
   if (hasExisting) {
     return { html: html.replace(existing, cardMarkup(post)), action: "updated" as const };
   }
