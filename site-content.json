@@ -1,0 +1,53 @@
+{
+  "seasonal_banner": {
+    "enabled": true,
+    "label": "SUMMER 2026",
+    "headline": "The Summer Edit",
+    "description": "Books, places, tables, and small pleasures for the season.",
+    "href": "blog.html?cat=seasonal-recommendations"
+  },
+  "currently_loving": [
+    {
+      "category": "Watching",
+      "title": "A Story Worth Staying In For",
+      "description": "The kind of beautifully made watch that rewards a slower evening.",
+      "url": "blog.html?cat=film-tv",
+      "image_url": ""
+    },
+    {
+      "category": "Reading",
+      "title": "The Chévere Summer Reading Guide",
+      "description": "Twenty-two books for long afternoons, late flights, and every quiet hour in between.",
+      "url": "posts/chevere-summer-reading-edit.html",
+      "image_url": "assets/chevere-summer-reading-edit.png"
+    },
+    {
+      "category": "Listening",
+      "title": "The Sound of a Long Summer Evening",
+      "description": "A warm, unhurried soundtrack for dinner with the windows open.",
+      "url": "blog.html?cat=music",
+      "image_url": ""
+    },
+    {
+      "category": "Favorite Find",
+      "title": "A Table Set for Outside",
+      "description": "Simple pieces that make an ordinary meal feel like an occasion.",
+      "url": "blog.html?cat=design",
+      "image_url": ""
+    },
+    {
+      "category": "Travel Dream",
+      "title": "A Slow Week by the Mediterranean",
+      "description": "Sun-washed towns, long lunches, and nowhere important to be.",
+      "url": "posts/dua-lipa-vacation.html",
+      "image_url": "assets/dua-lipa-cover-collage.png"
+    },
+    {
+      "category": "Restaurant",
+      "title": "Chicago Patio Season",
+      "description": "The tables worth booking while the city is at its most generous.",
+      "url": "posts/best-chicago-patios-2026.html",
+      "image_url": "assets/chicago-patio-guide-cover.png"
+    }
+  ]
+}

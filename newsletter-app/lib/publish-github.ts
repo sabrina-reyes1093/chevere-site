@@ -38,7 +38,7 @@ async function gh(path: string, init: RequestInit = {}) {
 const repo = () => `/repos/${config.githubRepo}`;
 const encode = (text: string) => Buffer.from(text, "utf8").toString("base64");
 
-async function readFileFromRepo(path: string) {
+export async function readFileFromRepo(path: string) {
   const response = await fetch(`${API}${repo()}/contents/${path}?ref=${config.githubBranch}`, {
     headers: {
       Authorization: `Bearer ${config.githubToken}`,
@@ -54,7 +54,7 @@ async function readFileFromRepo(path: string) {
 }
 
 /** Writes several files in one commit via the git data API. */
-async function commitFiles(files: { path: string; content: string | null }[], message: string) {
+export async function commitFiles(files: { path: string; content: string | null }[], message: string) {
   const ref = await gh(`${repo()}/git/ref/heads/${config.githubBranch}`);
   const headSha = ref.object.sha;
   const headCommit = await gh(`${repo()}/git/commits/${headSha}`);

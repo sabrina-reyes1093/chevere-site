@@ -2,7 +2,7 @@ import { categoryLabels, displayDate, type PostInput } from "@/lib/post-schema";
 
 /** Cache-busting suffixes used by the published pages. Keep in step with the
  *  values in blog.html and index.html when those are bumped. */
-export const ASSET_VERSIONS = { styles: "20260722-9", site: "20260722-8" };
+export const ASSET_VERSIONS = { styles: "20260722-10", site: "20260722-10" };
 
 function escape(value: string) {
   return value.replace(/[&<>"']/g, (char) => ({
@@ -30,6 +30,14 @@ export function renderBody(markdown: string) {
     .map((block) => {
       if (block.startsWith("### ")) return `<h3>${inline(block.slice(4))}</h3>`;
       if (block.startsWith("## ")) return `<h2>${inline(block.slice(3))}</h2>`;
+      if (block.split("\n").every((line) => line.trim().startsWith(">"))) {
+        const lines = block.split("\n").map((line) => line.trim().replace(/^>\s?/, "")).filter(Boolean);
+        const last = lines.at(-1) || "";
+        const hasAttribution = /^(?:—|-)\s+/.test(last);
+        const attribution = hasAttribution ? last.replace(/^(?:—|-)\s+/, "") : "";
+        const quote = hasAttribution ? lines.slice(0, -1).join(" ") : lines.join(" ");
+        return `<figure class="editorial-quote"><blockquote>${inline(quote)}</blockquote>${attribution ? `<figcaption>${inline(attribution)}</figcaption>` : ""}</figure>`;
+      }
       const standaloneImage = block.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
       if (standaloneImage) {
         return `<img class="post-inline-img" src="${escape(standaloneImage[2])}" alt="${escape(standaloneImage[1])}" />`;
@@ -101,7 +109,7 @@ const HEADER = `  <header class="site-header">
     <div class="nav-item has-dropdown">
       <a href="../blog.html?cat=guides">GUIDES<i data-lucide="chevron-down" class="chev" stroke-width="2" aria-hidden="true"></i></a>
       <div class="dropdown">
-        <a href="../blog.html?cat=reading-lists">Reading Lists</a>
+        <a href="../reading-lists.html">Reading Lists</a>
         <a href="../blog.html?cat=city-guides">City Guides</a>
         <a href="../blog.html?cat=seasonal-recommendations">Seasonal Recommendations</a>
         <a href="../blog.html?cat=restaurant-roundups">Restaurant Roundups</a>

@@ -86,6 +86,28 @@ function InlineImageUpload({ onInsert, bodyContent }: { onInsert: (markdown: str
   );
 }
 
+function EditorialQuoteInsert({ onInsert }: { onInsert: (markdown: string) => void }) {
+  const [quote, setQuote] = useState("");
+  const [attribution, setAttribution] = useState("");
+
+  function insert() {
+    const cleanQuote = quote.trim();
+    if (!cleanQuote) return;
+    const block = `> ${cleanQuote}${attribution.trim() ? `\n> — ${attribution.trim()}` : ""}`;
+    onInsert(block);
+    setQuote("");
+    setAttribution("");
+  }
+
+  return <div className="quote-insert">
+    <div>
+      <label>Editorial quote<input value={quote} onChange={(event) => setQuote(event.target.value)} placeholder="Culture begins with curiosity." /></label>
+      <label>Attribution (optional)<input value={attribution} onChange={(event) => setAttribution(event.target.value)} placeholder="Name or source" /></label>
+    </div>
+    <button type="button" className="secondary" onClick={insert} disabled={!quote.trim()}>Insert quote block</button>
+  </div>;
+}
+
 const empty: PostInput = {
   slug: "", title: "", category: "pop-culture", dek: "", body: "",
   cover_image_url: "", hero_image_url: "", signoff: "Until next week — stay *chévere*",
@@ -253,6 +275,9 @@ export function PostEditor({ initial }: { initial?: Post }) {
 
         <fieldset disabled={busy}>
           <legend>Body</legend>
+          <EditorialQuoteInsert onInsert={(markdown) => {
+            field("body", post.body.trim() ? `${post.body.trim()}\n\n${markdown}` : markdown);
+          }} />
           <label>Post content<textarea className="body-input" rows={22} value={post.body} onChange={(e) => field("body", e.target.value)} id="post-body-input" /></label>
           <details className="formatting-help" style={{ marginBottom: 12 }}>
             <summary>Formatting cheatsheet</summary>
@@ -262,6 +287,7 @@ export function PostEditor({ initial }: { initial?: Post }) {
               <li><code>*italic*</code> — italics</li>
               <li><code>[link text](https://example.com)</code> — a link</li>
               <li><code>![description](image-url)</code> — an image on its own line</li>
+              <li><code>&gt; Quote</code> followed by <code>&gt; — Attribution</code> — an editorial quote block</li>
               <li>Leave a blank line between paragraphs.</li>
             </ul>
           </details>

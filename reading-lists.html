@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Lists — Chévere</title>
+  <meta name="description" content="Permanent, thoughtfully curated reading lists from Chévere." />
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20260722-10" />
+</head>
+<body class="reading-lists-page">
+  <header class="site-header">
+    <a class="header-logo" href="index.html" aria-label="Chévere home"><img src="assets/logo.png" alt="Chévere" /></a>
+    <div class="header-actions">
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="Open menu" aria-controls="site-navigation" aria-expanded="false"><i data-lucide="menu" stroke-width="1.8" aria-hidden="true"></i></button>
+      <button id="search-toggle" aria-label="Search" title="Search"><i data-lucide="search" stroke-width="1.8" aria-hidden="true"></i></button>
+      <a class="join-list-button" href="index.html#newsletter">JOIN THE LIST</a>
+      <a class="header-social" href="https://www.instagram.com/itschevere/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><i data-lucide="instagram" aria-hidden="true"></i></a>
+      <a class="header-social" href="https://www.tiktok.com/@itschevere" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok"><svg class="tiktok-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="19" height="19" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.87.13v-3.5a6.37 6.37 0 0 0-.87-.06A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.46a8.23 8.23 0 0 0 4.77 1.48v-3.4a4.86 4.86 0 0 1-1.01.15z"/></svg></a>
+    </div>
+    <div id="search-panel" class="search-panel" role="dialog" aria-label="Search posts">
+      <div class="search-bar-wrap">
+        <i data-lucide="search" class="search-bar-icon" aria-hidden="true"></i>
+        <input id="search-input" type="text" placeholder="What are you looking for?" autocomplete="off" />
+        <button id="search-submit" class="search-action-btn" aria-label="Search" type="button"><i data-lucide="arrow-right" aria-hidden="true"></i></button>
+        <button id="search-close" class="search-close-btn" aria-label="Close search" type="button"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </header>
+
+  <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
+    <a href="index.html">HOME</a>
+    <div class="nav-item has-dropdown"><a href="blog.html?cat=culture">CULTURE<i data-lucide="chevron-down" class="chev" aria-hidden="true"></i></a><div class="dropdown"><a href="blog.html?cat=books">Books</a><a href="blog.html?cat=film-tv">Film &amp; TV</a><a href="blog.html?cat=music">Music</a><a href="blog.html?cat=sports">Sports</a><a href="blog.html?cat=pop-culture">Pop Culture</a></div></div>
+    <div class="nav-item has-dropdown"><a href="blog.html?cat=style">STYLE<i data-lucide="chevron-down" class="chev" aria-hidden="true"></i></a><div class="dropdown"><a href="blog.html?cat=fashion">Fashion</a><a href="blog.html?cat=beauty">Beauty</a><a href="blog.html?cat=interiors">Interiors</a><a href="blog.html?cat=design">Design</a></div></div>
+    <div class="nav-item has-dropdown"><a href="blog.html?cat=life">LIFE<i data-lucide="chevron-down" class="chev" aria-hidden="true"></i></a><div class="dropdown"><a href="blog.html?cat=food">Food</a><a href="blog.html?cat=travel">Travel</a><a href="blog.html?cat=life-wellness">Life &amp; Wellness</a></div></div>
+    <div class="nav-item has-dropdown"><a class="active" href="blog.html?cat=guides">GUIDES<i data-lucide="chevron-down" class="chev" aria-hidden="true"></i></a><div class="dropdown"><a href="reading-lists.html">Reading Lists</a><a href="blog.html?cat=city-guides">City Guides</a><a href="blog.html?cat=seasonal-recommendations">Seasonal Recommendations</a><a href="blog.html?cat=restaurant-roundups">Restaurant Roundups</a><a href="blog.html?cat=gift-guides">Gift Guides</a></div></div>
+    <a href="about.html">ABOUT</a>
+  </nav>
+
+  <main class="reading-lists-main">
+    <header class="reading-lists-header">
+      <p class="kicker">Chévere Library</p>
+      <h1>Reading Lists</h1>
+      <p>Curated shelves for every season, mood, and next chapter—designed to return to whenever you need a very good book.</p>
+    </header>
+    <section class="reading-list-grid" aria-label="Chévere reading lists">
+      <a class="reading-list-card" href="posts/chevere-summer-reading-edit.html">
+        <div class="reading-list-card__image"><img src="assets/chevere-summer-reading-edit.png" alt="" /></div>
+        <div class="reading-list-card__content">
+          <span class="kicker">Books</span>
+          <h2>The Chévere Summer Reading Edit</h2>
+          <p>A thoughtful collection for long afternoons, late flights, and every quiet hour in between.</p>
+          <span class="reading-list-card__meta">22 books · July 2026</span>
+        </div>
+      </a>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script src="site.js?v=20260722-10"></script>
+</body>
+</html>

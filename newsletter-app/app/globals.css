@@ -142,3 +142,102 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
   .login-card { padding:24px 18px; }
   .action-bar { grid-template-columns:1fr; }
 }
+.quote-insert {
+  margin: 12px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 72%, white);
+}
+
+.quote-insert-grid,
+.editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.quote-insert label,
+.editor-grid label {
+  display: grid;
+  gap: 6px;
+}
+
+.quote-insert button {
+  margin-top: 12px;
+}
+
+.site-content-editor {
+  display: grid;
+  gap: 24px;
+}
+
+.admin-panel,
+.loving-editor-card {
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.admin-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.admin-panel-heading h2 {
+  margin: 4px 0 0;
+}
+
+.admin-panel-heading > p {
+  max-width: 280px;
+  margin: 0;
+  color: var(--muted);
+}
+
+.span-2 {
+  grid-column: 1 / -1;
+}
+
+.loving-editor-list {
+  display: grid;
+  gap: 18px;
+}
+
+.loving-editor-card legend {
+  padding: 0 8px;
+  font-family: Georgia, serif;
+  font-size: 18px;
+}
+
+.toggle-label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.toggle-label input {
+  width: auto;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+@media (max-width: 680px) {
+  .quote-insert-grid,
+  .editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .span-2 {
+    grid-column: auto;
+  }
+
+  .admin-panel-heading {
+    display: grid;
+  }
+}

@@ -71,6 +71,13 @@ test("authored markdown is escaped before any formatting is applied", () => {
   assert.match(template, /return escape\(value\)/);
 });
 
+test("editorial quote blocks render with an optional attribution", () => {
+  const source = read("lib/post-template.ts");
+  assert.match(source, /editorial-quote/);
+  assert.match(source, /<blockquote>/);
+  assert.match(source, /<figcaption>/);
+});
+
 test("publishing edits blog.html in place rather than reserialising it", () => {
   const publish = read("lib/publish-post.ts");
   assert.match(publish, /post-grid/);
