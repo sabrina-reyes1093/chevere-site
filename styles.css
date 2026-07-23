@@ -505,9 +505,16 @@ body.popup-open::after {
 
 /* ---------- homepage featured reads ---------- */
 .home-about-section {
-  max-width: 1180px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 84px 36px 24px;
+  padding: 72px 40px 18px;
+}
+@media (min-width: 821px) {
+  .home-about-section .post-card.featured { min-height: 380px; }
+  .home-about-section .featured-copy { padding: 40px 44px; }
+  .home-about-section .post-card.featured h2 { font-size: clamp(30px, 3vw, 38px); }
+  .home-about-section .post-card.featured .dek { font-size: 16px; }
+  .home-about-section .featured-meta-row { margin-top: 40px; }
 }
 .featured-reads {
   padding: 76px max(32px, calc((100vw - 1180px) / 2)) 88px;
