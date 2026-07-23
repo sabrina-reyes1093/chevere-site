@@ -504,6 +504,19 @@ body.popup-open::after {
 }
 
 /* ---------- homepage featured reads ---------- */
+.home-featured-section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 84px 36px 96px;
+}
+.home-featured-heading { margin-bottom: 30px; }
+.home-featured-heading h2 {
+  margin-top: 5px;
+  font-family: var(--serif);
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1.08;
+  color: var(--ink);
+}
 .featured-reads {
   padding: 76px max(32px, calc((100vw - 1180px) / 2)) 88px;
   border-top: 1px solid var(--border-strong);
@@ -1091,17 +1104,53 @@ body.popup-open .back-to-top { opacity: 0; pointer-events: none; }
 @media (max-width: 620px) {
   html,
   body { overflow-x: clip; }
-  .site-header { height: 116px; justify-content: flex-start; padding-left: 16px; }
-  .header-logo img { width: 142px; max-width: 40vw; }
-  .header-actions { right: 8px; gap: 4px; }
+  .site-header { height: 134px; padding: 0; }
+  .header-logo {
+    position: absolute;
+    top: 76px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .header-logo img { width: 142px; max-width: none; }
+  .header-actions {
+    position: static;
+    display: block;
+    transform: none;
+  }
   .header-actions button,
   .header-actions a { width: 28px; height: 28px; }
+  .header-actions #mobile-menu-toggle {
+    position: absolute;
+    top: 17px;
+    left: 10px;
+  }
+  .header-actions #search-toggle {
+    position: absolute;
+    top: 17px;
+    left: 46px;
+  }
+  .header-actions .header-social { display: flex; }
+  .header-actions a[href*="instagram.com"] {
+    position: absolute;
+    top: 17px;
+    right: 128px;
+    margin: 0;
+  }
+  .header-actions a[href*="instagram.com"]::before { display: none; }
+  .header-actions a[href*="tiktok.com"] {
+    position: absolute;
+    top: 17px;
+    right: 96px;
+  }
   .header-actions .join-list-button {
-    width: auto;
-    height: 38px;
-    padding: 0 11px;
-    font-size: 10px;
-    letter-spacing: 0.06em;
+    position: absolute;
+    top: 14px;
+    right: 8px;
+    width: 84px;
+    height: 34px;
+    padding: 0 8px;
+    font-size: 8px;
+    letter-spacing: 0.045em;
   }
   .header-actions svg { width: 18px; height: 18px; }
   .header-actions .tiktok-icon { width: 16px; height: 16px; }
@@ -1116,6 +1165,9 @@ body.popup-open .back-to-top { opacity: 0; pointer-events: none; }
   .dropdown a { padding: 10px 20px; font-size: 14px; }
   .center-col { padding: 60px 24px 70px; }
   .home-main { min-height: 0; }
+  .home-featured-section { padding: 52px 16px 68px; }
+  .home-featured-heading { margin-bottom: 22px; }
+  .home-featured-heading h2 { font-size: 34px; }
   .featured-reads { padding: 52px 16px 62px; }
   .featured-heading { align-items: center; margin-bottom: 24px; }
   .featured-heading h2 { font-size: 38px; }

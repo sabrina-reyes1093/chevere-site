@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { CATEGORY_GROUPS, slugify, displayDate, categoryLabel, categorySection, normalizeCategory, normalizePostCategory, validateForPublish } from "../lib/post-schema.ts";
+import { CATEGORY_GROUPS, slugify, displayDate, categoryLabel, categoryLabels, categorySection, categorySections, normalizeCategory, normalizePostCategories, normalizePostCategory, postSchema, validateForPublish } from "../lib/post-schema.ts";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => fs.readFileSync(path.join(projectRoot, file), "utf8");
@@ -24,6 +24,9 @@ test("slugs and dates match the conventions already used on the site", () => {
   assert.equal(normalizePostCategory("pop-culture", "about-chevere"), "introduction");
   assert.equal(normalizePostCategory("pop-culture", "maybe-women-should-be-more-difficult"), "life-wellness");
   assert.equal(normalizePostCategory("everyday-favorites", "my-current-obsessions"), "pop-culture");
+  assert.deepEqual(normalizePostCategories("books,reading-lists", "chevere-summer-reading-edit"), ["books", "reading-lists"]);
+  assert.equal(categoryLabels("books,reading-lists"), "Books · Reading Lists");
+  assert.deepEqual(categorySections("books,reading-lists"), ["culture", "guides"]);
   assert.deepEqual(CATEGORY_GROUPS.map((group) => group.label), ["Culture", "Style", "Life", "Guides"]);
   const activeCategories = CATEGORY_GROUPS.flatMap((group) => group.categories.map((category) => category.slug));
   assert.equal(activeCategories.includes("everyday-favorites"), false);
@@ -38,6 +41,7 @@ test("a post cannot be published until it would render correctly", () => {
     signoff: "", published_on: "2026-07-19",
   };
   assert.equal(validateForPublish(complete), null);
+  assert.equal(postSchema.safeParse({ ...complete, category: "books,reading-lists" }).success, true);
   assert.match(validateForPublish({ ...complete, cover_image_url: "" }), /cover image/i);
   assert.match(validateForPublish({ ...complete, dek: "" }), /description/i);
   assert.match(validateForPublish({ ...complete, body: "" }), /body/i);
@@ -71,7 +75,8 @@ test("publishing edits blog.html in place rather than reserialising it", () => {
   const publish = read("lib/publish-post.ts");
   assert.match(publish, /post-grid/);
   assert.match(publish, /post-card/);
-  assert.match(publish, /data-featured/);
+  assert.match(publish, /categorySections/);
+  assert.match(publish, /includes\("introduction"\)/);
   assert.doesNotMatch(publish, /cheerio|\$\.html\(\)/);
   assert.match(publish, /unpublishPost/);
 });

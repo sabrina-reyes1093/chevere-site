@@ -1,8 +1,8 @@
-import { categoryLabel, displayDate, type PostInput } from "@/lib/post-schema";
+import { categoryLabels, displayDate, type PostInput } from "@/lib/post-schema";
 
 /** Cache-busting suffixes used by the published pages. Keep in step with the
  *  values in blog.html and index.html when those are bumped. */
-export const ASSET_VERSIONS = { styles: "20260722-3", site: "20260722-5" };
+export const ASSET_VERSIONS = { styles: "20260722-4", site: "20260722-6" };
 
 function escape(value: string) {
   return value.replace(/[&<>"']/g, (char) => ({
@@ -154,7 +154,7 @@ ${HEADER}
 
   <main class="page-main">
     <a class="back-link" href="../blog.html">&larr; Back to Blog</a>
-    <span class="kicker" style="display:block;margin-bottom:8px">${escape(categoryLabel(post.category))}</span>
+    <span class="kicker" style="display:block;margin-bottom:8px">${escape(categoryLabels(post.category, post.slug))}</span>
     <h1 class="page-title">${escape(post.title)}</h1>
     <p class="page-tagline" style="font-size:15px;color:#8e8c88;margin-top:-4px;margin-bottom:28px">${escape(displayDate(post.published_on))}</p>
     <div class="post-body">${hero}

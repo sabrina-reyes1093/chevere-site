@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdminPage } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase-admin";
-import { categoryLabel, displayDate, normalizePostCategory } from "@/lib/post-schema";
+import { categoryLabels, displayDate } from "@/lib/post-schema";
 import { UnpublishPostButton } from "@/components/unpublish-post-button";
 import { DeletePostButton } from "@/components/delete-post-button";
 
@@ -29,7 +29,7 @@ export default async function BlogPosts() {
         <tbody>
           {(posts || []).map((post) => <tr key={post.id}>
             <td><Link href={`/admin/posts/${post.id}`}><strong>{post.title || "Untitled post"}</strong></Link><small>/posts/{post.slug}.html</small></td>
-            <td>{categoryLabel(normalizePostCategory(post.category, post.slug))}</td>
+            <td>{categoryLabels(post.category, post.slug)}</td>
             <td><span className={`status ${post.status === "published" ? "sent" : post.status}`}>{post.status}</span></td>
             <td>{displayDate(post.published_on)}</td>
             <td>{new Date(post.updated_at).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}</td>

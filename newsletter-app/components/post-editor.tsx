@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ImageField } from "@/components/image-field";
-import { CATEGORY_GROUPS, normalizePostCategory, slugify, STANDALONE_POST_CATEGORY, type Post, type PostInput } from "@/lib/post-schema";
+import { CATEGORY_GROUPS, normalizePostCategories, serializeCategories, slugify, STANDALONE_POST_CATEGORY, type CategorySlug, type Post, type PostInput } from "@/lib/post-schema";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -94,7 +94,7 @@ const empty: PostInput = {
 
 export function PostEditor({ initial }: { initial?: Post }) {
   const router = useRouter();
-  const [post, setPost] = useState<PostInput>(initial ? { ...initial, category: normalizePostCategory(initial.category, initial.slug) } : empty);
+  const [post, setPost] = useState<PostInput>(initial ? { ...initial, category: serializeCategories(normalizePostCategories(initial.category, initial.slug)) } : empty);
   const [id, setId] = useState(initial?.id || "");
   const [status, setStatus] = useState(initial?.status || "draft");
   const [message, setMessage] = useState("");
@@ -111,6 +111,19 @@ export function PostEditor({ initial }: { initial?: Post }) {
   const markDirty = () => { setDirty(true); dirtyRef.current = true; };
 
   const field = (name: keyof PostInput, value: string) => { setPost((current) => ({ ...current, [name]: value })); markDirty(); };
+
+  function toggleCategory(category: CategorySlug, checked: boolean) {
+    setPost((current) => {
+      const selected = normalizePostCategories(current.category);
+      const next = checked
+        ? category === STANDALONE_POST_CATEGORY.slug
+          ? [category]
+          : [...selected.filter((item) => item !== STANDALONE_POST_CATEGORY.slug), category]
+        : selected.filter((item) => item !== category);
+      return next.length ? { ...current, category: serializeCategories(next) } : current;
+    });
+    markDirty();
+  }
 
   function changeTitle(value: string) {
     setPost((current) => ({ ...current, title: value, slug: slugTouched ? current.slug : slugify(value) }));
@@ -183,6 +196,8 @@ export function PostEditor({ initial }: { initial?: Post }) {
     router.refresh();
   }
 
+  const selectedCategories = normalizePostCategories(post.category);
+
   return <>
     <div className="page-heading">
       <div>
@@ -200,16 +215,25 @@ export function PostEditor({ initial }: { initial?: Post }) {
           <legend>Post details</legend>
           <label>Title<input value={post.title} onChange={(e) => changeTitle(e.target.value)} required /></label>
           <div className="two-col">
-            <label>Category
-              <select value={post.category} onChange={(e) => field("category", e.target.value)}>
-                <optgroup label="Standalone">
-                  <option value={STANDALONE_POST_CATEGORY.slug}>{STANDALONE_POST_CATEGORY.label}</option>
-                </optgroup>
-                {CATEGORY_GROUPS.map((group) => <optgroup key={group.slug} label={group.label}>
-                  {group.categories.map((item) => <option key={item.slug} value={item.slug}>{item.label}</option>)}
-                </optgroup>)}
-              </select>
-            </label>
+            <div>
+              <p style={{ marginBottom: 8, fontWeight: 600 }}>Categories</p>
+              <div style={{ display: "grid", gap: 10, padding: 12, border: "1px solid var(--line)", borderRadius: 8 }}>
+                <label style={{ display: "flex", alignItems: "center", gap: 8, margin: 0, fontWeight: 400 }}>
+                  <input type="checkbox" checked={selectedCategories.includes(STANDALONE_POST_CATEGORY.slug)} onChange={(e) => toggleCategory(STANDALONE_POST_CATEGORY.slug, e.target.checked)} style={{ width: "auto" }} />
+                  {STANDALONE_POST_CATEGORY.label}
+                </label>
+                {CATEGORY_GROUPS.map((group) => <div key={group.slug}>
+                  <strong style={{ display: "block", marginBottom: 6, fontSize: 12, textTransform: "uppercase", letterSpacing: ".06em" }}>{group.label}</strong>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 14px" }}>
+                    {group.categories.map((item) => <label key={item.slug} style={{ display: "flex", alignItems: "center", gap: 6, margin: 0, fontWeight: 400 }}>
+                      <input type="checkbox" checked={selectedCategories.includes(item.slug)} onChange={(e) => toggleCategory(item.slug, e.target.checked)} style={{ width: "auto" }} />
+                      {item.label}
+                    </label>)}
+                  </div>
+                </div>)}
+              </div>
+              <small className="field-hint">Select every archive where this post should appear. One article is shared across all selected categories.</small>
+            </div>
             <label>Date<input type="date" value={post.published_on} onChange={(e) => field("published_on", e.target.value)} /></label>
           </div>
           <label>Web address

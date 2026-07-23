@@ -61,21 +61,32 @@ const LEGACY_CATEGORY_ALIASES: Record<string, CategorySlug> = {
   culture: "pop-culture",
 };
 
-const EXISTING_POST_CATEGORY_OVERRIDES: Record<string, CategorySlug> = {
-  "chevere-summer-reading-edit": "reading-lists",
-  "best-chicago-patios-2026": "restaurant-roundups",
-  "about-chevere": "introduction",
-  "maybe-women-should-be-more-difficult": "life-wellness",
-  "my-current-obsessions": "pop-culture",
-  "dua-lipa-vacation": "travel",
+const EXISTING_POST_CATEGORY_OVERRIDES: Record<string, CategorySlug[]> = {
+  "best-chicago-patios-2026": ["restaurant-roundups"],
+  "about-chevere": ["introduction"],
+  "maybe-women-should-be-more-difficult": ["life-wellness"],
+  "my-current-obsessions": ["pop-culture"],
+  "dua-lipa-vacation": ["travel"],
 };
 
-const categorySlugs = [...CATEGORIES.map((item) => item.slug), STANDALONE_POST_CATEGORY.slug] as unknown as [string, ...string[]];
+// The database keeps this as one text field for backward compatibility. Multiple
+// categories are stored as a comma-separated list, so no duplicate post row or
+// article file is needed.
+export function splitCategoryValue(value: string) {
+  return value.split(/[\s,]+/).map((item) => item.trim()).filter(Boolean);
+}
+
+function isRecognizedCategory(slug: string) {
+  return slug === STANDALONE_POST_CATEGORY.slug || Boolean(LEGACY_CATEGORY_ALIASES[slug]) || CATEGORIES.some((item) => item.slug === slug);
+}
 
 export const postSchema = z.object({
   slug: z.string().trim().min(1).max(120).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase words separated by hyphens."),
   title: z.string().trim().min(1).max(160),
-  category: z.enum(categorySlugs),
+  category: z.string().trim().min(1).max(200).refine(
+    (value) => splitCategoryValue(value).every(isRecognizedCategory),
+    "Choose at least one valid category.",
+  ),
   dek: z.string().trim().max(400),
   body: z.string().max(60000),
   cover_image_url: z.string().trim().url().or(z.literal("")),
@@ -100,6 +111,10 @@ export function categoryLabel(slug: string) {
   return CATEGORIES.find((item) => item.slug === normalized)?.label || "Pop Culture";
 }
 
+export function categoryLabels(value: string, postSlug?: string) {
+  return normalizePostCategories(value, postSlug).map(categoryLabel).join(" · ");
+}
+
 export function normalizeCategory(slug: string): CategorySlug {
   if (slug === STANDALONE_POST_CATEGORY.slug) return slug;
   const normalized = LEGACY_CATEGORY_ALIASES[slug] || slug;
@@ -107,13 +122,27 @@ export function normalizeCategory(slug: string): CategorySlug {
 }
 
 export function normalizePostCategory(category: string, postSlug?: string): CategorySlug {
-  return (postSlug && EXISTING_POST_CATEGORY_OVERRIDES[postSlug]) || normalizeCategory(category);
+  return normalizePostCategories(category, postSlug)[0];
+}
+
+export function normalizePostCategories(category: string, postSlug?: string): CategorySlug[] {
+  const override = postSlug && EXISTING_POST_CATEGORY_OVERRIDES[postSlug];
+  const values = override || splitCategoryValue(category).map(normalizeCategory);
+  return Array.from(new Set<CategorySlug>(values.length ? values : ["pop-culture"]));
+}
+
+export function serializeCategories(categories: readonly CategorySlug[]) {
+  return Array.from(new Set(categories)).join(",");
 }
 
 export function categorySection(slug: string) {
   const normalized = normalizeCategory(slug);
   if (normalized === STANDALONE_POST_CATEGORY.slug) return "";
   return CATEGORIES.find((item) => item.slug === normalized)?.section || "culture";
+}
+
+export function categorySections(value: string, postSlug?: string) {
+  return Array.from(new Set(normalizePostCategories(value, postSlug).map(categorySection).filter(Boolean)));
 }
 
 /** Turn a title into a URL-safe slug, matching the existing files in posts/. */
