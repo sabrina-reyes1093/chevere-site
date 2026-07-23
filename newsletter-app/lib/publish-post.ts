@@ -17,10 +17,28 @@ function escapeAttr(value: string) {
 /** One card in the #post-grid of blog.html, matching the hand-written ones. */
 export function cardMarkup(post: PostInput) {
   const isStandalone = normalizeCategory(post.category) === "introduction";
-  const className = isStandalone ? "post-card featured" : "post-card";
-  const category = isStandalone ? "" : post.category;
-  const featured = isStandalone ? ' data-featured="true"' : "";
-  return `      <a class="${className}" data-cat="${escapeAttr(category)}" data-section="${escapeAttr(categorySection(category))}"${featured} href="posts/${escapeAttr(post.slug)}.html">
+  const href = `posts/${escapeAttr(post.slug)}.html`;
+  if (isStandalone) {
+    return `      <article class="post-card featured" data-cat="" data-section="" data-featured="true" data-url="${href}">
+        <a class="featured-card-link" href="${href}" aria-label="Read ${escapeAttr(post.title)}"></a>
+        <div class="featured-media">
+          <img class="featured-image" src="${escapeAttr(post.cover_image_url)}" alt="" />
+        </div>
+        <div class="featured-copy">
+          <div class="featured-copy-main">
+            <span class="kicker">${escapeAttr(categoryLabel(post.category))}</span>
+            <h2>${escapeAttr(post.title)}</h2>
+            <p class="dek">${escapeAttr(post.dek)}</p>
+          </div>
+          <div class="featured-meta-row">
+            <time class="date" datetime="${escapeAttr(post.published_on)}">${escapeAttr(displayDate(post.published_on))}</time>
+            <span class="featured-meta-separator" aria-hidden="true">&middot;</span>
+            <a class="featured-read-more" href="${href}">Read More <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </article>`;
+  }
+  return `      <a class="post-card" data-cat="${escapeAttr(post.category)}" data-section="${escapeAttr(categorySection(post.category))}" href="${href}">
         <div class="thumb" style="background-image:url(${escapeAttr(post.cover_image_url)});background-size:cover;background-position:center"></div>
         <span class="kicker">${escapeAttr(categoryLabel(post.category))}</span>
         <h2>${escapeAttr(post.title)}</h2>
@@ -34,8 +52,9 @@ export function cardMarkup(post: PostInput) {
  *  which a full parse-and-reserialize would not guarantee. */
 export function upsertCard(html: string, post: PostInput) {
   const href = `posts/${post.slug}.html`;
+  const escapedHref = href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const existing = new RegExp(
-    `[ \\t]*<a class="[^"]*post-card[^"]*"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
+    `[ \\t]*(?:<article class="[^"]*post-card[^"]*"[^>]*data-url="${escapedHref}"[\\s\\S]*?<\\/article>|<a class="[^"]*post-card[^"]*"[^>]*href="${escapedHref}"[\\s\\S]*?<\\/a>)`
   );
   if (existing.test(html)) {
     return { html: html.replace(existing, cardMarkup(post)), action: "updated" as const };
@@ -45,7 +64,7 @@ export function upsertCard(html: string, post: PostInput) {
   if (gridOpen === -1) throw new Error('Could not find <div class="post-grid" id="post-grid"> in blog.html.');
   let insertAt = html.indexOf(">", gridOpen) + 1;
   if (normalizeCategory(post.category) !== "introduction") {
-    const featured = html.slice(insertAt).match(/\n[ \t]*<a class="[^"]*post-card[^"]*featured[^"]*"[^>]*data-featured="true"[\s\S]*?<\/a>/);
+    const featured = html.slice(insertAt).match(/\n[ \t]*<article class="[^"]*post-card[^"]*featured[^"]*"[^>]*data-featured="true"[\s\S]*?<\/article>/);
     if (featured?.index === 0) insertAt += featured[0].length;
   }
   return {
@@ -86,8 +105,9 @@ export async function publishPost(post: PostInput): Promise<PublishResult> {
 /** Strips a slug's card out of blog.html. Shared with the GitHub path. */
 export function removeCard(html: string, slug: string) {
   const href = `posts/${slug}.html`;
+  const escapedHref = href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const card = new RegExp(
-    `\\n?[ \\t]*<a class="[^"]*post-card[^"]*"[^>]*href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[\\s\\S]*?<\\/a>`
+    `\\n?[ \\t]*(?:<article class="[^"]*post-card[^"]*"[^>]*data-url="${escapedHref}"[\\s\\S]*?<\\/article>|<a class="[^"]*post-card[^"]*"[^>]*href="${escapedHref}"[\\s\\S]*?<\\/a>)`
   );
   return html.replace(card, "");
 }

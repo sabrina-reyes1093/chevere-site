@@ -2,7 +2,7 @@ import { categoryLabel, displayDate, type PostInput } from "@/lib/post-schema";
 
 /** Cache-busting suffixes used by the published pages. Keep in step with the
  *  values in blog.html and index.html when those are bumped. */
-export const ASSET_VERSIONS = { styles: "20260722-2", site: "20260722-4" };
+export const ASSET_VERSIONS = { styles: "20260722-3", site: "20260722-5" };
 
 function escape(value: string) {
   return value.replace(/[&<>"']/g, (char) => ({

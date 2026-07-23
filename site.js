@@ -172,7 +172,7 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
             dek: grab('.dek'),
             kicker: grab('.kicker'),
             cat: c.getAttribute('data-cat') || '',
-            url: pagePrefix + (c.getAttribute('href') || 'blog.html')
+            url: pagePrefix + (c.getAttribute('href') || c.getAttribute('data-url') || 'blog.html')
           };
         });
         loading = false;
@@ -361,10 +361,14 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
 
   function cardMarkup(card) {
     var thumb = card.querySelector('.thumb');
+    var featuredImage = card.querySelector('.featured-image');
     var kicker = card.querySelector('.kicker');
     var title = card.querySelector('h2');
-    return '<li class="splide__slide"><a class="featured-card" href="' + (card.getAttribute('href') || 'blog.html') + '">' +
-      '<div class="featured-thumb" style="' + (thumb ? thumb.getAttribute('style') : '') + '"></div>' +
+    var href = card.getAttribute('href') || card.getAttribute('data-url') || 'blog.html';
+    var thumbStyle = thumb ? thumb.getAttribute('style') : '';
+    if (featuredImage) thumbStyle = 'background-image:url(' + featuredImage.getAttribute('src') + ');background-size:cover;background-position:center';
+    return '<li class="splide__slide"><a class="featured-card" href="' + href + '">' +
+      '<div class="featured-thumb" style="' + thumbStyle + '"></div>' +
       '<p class="featured-meta">' + (kicker ? kicker.innerHTML : '') + '</p>' +
       '<h3>' + (title ? title.innerHTML : '') + '</h3>' +
       '</a></li>';
