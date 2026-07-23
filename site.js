@@ -382,14 +382,14 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
       arrows: false,
       perPage: 3,
       perMove: 1,
-      gap: '24px',
+      gap: '32px',
       speed: 650,
       drag: true,
       keyboard: 'global',
       pagination: false,
       breakpoints: {
-        980: { perPage: 2 },
-        620: { perPage: 1, gap: '16px', padding: { right: '12%' } }
+        980: { perPage: 2, gap: '24px' },
+        620: { perPage: 1, gap: '18px', padding: { right: '12%' } }
       }
     });
 
