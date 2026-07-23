@@ -354,39 +354,78 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   });
 })();
 
-/* Homepage-only feature: use the newest editorial card from the blog feed. */
+/* homepage featured reads: Splide carousel fed by the newest four blog cards */
 (function () {
-  var feature = document.getElementById('homepage-featured-card');
-  if (!feature) return;
+  var track = document.getElementById('featured-track');
+  if (!track) return;
 
-  function text(card, selector) {
-    var node = card.querySelector(selector);
-    return node ? node.textContent.trim() : '';
+  function cardMarkup(card) {
+    var thumb = card.querySelector('.thumb');
+    var featuredImage = card.querySelector('.featured-image');
+    var kicker = card.querySelector('.kicker');
+    var title = card.querySelector('h2');
+    var href = card.getAttribute('href') || card.getAttribute('data-url') || 'blog.html';
+    var thumbStyle = thumb ? thumb.getAttribute('style') : '';
+    if (featuredImage) thumbStyle = 'background-image:url(' + featuredImage.getAttribute('src') + ');background-size:cover;background-position:center';
+    return '<li class="splide__slide"><a class="featured-card" href="' + href + '">' +
+      '<div class="featured-thumb" style="' + thumbStyle + '"></div>' +
+      '<p class="featured-meta">' + (kicker ? kicker.innerHTML : '') + '</p>' +
+      '<h3>' + (title ? title.innerHTML : '') + '</h3>' +
+      '</a></li>';
   }
 
-  function hydrate(card) {
-    var href = card.getAttribute('href');
-    var thumb = card.querySelector('.thumb');
-    var background = thumb ? thumb.style.backgroundImage : '';
-    var imageUrl = background.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-    var title = text(card, 'h2');
-    var date = text(card, '.date');
-    feature.setAttribute('data-url', href);
-    feature.querySelectorAll('.featured-card-link, .featured-read-more').forEach(function (link) { link.setAttribute('href', href); });
-    feature.querySelector('.featured-card-link').setAttribute('aria-label', 'Read ' + title);
-    feature.querySelector('.featured-image').setAttribute('src', imageUrl);
-    feature.querySelector('.kicker').textContent = text(card, '.kicker');
-    feature.querySelector('h2').textContent = title;
-    feature.querySelector('.dek').textContent = text(card, '.dek');
-    feature.querySelector('.date').textContent = date;
+  function mountCarousel() {
+    if (typeof window.Splide === 'undefined') return;
+    var carousel = new window.Splide('#featured-carousel', {
+      type: 'slide',
+      rewind: false,
+      arrows: false,
+      perPage: 3,
+      perMove: 1,
+      gap: '24px',
+      speed: 650,
+      drag: true,
+      keyboard: 'global',
+      pagination: false,
+      breakpoints: {
+        980: { perPage: 2 },
+        620: { perPage: 1, gap: '16px', padding: { right: '12%' } }
+      }
+    });
+
+    var previous = document.getElementById('featured-previous');
+    var next = document.getElementById('featured-next');
+
+    function updateControls() {
+      var end = carousel.Components.Controller.getEnd();
+      if (previous) previous.disabled = carousel.index <= 0;
+      if (next) next.disabled = carousel.index >= end;
+    }
+
+    carousel.on('mounted', updateControls);
+    carousel.on('moved', updateControls);
+    carousel.on('resized', updateControls);
+    carousel.on('updated', updateControls);
+    carousel.on('refresh', updateControls);
+
+    if (previous) previous.addEventListener('click', function () { carousel.go('<'); });
+    if (next) next.addEventListener('click', function () { carousel.go('>'); });
+
+    carousel.mount();
+    updateControls();
   }
 
   fetch('blog.html')
     .then(function (response) { return response.text(); })
     .then(function (html) {
       var doc = new DOMParser().parseFromString(html, 'text/html');
-      var newest = doc.querySelector('.post-card');
-      if (newest) hydrate(newest);
+      var cards = Array.prototype.slice.call(doc.querySelectorAll('.post-card'));
+      var featured = cards.filter(function (card) { return card.getAttribute('data-featured') === 'true'; });
+      var newest = featured.concat(cards.filter(function (card) {
+        return card.getAttribute('data-featured') !== 'true';
+      })).slice(0, 4);
+      if (newest.length) track.innerHTML = newest.map(cardMarkup).join('');
     })
-    .catch(function () { /* Keep the server-rendered fallback card. */ });
+    .catch(function () { /* Keep the four server-rendered fallback cards. */ })
+    .then(mountCarousel);
 })();

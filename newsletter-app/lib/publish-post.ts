@@ -18,6 +18,26 @@ function escapeAttr(value: string) {
 export function cardMarkup(post: PostInput) {
   const categories = normalizePostCategories(post.category, post.slug);
   const href = `posts/${escapeAttr(post.slug)}.html`;
+  if (categories.includes("introduction")) {
+    return `      <article class="post-card featured" data-cat="" data-section="" data-featured="true" data-url="${href}">
+        <a class="featured-card-link" href="${href}" aria-label="Read ${escapeAttr(post.title)}"></a>
+        <div class="featured-media">
+          <img class="featured-image" src="${escapeAttr(post.cover_image_url)}" alt="" />
+        </div>
+        <div class="featured-copy">
+          <div class="featured-copy-main">
+            <span class="kicker">${escapeAttr(categoryLabels(post.category, post.slug))}</span>
+            <h2>${escapeAttr(post.title)}</h2>
+            <p class="dek">${escapeAttr(post.dek)}</p>
+          </div>
+          <div class="featured-meta-row">
+            <time class="date" datetime="${escapeAttr(post.published_on)}">${escapeAttr(displayDate(post.published_on))}</time>
+            <span class="featured-meta-separator" aria-hidden="true">&middot;</span>
+            <a class="featured-read-more" href="${href}">Read More <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </article>`;
+  }
   return `      <a class="post-card" data-cat="${escapeAttr(categories.join(" "))}" data-section="${escapeAttr(categorySections(post.category, post.slug).join(" "))}" href="${href}">
         <div class="thumb" style="background-image:url(${escapeAttr(post.cover_image_url)});background-size:cover;background-position:center"></div>
         <span class="kicker">${escapeAttr(categoryLabels(post.category, post.slug))}</span>
@@ -37,16 +57,17 @@ export function upsertCard(html: string, post: PostInput) {
     `[ \\t]*(?:<article class="[^"]*post-card[^"]*"[^>]*data-url="${escapedHref}"[\\s\\S]*?<\\/article>|<a class="[^"]*post-card[^"]*"[^>]*href="${escapedHref}"[\\s\\S]*?<\\/a>)`
   );
   const hasExisting = existing.test(html);
-  if (normalizePostCategories(post.category, post.slug).includes("introduction")) {
-    return { html: removeCard(html, post.slug), action: "updated" as const };
-  }
   if (hasExisting) {
     return { html: html.replace(existing, cardMarkup(post)), action: "updated" as const };
   }
 
   const gridOpen = html.indexOf('<div class="post-grid" id="post-grid">');
   if (gridOpen === -1) throw new Error('Could not find <div class="post-grid" id="post-grid"> in blog.html.');
-  const insertAt = html.indexOf(">", gridOpen) + 1;
+  let insertAt = html.indexOf(">", gridOpen) + 1;
+  if (!normalizePostCategories(post.category, post.slug).includes("introduction")) {
+    const featured = html.slice(insertAt).match(/\n[ \t]*<article class="[^"]*post-card[^"]*featured[^"]*"[^>]*data-featured="true"[\s\S]*?<\/article>/);
+    if (featured?.index === 0) insertAt += featured[0].length;
+  }
   return {
     html: html.slice(0, insertAt) + "\n" + cardMarkup(post) + html.slice(insertAt),
     action: "inserted" as const,
