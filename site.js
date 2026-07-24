@@ -14,11 +14,12 @@
 
   var headerHome = document.querySelector('.header-logo');
   var prefix = headerHome && (headerHome.getAttribute('href') || '').indexOf('../') === 0 ? '../' : '';
+  var newsletterHeading = document.body.classList.contains('home') ? 'Stay in the Know' : 'Ch&eacute;vere Weekly';
 
   var footer = [
     '<section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">',
     '    <p class="newsletter-eyebrow">A weekly note from Ch&eacute;vere</p>',
-    '    <h2 id="newsletter-heading">CH&Eacute;VERE WEEKLY</h2>',
+    '    <h2 id="newsletter-heading">' + newsletterHeading + '</h2>',
     '    <p class="newsletter-sub">Weekly recommendations chosen with intention, plus discoveries worth sharing&mdash;straight to your inbox.</p>',
     '    <form id="newsletter-form">',
     '      <label class="sr-only" for="newsletter-email">Email address</label>',
@@ -150,7 +151,7 @@
   updateLabel();
 })();
 
-lucide.createIcons();
+if (window.lucide) window.lucide.createIcons();
 
 /* mobile navigation: keep the full taxonomy behind a compact menu button */
 (function () {
@@ -475,23 +476,20 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
   });
 })();
 
-/* homepage featured reads: Splide carousel fed by the newest four blog cards */
+/* homepage featured reads: three evergreen stories selected manually in the admin */
 (function () {
   var track = document.getElementById('featured-track');
   if (!track) return;
 
-  function cardMarkup(card) {
-    var thumb = card.querySelector('.thumb');
-    var featuredImage = card.querySelector('.featured-image');
-    var kicker = card.querySelector('.kicker');
-    var title = card.querySelector('h2');
-    var href = card.getAttribute('href') || card.getAttribute('data-url') || 'blog.html';
-    var thumbStyle = thumb ? thumb.getAttribute('style') : '';
-    if (featuredImage) thumbStyle = 'background-image:url(' + featuredImage.getAttribute('src') + ');background-size:cover;background-position:center';
-    return '<li class="splide__slide"><a class="featured-card" href="' + href + '">' +
-      '<div class="featured-thumb" style="' + thumbStyle + '"></div>' +
-      '<p class="featured-meta">' + (kicker ? kicker.innerHTML : '') + '</p>' +
-      '<h3>' + (title ? title.innerHTML : '') + '</h3>' +
+  function safe(value) {
+    return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function cardMarkup(item) {
+    return '<li class="splide__slide"><a class="featured-card" href="' + safe(item.url) + '">' +
+      '<div class="featured-thumb"><img src="' + safe(item.image_url) + '" alt="' + safe(item.image_alt || item.title) + '" width="800" height="533" loading="lazy" /></div>' +
+      '<p class="featured-meta">' + safe(item.category) + '</p>' +
+      '<h3>' + safe(item.title) + '</h3>' +
       '</a></li>';
   }
 
@@ -516,11 +514,13 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
 
     var previous = document.getElementById('featured-previous');
     var next = document.getElementById('featured-next');
+    var controls = document.querySelector('.featured-controls');
 
     function updateControls() {
       var end = carousel.Components.Controller.getEnd();
       if (previous) previous.disabled = carousel.index <= 0;
       if (next) next.disabled = carousel.index >= end;
+      if (controls) controls.hidden = end <= 0;
     }
 
     carousel.on('mounted', updateControls);
@@ -536,18 +536,14 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     updateControls();
   }
 
-  fetch('blog.html')
-    .then(function (response) { return response.text(); })
-    .then(function (html) {
-      var doc = new DOMParser().parseFromString(html, 'text/html');
-      var cards = Array.prototype.slice.call(doc.querySelectorAll('.post-card'));
-      var featured = cards.filter(function (card) { return card.getAttribute('data-featured') === 'true'; });
-      var newest = featured.concat(cards.filter(function (card) {
-        return card.getAttribute('data-featured') !== 'true';
-      })).slice(0, 4);
-      if (newest.length) track.innerHTML = newest.map(cardMarkup).join('');
+  var newsletterApi = window.CHEVERE_NEWSLETTER_API_URL || 'https://newsletter.itschevere.com';
+  fetch(newsletterApi + '/api/featured-reads', { cache: 'no-store' })
+    .then(function (response) { return response.ok ? response.json() : Promise.reject(new Error('Featured Reads unavailable')); })
+    .then(function (payload) {
+      var items = payload && Array.isArray(payload.items) ? payload.items : [];
+      if (items.length === 3) track.innerHTML = items.map(cardMarkup).join('');
     })
-    .catch(function () { /* Keep the four server-rendered fallback cards. */ })
+    .catch(function () { /* Keep the three server-rendered fallback cards. */ })
     .then(mountCarousel);
 })();
 

@@ -11,6 +11,7 @@ The production scheduler is intentionally disabled unless `NEWSLETTER_CRON_ENABL
 - **Database and admin login:** Supabase Postgres and Supabase Auth.
 - **Email:** Resend, using a verified sender domain and a signed webhook for delivery, open, click, bounce, complaint, and failure events.
 - **Shared weekly roundup:** each newsletter issue owns exactly three ordered roundup cards. The same stored fields power both the homepage API and the email-safe newsletter renderer.
+- **Manual Featured Reads:** three ordered published articles live in `homepage_featured_reads`. They are selected, reordered, previewed, and published from the dedicated admin page, independently of newsletter issues.
 - **Homepage schedule:** an issue can be published immediately or scheduled for Sunday at 8:00 a.m. in `America/Chicago`. `/api/roundup` resolves the newest eligible valid issue on the server, so no browser timer or cron job is required. The previous valid issue remains active until its replacement is eligible.
 - **Seasonal guide:** the homepage's text-only seasonal feature is managed under `/admin/site-content`. Its label, headline, description, destination, CTA, visibility, publication date, and optional expiration date are stored in `site-content.json`.
 - **Email schedule:** `NEWSLETTER_SEND_TIME` stores the Friday time in `America/Chicago`. Vercel calls the protected endpoint at the matching UTC times in `vercel.json`; the endpoint checks Chicago wall-clock time so daylight-saving changes are handled correctly.
@@ -18,7 +19,7 @@ The production scheduler is intentionally disabled unless `NEWSLETTER_CRON_ENABL
 ## Initial setup
 
 1. Create a Supabase project.
-2. Run every file in `supabase/migrations` in numeric order in the Supabase SQL editor. Existing installations adding the shared roundup must run `009_weekly_roundup.sql` before deploying the matching application code.
+2. Run every file in `supabase/migrations` in numeric order in the Supabase SQL editor. Existing installations must run `009_weekly_roundup.sql` for the shared roundup and `010_homepage_featured_reads.sql` for admin-controlled Featured Reads before deploying the matching application code.
 3. In Supabase Auth, create Sabrina's admin user with the same email configured in `ADMIN_EMAIL`. Keep public user registration disabled because only the administrator signs in.
 4. Create a Resend account, verify `itschevere.com`, and configure SPF/DKIM as Resend instructs. Add a signed webhook pointing to `https://newsletter.itschevere.com/api/webhooks/resend` and subscribe it to email delivery, failure, bounce, complaint, open, and click events.
 5. Deploy this directory to Vercel with `newsletter.itschevere.com` as its custom domain.

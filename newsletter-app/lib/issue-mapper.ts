@@ -1,6 +1,10 @@
 import { chicagoLocalToIso } from "@/lib/schedule";
 import type { IssueInput, RoundupItem } from "@/lib/types";
 
+export function normalizeRoundupTitle(title: string) {
+  return /therapuss/i.test(title) ? "THERAPUSS by Jake Shane" : title;
+}
+
 function parseStoredItems(stored: unknown) {
   let parsed: unknown = stored;
   if (typeof stored === "string") {
@@ -25,7 +29,7 @@ function normalizeItems(row: Record<string, unknown>) {
   return items.slice(0, 3).map((item, index): RoundupItem => ({
     id: String(item.id || `${row.id || "issue"}-card-${index + 1}`),
     category: String(item.category || ""),
-    title: String(item.title || ""),
+    title: normalizeRoundupTitle(String(item.title || "")),
     text: String(item.text || ""),
     url: String(item.url || ""),
     image_url: String(item.image_url || ""),
@@ -39,6 +43,7 @@ function normalizeItems(row: Record<string, unknown>) {
 export function toDbRow(issue: IssueInput): Record<string, unknown> {
   const roundupItems = (issue.roundup_items || []).map((item, index) => ({
     ...item,
+    title: normalizeRoundupTitle(item.title),
     display_order: index + 1,
   }));
   return {

@@ -171,6 +171,81 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
   gap: 24px;
 }
 
+.featured-admin-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(340px, .8fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.featured-admin-slots {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.featured-admin-slot {
+  padding: 20px;
+}
+
+.featured-admin-order {
+  display: flex;
+  gap: 12px;
+}
+
+.featured-admin-preview {
+  position: sticky;
+  top: 100px;
+  padding: clamp(20px, 4vw, 30px);
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.featured-admin-preview > h2 {
+  margin: 6px 0 22px;
+}
+
+.featured-admin-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.featured-admin-preview article img,
+.featured-admin-preview .roundup-preview-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  margin-bottom: 11px;
+  object-fit: cover;
+}
+
+.featured-admin-preview article > span {
+  color: var(--brown);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.featured-admin-preview article h3 {
+  margin: 7px 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 15px;
+  line-height: 1.22;
+}
+
+.featured-admin-preview article p {
+  margin: 0;
+  color: #6f655d;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.success-text {
+  color: var(--green);
+}
+
 .admin-panel {
   padding: clamp(20px, 4vw, 32px);
   border: 1px solid var(--line);
@@ -314,6 +389,27 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
 
   .admin-panel-heading {
     display: grid;
+  }
+
+  .featured-admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-admin-preview {
+    position: static;
+  }
+
+  .featured-admin-preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-admin-preview article h3 {
+    font-size: 18px;
+  }
+
+  .editor-actions {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .roundup-home-preview > div {

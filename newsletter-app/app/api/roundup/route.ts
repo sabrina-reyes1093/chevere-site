@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { fromDbRow } from "@/lib/issue-mapper";
+import { fromDbRow, normalizeRoundupTitle } from "@/lib/issue-mapper";
 import { validateRoundupForPublication } from "@/lib/issue-schema";
 import { createAdminClient } from "@/lib/supabase-admin";
 import type { RoundupItem } from "@/lib/types";
@@ -38,7 +38,10 @@ export async function GET() {
     const snapshot = Array.isArray(row.roundup_snapshot) ? row.roundup_snapshot as RoundupItem[] : null;
     const candidate = snapshot ? { ...issue, roundup_items: snapshot } : issue;
     if (validateRoundupForPublication(candidate)) continue;
-    const cards = candidate.roundup_items.slice().sort((a: RoundupItem, b: RoundupItem) => a.display_order - b.display_order);
+    const cards = candidate.roundup_items
+      .slice()
+      .sort((a: RoundupItem, b: RoundupItem) => a.display_order - b.display_order)
+      .map((item: RoundupItem) => ({ ...item, title: normalizeRoundupTitle(item.title) }));
     return NextResponse.json({
       issue: {
         id: row.id,
