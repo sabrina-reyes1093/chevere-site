@@ -1,9 +1,14 @@
 export type RoundupItem = {
+  id: string;
   category: string;
   title: string;
   text: string;
   url: string;
   image_url: string;
+  image_alt: string;
+  link_type: "internal" | "external";
+  cta_label: string;
+  display_order: number;
 };
 
 export type IssueInput = {
@@ -11,7 +16,10 @@ export type IssueInput = {
   title: string;
   subject: string;
   preview_text: string;
+  issue_date: string;
   scheduled_for: string;
+  homepage_publish_at: string;
+  roundup_status: "draft" | "scheduled" | "published" | "archived";
   featured_title: string;
   featured_preview: string;
   featured_url: string;

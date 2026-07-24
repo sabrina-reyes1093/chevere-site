@@ -13,14 +13,9 @@ export const siteContentSchema = z.object({
     headline: z.string().max(160),
     description: z.string().max(320),
     href: z.string().max(500),
-  }),
-  currently_loving: z.array(z.object({
-    category: z.string().max(80),
-    title: z.string().max(160),
-    description: z.string().max(320),
-    url: z.string().max(500),
     image_url: z.string().max(1000),
-  })).max(6),
+    image_alt: z.string().max(240),
+  }),
 });
 
 export type SiteContent = z.infer<typeof siteContentSchema>;

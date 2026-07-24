@@ -13,7 +13,7 @@ export default async function SiteContentPage() {
         <div>
           <p className="eyebrow">Homepage</p>
           <h1>Site content</h1>
-          <p>Manage the seasonal edit and the editor’s weekly recommendations.</p>
+          <p>Manage The Summer Guide shown beneath the homepage welcome.</p>
         </div>
       </div>
       <SiteContentEditor initialContent={content} />

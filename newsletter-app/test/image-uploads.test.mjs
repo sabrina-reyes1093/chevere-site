@@ -22,11 +22,12 @@ test("the image bucket stays publicly readable so inboxes can load the images", 
   assert.match(migration, /for select/);
 });
 
-test("both issue image slots accept a pasted image as well as a URL", () => {
+test("featured and roundup images accept pasted images as well as URLs", () => {
   const editor = read("components/issue-editor.tsx");
   assert.equal((editor.match(/<ImageField/g) || []).length, 2);
   assert.match(editor, /featured_image_url/);
   assert.match(editor, /"image_url", url/);
+  assert.match(editor, /Image alt text/);
 });
 
 test("a pasted file is uploaded so the field holds a URL, never inline base64", () => {

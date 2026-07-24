@@ -171,8 +171,7 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
   gap: 24px;
 }
 
-.admin-panel,
-.loving-editor-card {
+.admin-panel {
   padding: clamp(20px, 4vw, 32px);
   border: 1px solid var(--line);
   background: var(--paper);
@@ -200,17 +199,6 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
   grid-column: 1 / -1;
 }
 
-.loving-editor-list {
-  display: grid;
-  gap: 18px;
-}
-
-.loving-editor-card legend {
-  padding: 0 8px;
-  font-family: Georgia, serif;
-  font-size: 18px;
-}
-
 .toggle-label {
   display: flex;
   gap: 8px;
@@ -227,6 +215,93 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
   align-items: center;
 }
 
+.field-help {
+  margin: -8px 0 4px;
+  color: #6f655d;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.optional {
+  color: #80756d;
+  font-weight: 400;
+}
+
+.roundup-admin-card {
+  margin-bottom: 18px;
+  padding: 22px;
+}
+
+.roundup-admin-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.roundup-admin-heading > strong {
+  color: var(--brown);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 20px;
+}
+
+.roundup-home-preview {
+  margin-top: 28px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  text-align: center;
+}
+
+.roundup-home-preview h2 {
+  margin: 6px 0 22px;
+}
+
+.roundup-home-preview > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  text-align: left;
+}
+
+.roundup-home-preview article img,
+.roundup-preview-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: 12px;
+  background: #eee7de;
+}
+
+.roundup-preview-placeholder {
+  display: grid;
+  place-items: center;
+  color: #80756d;
+  font-size: 12px;
+}
+
+.roundup-home-preview article > span {
+  color: var(--brown);
+  font-size: 10px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.roundup-home-preview article h3 {
+  margin: 7px 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.roundup-home-preview article p {
+  margin: 0;
+  color: #6f655d;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 @media (max-width: 680px) {
   .quote-insert-grid,
   .editor-grid {
@@ -239,5 +314,13 @@ legend { width:100%; font-size:25px; margin-bottom:18px; }
 
   .admin-panel-heading {
     display: grid;
+  }
+
+  .roundup-home-preview > div {
+    grid-template-columns: 1fr;
+  }
+
+  .roundup-admin-heading {
+    align-items: flex-start;
   }
 }

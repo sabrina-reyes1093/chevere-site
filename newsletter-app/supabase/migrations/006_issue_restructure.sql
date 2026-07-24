@@ -20,8 +20,25 @@ update public.newsletter_issues set
         select jsonb_build_object('category', 'For the Weekend', 'title', weekend_title, 'text', weekend_text, 'url', weekend_url, 'image_url', '') as item
         where weekend_title <> ''
         union all
-        select jsonb_build_object('category', 'Worth Discovering', 'title', rec->>'title', 'text', rec->>'text', 'url', rec->>'url', 'image_url', coalesce(rec->>'image_url', '')) as item
-        from jsonb_array_elements(recommendations) as rec
+        select jsonb_build_object(
+          'category', coalesce(nullif(rec->>'category', ''), 'Worth Discovering'),
+          'title', rec->>'title',
+          'text', rec->>'text',
+          'url', rec->>'url',
+          'image_url', coalesce(rec->>'image_url', ''),
+          'image_alt', coalesce(rec->>'image_alt', ''),
+          'link_type', coalesce(rec->>'link_type', 'external'),
+          'cta_label', coalesce(rec->>'cta_label', 'Read More')
+        ) as item
+        from jsonb_array_elements(
+          case
+            when jsonb_typeof(recommendations) = 'array' then recommendations
+            when jsonb_typeof(recommendations) = 'string'
+              and (recommendations #>> '{}') ~ '^\s*\['
+              then (recommendations #>> '{}')::jsonb
+            else '[]'::jsonb
+          end
+        ) as rec
         where rec->>'title' <> ''
       ) as items
     ),

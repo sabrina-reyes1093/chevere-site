@@ -16,15 +16,6 @@ export function SiteContentEditor({ initialContent }: { initialContent: SiteCont
     }));
   }
 
-  function updateLoving(index: number, field: keyof SiteContent["currently_loving"][number], value: string) {
-    setContent((current) => ({
-      ...current,
-      currently_loving: current.currently_loving.map((item, itemIndex) => (
-        itemIndex === index ? { ...item, [field]: value } : item
-      )),
-    }));
-  }
-
   async function save() {
     setSaving(true);
     setStatus("");
@@ -36,7 +27,7 @@ export function SiteContentEditor({ initialContent }: { initialContent: SiteCont
       });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error || "Unable to save homepage content.");
-      setStatus("Homepage content saved and published.");
+      setStatus("The Summer Guide was saved and published.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Unable to save homepage content.");
     } finally {
@@ -50,53 +41,24 @@ export function SiteContentEditor({ initialContent }: { initialContent: SiteCont
         <div className="admin-panel-heading">
           <div>
             <p className="eyebrow">Homepage</p>
-            <h2>Seasonal banner</h2>
+            <h2>The Summer Guide</h2>
           </div>
           <label className="toggle-label">
-            <input
-              type="checkbox"
-              checked={content.seasonal_banner.enabled}
-              onChange={(event) => updateBanner("enabled", event.target.checked)}
-            />
-            Show banner
+            <input type="checkbox" checked={content.seasonal_banner.enabled} onChange={(event) => updateBanner("enabled", event.target.checked)} />
+            Show seasonal guide
           </label>
         </div>
         <div className="editor-grid">
           <label>Season label<input value={content.seasonal_banner.label} onChange={(event) => updateBanner("label", event.target.value)} /></label>
           <label>Headline<input value={content.seasonal_banner.headline} onChange={(event) => updateBanner("headline", event.target.value)} /></label>
           <label className="span-2">Description<textarea rows={3} value={content.seasonal_banner.description} onChange={(event) => updateBanner("description", event.target.value)} /></label>
-          <label className="span-2">Link<input value={content.seasonal_banner.href} onChange={(event) => updateBanner("href", event.target.value)} /></label>
+          <label>Destination URL<input value={content.seasonal_banner.href} onChange={(event) => updateBanner("href", event.target.value)} /></label>
+          <label>Image URL<input value={content.seasonal_banner.image_url} onChange={(event) => updateBanner("image_url", event.target.value)} /></label>
+          <label className="span-2">Image alt text<input value={content.seasonal_banner.image_alt} onChange={(event) => updateBanner("image_alt", event.target.value)} /></label>
         </div>
       </section>
-
-      <section className="admin-panel">
-        <div className="admin-panel-heading">
-          <div>
-            <p className="eyebrow">Weekly edit</p>
-            <h2>Currently Loving</h2>
-          </div>
-          <p>Up to six editor recommendations.</p>
-        </div>
-        <div className="loving-editor-list">
-          {content.currently_loving.map((item, index) => (
-            <fieldset key={index} className="loving-editor-card">
-              <legend>{index + 1}. {item.category || "Recommendation"}</legend>
-              <div className="editor-grid">
-                <label>Category<input value={item.category} onChange={(event) => updateLoving(index, "category", event.target.value)} /></label>
-                <label>Title<input value={item.title} onChange={(event) => updateLoving(index, "title", event.target.value)} /></label>
-                <label className="span-2">Description<textarea rows={3} value={item.description} onChange={(event) => updateLoving(index, "description", event.target.value)} /></label>
-                <label>Article URL<input value={item.url} onChange={(event) => updateLoving(index, "url", event.target.value)} /></label>
-                <label>Optional image URL<input value={item.image_url} onChange={(event) => updateLoving(index, "image_url", event.target.value)} /></label>
-              </div>
-            </fieldset>
-          ))}
-        </div>
-      </section>
-
       <div className="editor-actions">
-        <button type="button" className="primary" onClick={save} disabled={saving}>
-          {saving ? "Saving…" : "Save homepage content"}
-        </button>
+        <button type="button" className="primary" onClick={save} disabled={saving}>{saving ? "Saving…" : "Save The Summer Guide"}</button>
         {status ? <p role="status">{status}</p> : null}
       </div>
     </div>

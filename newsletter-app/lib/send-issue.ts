@@ -16,8 +16,23 @@ function temporary(error: unknown) {
 export async function sendIssue(issue: Issue) {
   const db = createAdminClient();
   const resend = new Resend(config.resendKey);
-  const issueData: IssueInput = fromDbRow(issue as unknown as Record<string, unknown>);
+  const currentIssueData: IssueInput = fromDbRow(issue as unknown as Record<string, unknown>);
   const started = new Date().toISOString();
+  const { data: existingSnapshot, error: snapshotReadError } = await db.from("newsletter_issue_snapshots")
+    .select("issue_payload").eq("issue_id", issue.id).maybeSingle();
+  if (snapshotReadError) throw new Error(`Could not read the immutable newsletter snapshot: ${snapshotReadError.message}`);
+  const issueData = existingSnapshot?.issue_payload
+    ? existingSnapshot.issue_payload as IssueInput
+    : currentIssueData;
+  if (!existingSnapshot) {
+    const { error: snapshotError } = await db.from("newsletter_issue_snapshots").insert({
+      issue_id: issue.id,
+      issue_payload: issueData,
+      rendered_html: renderNewsletter(issueData, "{{unsubscribe_url}}"),
+      sent_at: started,
+    });
+    if (snapshotError) throw new Error(`Could not preserve the immutable newsletter snapshot: ${snapshotError.message}`);
+  }
   const { data: attempt } = await db.from("newsletter_send_attempts").insert({
     issue_id: issue.id,
     attempt_number: issue.attempt_count,

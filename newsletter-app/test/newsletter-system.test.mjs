@@ -3,7 +3,13 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { isFridaySendWindow, nextFridayAtChicagoTime, parseSendTime } from "../lib/schedule.ts";
+import {
+  chicagoLocalToIso,
+  isFridaySendWindow,
+  nextFridayAtChicagoTime,
+  nextSundayAtChicagoTime,
+  parseSendTime,
+} from "../lib/schedule.ts";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => fs.readFileSync(path.join(projectRoot, file), "utf8");
@@ -15,6 +21,13 @@ test("Friday scheduling follows America/Chicago across daylight-saving changes",
   assert.equal(isFridaySendWindow(new Date("2026-07-03T13:29:00Z"), "08:30"), false);
   assert.deepEqual(parseSendTime("15:45"), { hour: 15, minute: 45 });
   assert.throws(() => parseSendTime("25:00"));
+});
+
+test("homepage roundup scheduling resolves Sunday at 8 AM in America/Chicago", () => {
+  assert.equal(nextSundayAtChicagoTime(new Date("2026-01-01T12:00:00Z")).toISOString(), "2026-01-04T14:00:00.000Z");
+  assert.equal(nextSundayAtChicagoTime(new Date("2026-07-01T12:00:00Z")).toISOString(), "2026-07-05T13:00:00.000Z");
+  assert.equal(chicagoLocalToIso("2026-01-04T08:00"), "2026-01-04T14:00:00.000Z");
+  assert.equal(chicagoLocalToIso("2026-07-05T08:00"), "2026-07-05T13:00:00.000Z");
 });
 
 test("live delivery remains disabled by default and requires approval", () => {

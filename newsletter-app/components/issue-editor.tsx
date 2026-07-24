@@ -5,19 +5,39 @@ import { useRouter } from "next/navigation";
 import type { Issue, IssueInput, RoundupItem } from "@/lib/types";
 import { ImageField } from "@/components/image-field";
 
-const DEFAULT_CATS = new Set(["Watching", "Listening", "Reading", "Favorite Find"]);
-
 const defaultRoundup: RoundupItem[] = [
-  { category: "Watching", title: "", text: "", url: "", image_url: "" },
-  { category: "Listening", title: "", text: "", url: "", image_url: "" },
-  { category: "Reading", title: "", text: "", url: "", image_url: "" },
-  { category: "Favorite Find", title: "", text: "", url: "", image_url: "" },
+  { id: "card-1", category: "", title: "", text: "", url: "", image_url: "", image_alt: "", link_type: "internal", cta_label: "Read More", display_order: 1 },
+  { id: "card-2", category: "", title: "", text: "", url: "", image_url: "", image_alt: "", link_type: "internal", cta_label: "Read More", display_order: 2 },
+  { id: "card-3", category: "", title: "", text: "", url: "", image_url: "", image_alt: "", link_type: "internal", cta_label: "Read More", display_order: 3 },
 ];
 
-function isDefault(cat: string) { return DEFAULT_CATS.has(cat); }
+function today() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit",
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function completeRoundup(items: RoundupItem[] = []) {
+  return defaultRoundup.map((blank, index) => ({ ...blank, ...(items[index] || {}), display_order: index + 1 }));
+}
+
+function chicagoInput(value: string | null | undefined) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return value.slice(0, 16);
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}T${values.hour}:${values.minute}`;
+}
 
 const empty: IssueInput = {
-  note_from_sabrina: "", title: "Welcome to Chévere Weekly", subject: "Welcome to Chévere Weekly", preview_text: "A first look at Chévere, plus a few things worth watching, reading, and discovering.", scheduled_for: "",
+  note_from_sabrina: "", title: "Welcome to Chévere Weekly", subject: "Welcome to Chévere Weekly", preview_text: "A first look at Chévere, plus a few things worth reading and discovering.",
+  issue_date: today(), scheduled_for: "", homepage_publish_at: "", roundup_status: "draft",
   featured_title: "", featured_preview: "", featured_url: "", featured_image_url: "",
   roundup_items: defaultRoundup,
   closing_note: "", signoff: "Until next week,\nStay CHÉVERE",
@@ -27,16 +47,22 @@ type Article = { title: string; preview: string; url: string; image: string };
 
 export function IssueEditor({ initial }: { initial?: Issue }) {
   const router = useRouter();
-  const [issue, setIssue] = useState<IssueInput>(initial ? { ...initial, roundup_items: initial.roundup_items?.length ? initial.roundup_items : defaultRoundup, signoff: initial.signoff || "Until next week,\nStay CHÉVERE" } : empty);
+  const [issue, setIssue] = useState<IssueInput>(initial ? {
+    ...initial,
+    scheduled_for: chicagoInput(initial.scheduled_for),
+    homepage_publish_at: chicagoInput(initial.homepage_publish_at),
+    roundup_items: completeRoundup(initial.roundup_items),
+    signoff: initial.signoff || "Until next week,\nStay CHÉVERE",
+  } : empty);
   const [id, setId] = useState(initial?.id || "");
   const [status, setStatus] = useState(initial?.status || "draft");
+  const [roundupStatus, setRoundupStatus] = useState(initial?.roundup_status || "draft");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState("");
   const [previewWidth, setPreviewWidth] = useState<"desktop" | "mobile">("desktop");
   const [articles, setArticles] = useState<Article[]>([]);
   const [approved, setApproved] = useState(false);
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const [search, setSearch] = useState("");
   const [, setDirty] = useState(false);
   const dirtyRef = useRef(false);
@@ -52,29 +78,20 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
 
   useEffect(() => { fetch("/api/articles").then((r) => r.ok ? r.json() : []).then(setArticles).catch(() => setArticles([])); }, []);
 
-  const field = (name: keyof IssueInput, value: string) => { setIssue((current) => ({ ...current, [name]: value })); markDirty(); };
+  const field = <K extends keyof IssueInput>(name: K, value: IssueInput[K]) => { setIssue((current) => ({ ...current, [name]: value })); markDirty(); };
 
-  const updateRoundupItem = (index: number, key: keyof RoundupItem, value: string) => { setIssue((current) => ({
+  const updateRoundupItem = <K extends keyof RoundupItem>(index: number, key: K, value: RoundupItem[K]) => { setIssue((current) => ({
     ...current, roundup_items: current.roundup_items.map((item, i) => i === index ? { ...item, [key]: value } : item),
   })); markDirty(); };
-
-  const removeRoundupItem = (index: number) => setIssue((current) => ({
-    ...current, roundup_items: current.roundup_items.filter((_, i) => i !== index),
-  }));
 
   const moveRoundupItem = (index: number, dir: -1 | 1) => setIssue((current) => {
     const items = [...current.roundup_items];
     const target = index + dir;
     if (target < 0 || target >= items.length) return current;
     [items[index], items[target]] = [items[target], items[index]];
-    return { ...current, roundup_items: items };
+    markDirty();
+    return { ...current, roundup_items: items.map((item, itemIndex) => ({ ...item, display_order: itemIndex + 1 })) };
   });
-
-  const addRoundupItem = () => setIssue((current) => ({
-    ...current, roundup_items: [...current.roundup_items, { category: "Custom", title: "", text: "", url: "", image_url: "" }],
-  }));
-
-  const toggleExpand = (index: number) => setExpandedItems((current) => ({ ...current, [index]: !current[index] }));
 
   async function request(url: string, options: RequestInit) {
     setBusy(true); setMessage("");
@@ -92,6 +109,7 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
     setId(data.id); setStatus(data.status); setMessage("Draft saved.");
     setDirty(false); dirtyRef.current = false;
     if (!id) router.replace(`/admin/issues/${data.id}`);
+    return data.id as string;
   }
 
   async function showPreview() {
@@ -110,8 +128,45 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
 
   function tryParseJson(text: string) { try { return JSON.parse(text); } catch { return null; } }
 
-  async function test() { if (!id) return setMessage("Save the draft before sending a test."); await request(`/api/admin/issues/${id}/test`, { method: "POST" }); setMessage("Test email sent."); }
-  async function approve() { if (!id) return setMessage("Save the draft before scheduling."); if (!approved) return setMessage("Confirm that you reviewed and approved this issue first."); const data = await request(`/api/admin/issues/${id}/approve`, { method: "POST" }); setStatus(data.status); setMessage(`Approved for ${new Date(data.scheduled_for).toLocaleString("en-US", { timeZone: "America/Chicago", dateStyle: "medium", timeStyle: "short" })} CT.`); router.refresh(); }
+  async function test() {
+    const currentId = id || await save();
+    await request(`/api/admin/issues/${currentId}/test`, { method: "POST" });
+    setMessage("Test email sent.");
+  }
+
+  async function approve() {
+    if (!approved) return setMessage("Confirm that you reviewed and approved this issue first.");
+    const currentId = id || await save();
+    if (id) await save();
+    const data = await request(`/api/admin/issues/${currentId}/approve`, { method: "POST" });
+    setStatus(data.status);
+    setMessage(`Email approved for ${new Date(data.scheduled_for).toLocaleString("en-US", { timeZone: "America/Chicago", dateStyle: "medium", timeStyle: "short" })} CT.`);
+    router.refresh();
+  }
+
+  async function roundupAction(action: "publish" | "schedule" | "archive") {
+    const currentId = id || await save();
+    if (id && action !== "archive") await save();
+    const data = await request(`/api/admin/issues/${currentId}/roundup`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action }),
+    });
+    setRoundupStatus(data.roundup_status);
+    setIssue((current) => ({
+      ...current,
+      roundup_status: data.roundup_status,
+      homepage_publish_at: chicagoInput(data.homepage_publish_at),
+    }));
+    const verb = action === "publish" ? "published" : action === "schedule" ? "scheduled" : "archived";
+    setMessage(`Homepage roundup ${verb}.`);
+    router.refresh();
+  }
+
+  async function duplicateIssue() {
+    const data = await request("/api/admin/issues/duplicate", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(id ? { id } : {}),
+    });
+    router.push(`/admin/issues/${data.id}`);
+  }
 
   function chooseArticle(url: string) {
     const article = articles.find((item) => item.url === url); if (!article) return;
@@ -161,7 +216,7 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
   const filteredArticles = articles.filter((a) => !search || a.title.toLowerCase().includes(search.toLowerCase()));
 
   return <>
-    <div className="page-heading"><div><p className="eyebrow">Chévere Weekly</p><h1>{id ? issue.title || "Untitled issue" : "New weekly issue"}</h1><p><span className={`status ${status}`}>{status}</span>{initial?.scheduled_for && ` Scheduled ${new Date(initial.scheduled_for).toLocaleString("en-US", { timeZone: "America/Chicago" })} CT`}</p></div><a href="/admin" className="secondary link-button">Back to issues</a></div>
+    <div className="page-heading"><div><p className="eyebrow">Chévere Weekly</p><h1>{id ? issue.title || "Untitled issue" : "New weekly issue"}</h1><p><span className={`status ${status}`}>Email: {status}</span> <span className={`status ${roundupStatus === "published" ? "sent" : roundupStatus}`}>Homepage: {roundupStatus}</span></p></div><a href="/admin" className="secondary link-button">Back to issues</a></div>
     {message && <p className={`message ${/failed|error|unable|review|complete|Select|Add/i.test(message) ? "error" : "success"}`}>{message}</p>}
     <div className="editor-layout">
       <form className="editor stack" onSubmit={(event) => { event.preventDefault(); void save(); }}>
@@ -174,7 +229,11 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
             <label>Email subject<input value={issue.subject} onChange={(e) => field("subject", e.target.value)} placeholder="Shown in subscribers' inboxes" required /></label>
           </div>
           <label>Inbox preview text<input value={issue.preview_text} onChange={(e) => field("preview_text", e.target.value)} maxLength={240} placeholder="Short teaser shown below the subject line" /></label>
-          <label>Optional scheduled date<input type="datetime-local" value={issue.scheduled_for} onChange={(e) => field("scheduled_for", e.target.value)} /></label>
+          <div className="two-col">
+            <label>Issue date<input type="date" value={issue.issue_date} onChange={(e) => field("issue_date", e.target.value)} /></label>
+            <label>Homepage publish date and time (Central)<input type="datetime-local" value={issue.homepage_publish_at} onChange={(e) => field("homepage_publish_at", e.target.value)} /><span className="image-field-hint">Leave blank to schedule the next Sunday at 8:00 AM.</span></label>
+          </div>
+          <label>Email delivery date and time (Central)<input type="datetime-local" value={issue.scheduled_for} onChange={(e) => field("scheduled_for", e.target.value)} /><span className="image-field-hint">Leave blank to use the next configured Friday delivery time.</span></label>
         </fieldset>
 
         {/* Section 2: Opening Note */}
@@ -211,41 +270,45 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
           )}
         </fieldset>
 
-        {/* Section 4: Weekly Chévere Picks */}
+        {/* Section 4: shared homepage + newsletter roundup */}
         <fieldset disabled={busy || locked}>
-          <legend>4. Weekly Ch&eacute;vere Picks</legend>
-          {issue.roundup_items.map((item, index) => {
-            const isDefaultCat = isDefault(item.category) && index < 4;
-            return (
-              <div className="recommendation" key={index} style={{ marginBottom: 16 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                  {isDefaultCat ? (
-                    <strong style={{ fontSize: 14, color: "var(--brown)", letterSpacing: "0.05em", textTransform: "uppercase" }}>{item.category}</strong>
-                  ) : (
-                    <input aria-label="Category name" value={item.category} onChange={(e) => updateRoundupItem(index, "category", e.target.value)} placeholder="Category name" style={{ fontWeight: 600, fontSize: 14, margin: 0, padding: "4px 8px", width: "auto", minWidth: 120 }} />
-                  )}
+          <legend>4. This Week at Ch&eacute;vere</legend>
+          <p className="field-help">These exact three cards power both the homepage weekly roundup and the email.</p>
+          {issue.roundup_items.map((item, index) => (
+              <div className="recommendation roundup-admin-card" key={item.id}>
+                <div className="roundup-admin-heading">
+                  <strong>Roundup Card {index + 1}</strong>
                   <div style={{ display: "flex", gap: 6 }}>
-                    <button type="button" className="text-button" onClick={() => moveRoundupItem(index, -1)} disabled={index === 0} style={{ fontSize: 12, padding: "2px 6px" }}>&uarr;</button>
-                    <button type="button" className="text-button" onClick={() => moveRoundupItem(index, 1)} disabled={index === issue.roundup_items.length - 1} style={{ fontSize: 12, padding: "2px 6px" }}>&darr;</button>
-                    <button type="button" className="text-button" onClick={() => removeRoundupItem(index)} style={{ fontSize: 12, padding: "2px 6px", color: "var(--red)" }}>Remove</button>
+                    <button type="button" className="text-button" aria-label={`Move Roundup Card ${index + 1} earlier`} onClick={() => moveRoundupItem(index, -1)} disabled={index === 0}>&uarr; Earlier</button>
+                    <button type="button" className="text-button" aria-label={`Move Roundup Card ${index + 1} later`} onClick={() => moveRoundupItem(index, 1)} disabled={index === 2}>Later &darr;</button>
                   </div>
                 </div>
-                <input aria-label={`Title ${index + 1}`} value={item.title} onChange={(e) => updateRoundupItem(index, "title", e.target.value)} placeholder="Item title" style={{ marginBottom: 8 }} />
-                <textarea aria-label={`Description ${index + 1}`} rows={2} value={item.text} onChange={(e) => updateRoundupItem(index, "text", e.target.value)} placeholder="One short description" style={{ marginBottom: 8 }} />
-                {!expandedItems[index] && (
-                  <button type="button" className="text-button" onClick={() => toggleExpand(index)} style={{ fontSize: 12, padding: "2px 0" }}>+ Add image or link</button>
-                )}
-                {expandedItems[index] && (
-                  <div style={{ display: "grid", gap: 8, marginTop: 4 }}>
-                    <input type="url" aria-label={`Link ${index + 1}`} value={item.url} onChange={(e) => updateRoundupItem(index, "url", e.target.value)} placeholder="Optional link (https://...)" />
-                    <ImageField label="Optional image" value={item.image_url} onChange={(url) => updateRoundupItem(index, "image_url", url)} disabled={busy || locked} />
-                    <button type="button" className="text-button" onClick={() => toggleExpand(index)} style={{ fontSize: 12, padding: "2px 0" }}>&minus; Hide image or link</button>
-                  </div>
-                )}
+                <div className="two-col">
+                  <label>Category <span className="optional">(optional)</span><input value={item.category} onChange={(e) => updateRoundupItem(index, "category", e.target.value)} placeholder="Books, Film, Travel..." /></label>
+                  <label>Title<input value={item.title} onChange={(e) => updateRoundupItem(index, "title", e.target.value)} placeholder="Card title" /></label>
+                </div>
+                <label>Short description <span className="optional">(optional)</span><textarea rows={3} value={item.text} onChange={(e) => updateRoundupItem(index, "text", e.target.value)} placeholder="One or two concise sentences" /></label>
+                <ImageField label="Image" value={item.image_url} onChange={(url) => updateRoundupItem(index, "image_url", url)} disabled={busy || locked} />
+                <label>Image alt text<input value={item.image_alt} onChange={(e) => updateRoundupItem(index, "image_alt", e.target.value)} placeholder="Describe the image for readers using screen readers" /></label>
+                <div className="two-col">
+                  <label>Destination URL<input type="text" value={item.url} onChange={(e) => updateRoundupItem(index, "url", e.target.value)} placeholder="/posts/story.html or https://example.com" /></label>
+                  <label>Link type<select value={item.link_type} onChange={(e) => updateRoundupItem(index, "link_type", e.target.value as RoundupItem["link_type"])}><option value="internal">Internal Chévere link</option><option value="external">External link</option></select></label>
+                </div>
+                <label>CTA label <span className="optional">(optional)</span><input value={item.cta_label} onChange={(e) => updateRoundupItem(index, "cta_label", e.target.value)} placeholder="Read More" /></label>
               </div>
-            );
-          })}
-          <button type="button" className="secondary" onClick={addRoundupItem} style={{ fontSize: 13, padding: "7px 14px" }}>+ Add item</button>
+          ))}
+          <div className="roundup-home-preview" aria-label="Homepage roundup preview">
+            <p className="eyebrow">The Weekly Roundup</p>
+            <h2>This Week at Chévere</h2>
+            <div>
+              {issue.roundup_items.map((item, index) => <article key={item.id}>
+                {item.image_url ? <img src={item.image_url} alt={item.image_alt} /> : <div className="roundup-preview-placeholder">Image {index + 1}</div>}
+                {item.category ? <span>{item.category}</span> : null}
+                <h3>{item.title || `Roundup Card ${index + 1}`}</h3>
+                {item.text ? <p>{item.text}</p> : null}
+              </article>)}
+            </div>
+          </div>
         </fieldset>
 
         {/* Section 5: Before You Go */}
@@ -259,8 +322,12 @@ export function IssueEditor({ initial }: { initial?: Issue }) {
         <div className="action-bar">
           <button className="primary" disabled={busy || locked}>Save draft</button>
           <button type="button" className="secondary" onClick={showPreview} disabled={busy}>Preview</button>
-          <button type="button" className="secondary" onClick={test} disabled={busy || !id}>Send test</button>
-          <button type="button" className="approve" onClick={approve} disabled={busy || !id || locked || !approved}>Approve &amp; schedule</button>
+          <button type="button" className="secondary" onClick={test} disabled={busy || locked}>Send test</button>
+          <button type="button" className="secondary" onClick={() => roundupAction("publish")} disabled={busy || locked}>Publish homepage now</button>
+          <button type="button" className="secondary" onClick={() => roundupAction("schedule")} disabled={busy || locked}>Schedule homepage</button>
+          {roundupStatus !== "archived" && <button type="button" className="secondary" onClick={() => roundupAction("archive")} disabled={busy || !id}>Archive roundup</button>}
+          <button type="button" className="secondary" onClick={duplicateIssue} disabled={busy}>{id ? "Duplicate this issue" : "Duplicate previous issue"}</button>
+          <button type="button" className="approve" onClick={approve} disabled={busy || locked || !approved}>Approve &amp; schedule email</button>
         </div>
       </form>
 

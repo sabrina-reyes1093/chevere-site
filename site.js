@@ -16,17 +16,17 @@
   var prefix = headerHome && (headerHome.getAttribute('href') || '').indexOf('../') === 0 ? '../' : '';
 
   var footer = [
-    '<footer class="site-footer">',
-    '  <section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">',
+    '<section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">',
     '    <p class="newsletter-eyebrow">A weekly note from Ch&eacute;vere</p>',
-    '    <h2 id="newsletter-heading">Ch&eacute;vere, Delivered</h2>',
+    '    <h2 id="newsletter-heading">CH&Eacute;VERE WEEKLY</h2>',
     '    <p class="newsletter-sub">Weekly recommendations chosen with intention, plus discoveries worth sharing&mdash;straight to your inbox.</p>',
     '    <form id="newsletter-form">',
     '      <label class="sr-only" for="newsletter-email">Email address</label>',
     '      <input id="newsletter-email" name="email" type="email" placeholder="Email address" autocomplete="email" required />',
     '      <button type="submit">JOIN THE LIST</button>',
     '    </form>',
-    '  </section>',
+    '</section>',
+    '<footer class="site-footer">',
     '  <div class="footer-editorial">',
     '    <a class="footer-logo" href="' + prefix + 'index.html" aria-label="Ch&eacute;vere home"><img src="' + prefix + 'assets/logo.png" alt="Ch&eacute;vere" /></a>',
     '    <p class="footer-motto">Culture. Style. Discovery.</p>',
@@ -551,23 +551,17 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     .then(mountCarousel);
 })();
 
-/* homepage editorial modules: seasonal edit and the editor's current favorites */
+/* homepage seasonal guide and server-resolved weekly roundup */
 (function renderHomepageEditorialModules() {
   var hero = document.querySelector('.home-main');
   var featuredReads = document.querySelector('.featured-reads');
   if (!hero || !featuredReads) return;
 
   var seasonal = document.createElement('section');
-  seasonal.className = 'seasonal-edit';
+  seasonal.className = 'seasonal-guide';
   seasonal.hidden = true;
-  seasonal.setAttribute('aria-labelledby', 'seasonal-edit-title');
+  seasonal.setAttribute('aria-labelledby', 'seasonal-guide-title');
   hero.insertAdjacentElement('afterend', seasonal);
-
-  var loving = document.createElement('section');
-  loving.className = 'currently-loving';
-  loving.hidden = true;
-  loving.setAttribute('aria-labelledby', 'currently-loving-title');
-  featuredReads.insertAdjacentElement('afterend', loving);
 
   function safe(value) {
     return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -578,30 +572,41 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     .then(function (content) {
       var banner = content.seasonal_banner || {};
       if (banner.enabled && banner.headline) {
-        var inner = '<div class="seasonal-edit-inner"><p class="seasonal-label">' + safe(banner.label) + '</p>' +
-          '<h2 id="seasonal-edit-title">' + safe(banner.headline) + '</h2>' +
-          (banner.description ? '<p>' + safe(banner.description) + '</p>' : '') + '</div>';
+        var inner = '<div class="seasonal-guide-inner">' +
+          (banner.image_url ? '<div class="seasonal-guide-media"><img src="' + safe(banner.image_url) + '" alt="' + safe(banner.image_alt) + '" width="800" height="520" /></div>' : '') +
+          '<div class="seasonal-guide-copy"><p class="seasonal-label">' + safe(banner.label) + '</p>' +
+          '<h2 id="seasonal-guide-title">' + safe(banner.headline) + '</h2>' +
+          (banner.description ? '<p>' + safe(banner.description) + '</p>' : '') + '</div></div>';
         seasonal.innerHTML = banner.href ? '<a href="' + safe(banner.href) + '">' + inner + '</a>' : inner;
         seasonal.hidden = false;
       }
-
-      var items = Array.isArray(content.currently_loving) ? content.currently_loving.filter(function (item) { return item && item.title; }).slice(0, 6) : [];
-      if (items.length) {
-        loving.innerHTML = '<div class="currently-loving-heading"><p>The editor&rsquo;s weekly notes</p><h2 id="currently-loving-title">Currently Loving</h2></div>' +
-          '<div class="currently-loving-grid">' + items.map(function (item) {
-            var card = '<article class="loving-card">' +
-              (item.image_url ? '<div class="loving-image"><img src="' + safe(item.image_url) + '" alt="" loading="lazy" /></div>' : '') +
-              '<p class="loving-label">' + safe(item.category) + '</p><h3>' + safe(item.title) + '</h3>' +
-              (item.description ? '<p class="loving-description">' + safe(item.description) + '</p>' : '') + '</article>';
-            return item.url ? '<a class="loving-card-link" href="' + safe(item.url) + '">' + card + '</a>' : '<div class="loving-card-link">' + card + '</div>';
-          }).join('') + '</div>';
-        loving.hidden = false;
-      }
     })
-    .catch(function () {
-      seasonal.remove();
-      loving.remove();
-    });
+    .catch(function () { seasonal.remove(); });
+
+  var newsletterApi = window.CHEVERE_NEWSLETTER_API_URL || 'https://newsletter.itschevere.com';
+  fetch(newsletterApi + '/api/roundup', { cache: 'no-store' })
+    .then(function (response) { return response.ok ? response.json() : Promise.reject(new Error('Roundup unavailable')); })
+    .then(function (payload) {
+      var issue = payload && payload.issue;
+      var cards = issue && Array.isArray(issue.cards) ? issue.cards : [];
+      if (cards.length !== 3) return;
+      var weekly = document.createElement('section');
+      weekly.className = 'weekly-roundup';
+      weekly.setAttribute('aria-labelledby', 'weekly-roundup-title');
+      weekly.innerHTML = '<div class="weekly-roundup-heading"><p>The Weekly Roundup</p><h2 id="weekly-roundup-title">This Week at Ch&eacute;vere</h2></div>' +
+        '<div class="weekly-roundup-grid">' + cards.map(function (card) {
+          var external = card.link_type === 'external';
+          return '<a class="weekly-roundup-card" href="' + safe(card.url) + '"' + (external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' +
+            '<div class="weekly-roundup-image"><img src="' + safe(card.image_url) + '" alt="' + safe(card.image_alt) + '" width="800" height="520" loading="lazy" /></div>' +
+            (card.category ? '<span class="kicker">' + safe(card.category) + '</span>' : '') +
+            '<h3>' + safe(card.title) + '</h3>' +
+            (card.text ? '<p>' + safe(card.text) + '</p>' : '') +
+            '<span class="weekly-roundup-link">' + safe(card.cta_label || 'Read More') + ' <span aria-hidden="true">&rarr;</span></span>' +
+            '</a>';
+        }).join('') + '</div>';
+      featuredReads.insertAdjacentElement('afterend', weekly);
+    })
+    .catch(function () { /* No published issue means no homepage section. */ });
 })();
 
 /* blog reading progress: a quiet 4px strip that tracks only the article */

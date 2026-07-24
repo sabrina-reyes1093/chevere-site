@@ -10,9 +10,18 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
   if (!parsed.success) return NextResponse.json({ error: "Review the issue fields.", details: parsed.error.flatten() }, { status: 400 });
   const { id } = await context.params;
   const db = createAdminClient();
-  const { data: current } = await db.from("newsletter_issues").select("status").eq("id", id).single();
+  const { data: current } = await db.from("newsletter_issues").select("status,roundup_status,homepage_publish_at").eq("id", id).single();
   if (!current || current.status === "sent" || current.status === "sending") return NextResponse.json({ error: "A sent or sending issue cannot be edited." }, { status: 409 });
-  const { data, error } = await db.from("newsletter_issues").update({ ...toDbRow(parsed.data), status: "draft", approved_at: null, scheduled_for: null, updated_at: new Date().toISOString() }).eq("id", id).select("*").single();
+  const update = toDbRow(parsed.data);
+  const roundupIsLive = current.roundup_status === "published" ||
+    (current.roundup_status === "scheduled" && current.homepage_publish_at && new Date(current.homepage_publish_at) <= new Date());
+  if (roundupIsLive) {
+    delete update.roundup_items;
+    delete update.recommendations;
+    delete update.roundup_status;
+    delete update.homepage_publish_at;
+  }
+  const { data, error } = await db.from("newsletter_issues").update({ ...update, status: "draft", approved_at: null, updated_at: new Date().toISOString() }).eq("id", id).select("*").single();
   return error ? NextResponse.json({ error: error.message }, { status: 500 }) : NextResponse.json(data);
 }
 
