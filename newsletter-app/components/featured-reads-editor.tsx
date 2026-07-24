@@ -13,12 +13,12 @@ export function FeaturedReadsEditor({ articles, initialItems }: Props) {
   const [postIds, setPostIds] = useState(() => initialItems
     .slice()
     .sort((a, b) => a.display_order - b.display_order)
-    .map((item) => item.id));
+    .map((item) => item.slug));
   const [status, setStatus] = useState("");
   const [saving, setSaving] = useState(false);
 
   const selected = useMemo(
-    () => postIds.map((id) => articles.find((article) => article.id === id)).filter((article): article is FeaturedReadArticle => Boolean(article)),
+    () => postIds.map((id) => articles.find((article) => article.slug === id)).filter((article): article is FeaturedReadArticle => Boolean(article)),
     [articles, postIds],
   );
   const isComplete = postIds.length === 3 && selected.length === 3 && new Set(postIds).size === 3;
@@ -94,9 +94,9 @@ export function FeaturedReadsEditor({ articles, initialItems }: Props) {
                   <option value="">Select an article...</option>
                   {articles.map((article) => (
                     <option
-                      key={article.id}
-                      value={article.id}
-                      disabled={postIds.some((id, selectedIndex) => selectedIndex !== index && id === article.id)}
+                      key={article.slug}
+                      value={article.slug}
+                      disabled={postIds.some((id, selectedIndex) => selectedIndex !== index && id === article.slug)}
                     >
                       {article.title}
                     </option>
@@ -118,7 +118,7 @@ export function FeaturedReadsEditor({ articles, initialItems }: Props) {
         <h2 id="featured-preview-title">Featured Reads</h2>
         <div className="featured-admin-preview-grid">
           {[0, 1, 2].map((index) => {
-            const article = articles.find((item) => item.id === postIds[index]);
+            const article = articles.find((item) => item.slug === postIds[index]);
             return (
               <article key={index}>
                 {article?.image_url

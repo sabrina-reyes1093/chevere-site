@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 import { getAdminUser, requireAdminApi } from "@/lib/auth";
-import { loadFeaturedReads } from "@/lib/featured-reads";
+import { loadFeaturedReads, loadPublishedArticles } from "@/lib/featured-reads";
 import { createAdminClient } from "@/lib/supabase-admin";
 
 const selectionSchema = z.object({
-  post_ids: z.array(z.string().uuid()).length(3),
+  post_ids: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).length(3),
 }).superRefine((value, context) => {
   if (new Set(value.post_ids).size !== 3) {
     context.addIssue({ code: "custom", path: ["post_ids"], message: "Choose three different articles." });
@@ -36,23 +36,17 @@ export async function PUT(request: NextRequest) {
     );
   }
 
-  const db = createAdminClient();
-  const { data: posts, error: postsError } = await db
-    .from("blog_posts")
-    .select("id")
-    .in("id", parsed.data.post_ids)
-    .eq("status", "published");
-
-  if (postsError) return NextResponse.json({ error: postsError.message }, { status: 500 });
-  if ((posts || []).length !== 3) {
+  const publishedArticles = await loadPublishedArticles();
+  if (parsed.data.post_ids.some((slug) => !publishedArticles.some((article) => article.slug === slug))) {
     return NextResponse.json({ error: "All three selections must be published articles." }, { status: 400 });
   }
 
+  const db = createAdminClient();
   const user = await getAdminUser();
   const updatedAt = new Date().toISOString();
-  const rows = parsed.data.post_ids.map((postId, index) => ({
+  const rows = parsed.data.post_ids.map((postSlug, index) => ({
     display_order: index + 1,
-    post_id: postId,
+    post_slug: postSlug,
     updated_at: updatedAt,
     updated_by: user?.id || null,
   }));

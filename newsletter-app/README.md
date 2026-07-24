@@ -19,7 +19,7 @@ The production scheduler is intentionally disabled unless `NEWSLETTER_CRON_ENABL
 ## Initial setup
 
 1. Create a Supabase project.
-2. Run every file in `supabase/migrations` in numeric order in the Supabase SQL editor. Existing installations must run `009_weekly_roundup.sql` for the shared roundup and `010_homepage_featured_reads.sql` for admin-controlled Featured Reads before deploying the matching application code.
+2. Run every file in `supabase/migrations` in numeric order in the Supabase SQL editor. Existing installations must run `009_weekly_roundup.sql` for the shared roundup, then `010_homepage_featured_reads.sql` and `011_featured_reads_static_posts.sql` for admin-controlled Featured Reads before deploying the matching application code.
 3. In Supabase Auth, create Sabrina's admin user with the same email configured in `ADMIN_EMAIL`. Keep public user registration disabled because only the administrator signs in.
 4. Create a Resend account, verify `itschevere.com`, and configure SPF/DKIM as Resend instructs. Add a signed webhook pointing to `https://newsletter.itschevere.com/api/webhooks/resend` and subscribe it to email delivery, failure, bounce, complaint, open, and click events.
 5. Deploy this directory to Vercel with `newsletter.itschevere.com` as its custom domain.

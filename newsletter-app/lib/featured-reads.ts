@@ -1,18 +1,9 @@
-import { categoryLabels } from "@/lib/post-schema";
+import { load } from "cheerio";
+
+import { config } from "@/lib/config";
 import { createAdminClient } from "@/lib/supabase-admin";
 
-type PublishedPostRow = {
-  id: string;
-  slug: string;
-  title: string;
-  category: string;
-  dek: string;
-  cover_image_url: string;
-  published_on: string;
-};
-
 export type FeaturedReadArticle = {
-  id: string;
   slug: string;
   title: string;
   category: string;
@@ -27,45 +18,42 @@ export type FeaturedRead = FeaturedReadArticle & {
   display_order: number;
 };
 
-export function toFeaturedReadArticle(post: PublishedPostRow): FeaturedReadArticle {
-  return {
-    id: post.id,
-    slug: post.slug,
-    title: post.title,
-    category: categoryLabels(post.category, post.slug),
-    excerpt: post.dek,
-    image_url: post.cover_image_url,
-    image_alt: post.title,
-    url: `/posts/${post.slug}.html`,
-    published_on: post.published_on,
-  };
-}
-
 export async function loadPublishedArticles() {
-  const { data, error } = await createAdminClient()
-    .from("blog_posts")
-    .select("id,slug,title,category,dek,cover_image_url,published_on")
-    .eq("status", "published")
-    .neq("category", "introduction")
-    .neq("slug", "about-chevere")
-    .order("published_on", { ascending: false });
+  const response = await fetch(`${config.siteUrl}/blog.html`, { next: { revalidate: 300 } });
+  if (!response.ok) throw new Error("Unable to load published articles.");
 
-  if (error) throw new Error(error.message);
-  return ((data || []) as PublishedPostRow[]).map(toFeaturedReadArticle);
+  const $ = load(await response.text());
+  return $(".post-card").map((_, element): FeaturedReadArticle => {
+    const card = $(element);
+    const href = card.attr("href") || "";
+    const slug = href.split("/").pop()?.replace(/\.html$/, "") || "";
+    const style = card.find(".thumb").attr("style") || "";
+    const image = style.match(/url\(['"]?([^'")]+)['"]?\)/)?.[1] || "";
+    const title = card.find("h2").text().trim();
+    return {
+      slug,
+      title,
+      category: card.find(".kicker").text().trim(),
+      excerpt: card.find(".dek").text().trim(),
+      image_url: image ? new URL(image, `${config.siteUrl}/`).toString() : "",
+      image_alt: title,
+      url: new URL(href || "blog.html", `${config.siteUrl}/`).toString(),
+      published_on: card.find(".date").text().trim(),
+    };
+  }).get().filter((article) => article.slug && article.title && article.image_url);
 }
 
 export async function loadFeaturedReads(): Promise<FeaturedRead[]> {
   const { data, error } = await createAdminClient()
     .from("homepage_featured_reads")
-    .select("display_order,blog_posts!inner(id,slug,title,category,dek,cover_image_url,published_on,status)")
+    .select("display_order,post_slug")
     .order("display_order", { ascending: true });
 
   if (error) throw new Error(error.message);
 
+  const articles = await loadPublishedArticles();
   return (data || []).flatMap((row) => {
-    const relation = row.blog_posts as unknown;
-    const post = (Array.isArray(relation) ? relation[0] : relation) as (PublishedPostRow & { status: string }) | null;
-    if (!post || post.status !== "published") return [];
-    return [{ ...toFeaturedReadArticle(post), display_order: Number(row.display_order) }];
+    const article = articles.find((item) => item.slug === row.post_slug);
+    return article ? [{ ...article, display_order: Number(row.display_order) }] : [];
   });
 }

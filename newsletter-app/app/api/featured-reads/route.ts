@@ -18,7 +18,7 @@ export async function GET() {
   try {
     const items = await loadFeaturedReads();
     const isComplete = items.length === 3
-      && new Set(items.map((item) => item.id)).size === 3
+      && new Set(items.map((item) => item.slug)).size === 3
       && items.every((item, index) => item.display_order === index + 1);
 
     return NextResponse.json(

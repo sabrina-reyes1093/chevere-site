@@ -19,12 +19,22 @@ test("Featured Reads has a durable three-slot model with the requested defaults"
   assert.match(migration, /spain-wins-the-2026-world-cup/);
 });
 
+test("legacy static articles are referenced by canonical slug without duplicate post rows", () => {
+  const migration = read("supabase/migrations/011_featured_reads_static_posts.sql");
+  const model = read("lib/featured-reads.ts");
+  assert.match(migration, /post_slug text/i);
+  assert.match(migration, /drop column if exists post_id/i);
+  assert.match(migration, /homepage_featured_reads_unique_slug unique \(post_slug\)/i);
+  assert.match(model, /fetch\(`\$\{config\.siteUrl\}\/blog\.html`/);
+  assert.match(model, /\.select\("display_order,post_slug"\)/);
+});
+
 test("admin selection requires three unique published articles and supports reorder plus preview", () => {
   const route = read("app/api/admin/featured-reads/route.ts");
   const editor = read("components/featured-reads-editor.tsx");
   assert.match(route, /\.length\(3\)/);
   assert.match(route, /new Set\(value\.post_ids\)\.size !== 3/);
-  assert.match(route, /\.eq\("status", "published"\)/);
+  assert.match(route, /loadPublishedArticles/);
   assert.match(route, /\.upsert\(rows, \{ onConflict: "display_order" \}\)/);
   assert.match(editor, /Move Featured Story/);
   assert.match(editor, /Homepage preview/);
