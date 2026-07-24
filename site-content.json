@@ -5,7 +5,8 @@
     "headline": "The Summer Guide",
     "description": "Books, places, tables, and small pleasures for the season.",
     "href": "reading-lists.html",
-    "image_url": "assets/chevere-summer-reading-edit.png",
-    "image_alt": "An open book, summer fruit, and a glass arranged beside a pool."
+    "cta_label": "EXPLORE THE GUIDE",
+    "publish_date": "2026-06-01",
+    "expiration_date": ""
   }
 }

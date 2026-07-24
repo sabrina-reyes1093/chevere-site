@@ -53,8 +53,9 @@ export function SiteContentEditor({ initialContent }: { initialContent: SiteCont
           <label>Headline<input value={content.seasonal_banner.headline} onChange={(event) => updateBanner("headline", event.target.value)} /></label>
           <label className="span-2">Description<textarea rows={3} value={content.seasonal_banner.description} onChange={(event) => updateBanner("description", event.target.value)} /></label>
           <label>Destination URL<input value={content.seasonal_banner.href} onChange={(event) => updateBanner("href", event.target.value)} /></label>
-          <label>Image URL<input value={content.seasonal_banner.image_url} onChange={(event) => updateBanner("image_url", event.target.value)} /></label>
-          <label className="span-2">Image alt text<input value={content.seasonal_banner.image_alt} onChange={(event) => updateBanner("image_alt", event.target.value)} /></label>
+          <label>CTA label<input value={content.seasonal_banner.cta_label} onChange={(event) => updateBanner("cta_label", event.target.value)} /></label>
+          <label>Publish date<input type="date" value={content.seasonal_banner.publish_date} onChange={(event) => updateBanner("publish_date", event.target.value)} /></label>
+          <label>Expiration date <span className="optional">(optional)</span><input type="date" value={content.seasonal_banner.expiration_date} onChange={(event) => updateBanner("expiration_date", event.target.value)} /></label>
         </div>
       </section>
       <div className="editor-actions">

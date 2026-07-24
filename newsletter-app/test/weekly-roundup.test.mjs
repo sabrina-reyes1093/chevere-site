@@ -60,9 +60,26 @@ test("admin supports publish, Sunday scheduling, archive, duplicate, reorder, an
 test("homepage has the requested editorial order and no retired Currently Loving module", () => {
   const html = readPublic("index.html");
   const site = readPublic("site.js");
+  const styles = readPublic("styles.css");
   const content = JSON.parse(readPublic("site-content.json"));
+  const editor = read("components/site-content-editor.tsx");
+  const contentSchema = read("lib/site-content.ts");
 
   assert.equal(content.seasonal_banner.headline, "The Summer Guide");
+  assert.equal(content.seasonal_banner.cta_label, "EXPLORE THE GUIDE");
+  assert.equal(content.seasonal_banner.publish_date, "2026-06-01");
+  assert.equal(content.seasonal_banner.expiration_date, "");
+  assert.equal("image_url" in content.seasonal_banner, false);
+  assert.equal("image_alt" in content.seasonal_banner, false);
+  assert.doesNotMatch(site, /seasonal-guide-media/);
+  assert.doesNotMatch(styles, /seasonal-guide-media/);
+  assert.match(site, /seasonal-cta/);
+  assert.match(editor, /CTA label/);
+  assert.match(editor, /Publish date/);
+  assert.match(editor, /Expiration date/);
+  assert.match(contentSchema, /cta_label/);
+  assert.match(contentSchema, /publish_date/);
+  assert.match(contentSchema, /expiration_date/);
   assert.doesNotMatch(site, /Currently Loving/i);
   assert.doesNotMatch(html, /Currently Loving/i);
   assert.match(site, /The Weekly Roundup/);

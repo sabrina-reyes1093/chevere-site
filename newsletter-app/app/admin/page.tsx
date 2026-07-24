@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminHome() {
   await requireAdminPage();
   const db = createAdminClient();
-  const [{ data: issues }, { count: activeSubscribers }, { data: attempts }, { data: deliveries }] = await Promise.all([
+  const [{ data: issues, error: issuesError }, { count: activeSubscribers }, { data: attempts }, { data: deliveries }] = await Promise.all([
     db.from("newsletter_issues").select("id,title,status,roundup_status,homepage_publish_at,scheduled_for,sent_at,recipient_count,updated_at,last_error").order("created_at", { ascending: false }),
     db.from("newsletter_subscribers").select("id", { count: "exact", head: true }).eq("status", "active").not("confirmed_at", "is", null),
     db.from("newsletter_send_attempts").select("id,result,reason,error,started_at").order("started_at", { ascending: false }).limit(8),
@@ -25,8 +25,14 @@ export default async function AdminHome() {
     if (delivery.unsubscribed_at) current.unsubscribes += 1;
     metrics.set(delivery.issue_id, current);
   }
+  const issuesMessage = issuesError?.code === "42703"
+    ? <>The weekly-roundup database migration is required before issues can be managed. Run <code>009_weekly_roundup.sql</code> in Supabase, then reload this page.</>
+    : issuesError
+      ? <>Newsletter issues are temporarily unavailable. Reload the page or check the database connection.</>
+      : null;
   return <AdminShell>
     <div className="page-heading"><div><p className="eyebrow">Weekly publishing</p><h1>Newsletter issues</h1><p>{activeSubscribers || 0} active subscribers</p></div><Link href="/admin/issues/new" className="primary link-button">Create issue</Link></div>
+    {issuesMessage ? <p className="message error" role="alert">{issuesMessage}</p> : null}
     <section className="panel">
       <div className="table-wrap"><table><thead><tr><th>Issue</th><th>Email</th><th>Homepage</th><th>Scheduled / sent</th><th>Recipients</th><th>Delivered</th><th>Failures</th><th>Opens</th><th>Clicks</th><th>Unsubscribes</th><th>Actions</th></tr></thead><tbody>
         {(issues || []).map((issue) => { const issueMetrics = metrics.get(issue.id); return <tr key={issue.id}>

@@ -13,8 +13,9 @@ export const siteContentSchema = z.object({
     headline: z.string().max(160),
     description: z.string().max(320),
     href: z.string().max(500),
-    image_url: z.string().max(1000),
-    image_alt: z.string().max(240),
+    cta_label: z.string().max(80).default("EXPLORE THE GUIDE"),
+    publish_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).or(z.literal("")).default(""),
+    expiration_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).or(z.literal("")).default(""),
   }),
 });
 

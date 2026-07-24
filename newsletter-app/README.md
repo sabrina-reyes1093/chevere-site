@@ -12,6 +12,7 @@ The production scheduler is intentionally disabled unless `NEWSLETTER_CRON_ENABL
 - **Email:** Resend, using a verified sender domain and a signed webhook for delivery, open, click, bounce, complaint, and failure events.
 - **Shared weekly roundup:** each newsletter issue owns exactly three ordered roundup cards. The same stored fields power both the homepage API and the email-safe newsletter renderer.
 - **Homepage schedule:** an issue can be published immediately or scheduled for Sunday at 8:00 a.m. in `America/Chicago`. `/api/roundup` resolves the newest eligible valid issue on the server, so no browser timer or cron job is required. The previous valid issue remains active until its replacement is eligible.
+- **Seasonal guide:** the homepage's text-only seasonal feature is managed under `/admin/site-content`. Its label, headline, description, destination, CTA, visibility, publication date, and optional expiration date are stored in `site-content.json`.
 - **Email schedule:** `NEWSLETTER_SEND_TIME` stores the Friday time in `America/Chicago`. Vercel calls the protected endpoint at the matching UTC times in `vercel.json`; the endpoint checks Chicago wall-clock time so daylight-saving changes are handled correctly.
 
 ## Initial setup

@@ -28,7 +28,10 @@ export async function GET() {
     .limit(20);
 
   // Before migration 009 is applied there is intentionally no public roundup.
-  if (error) return NextResponse.json({ issue: null }, { headers: { ...cors, "Cache-Control": "public, max-age=60, stale-while-revalidate=300" } });
+  if (error) {
+    console.error("Unable to resolve the homepage weekly roundup.", { code: error.code, message: error.message });
+    return NextResponse.json({ issue: null }, { headers: { ...cors, "Cache-Control": "public, max-age=60, stale-while-revalidate=300" } });
+  }
 
   for (const row of data || []) {
     const issue = fromDbRow(row as Record<string, unknown>);

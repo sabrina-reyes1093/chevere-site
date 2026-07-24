@@ -551,11 +551,10 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     .then(mountCarousel);
 })();
 
-/* homepage seasonal guide and server-resolved weekly roundup */
-(function renderHomepageEditorialModules() {
+/* homepage seasonal guide */
+(function renderHomepageSeasonalGuide() {
   var hero = document.querySelector('.home-main');
-  var featuredReads = document.querySelector('.featured-reads');
-  if (!hero || !featuredReads) return;
+  if (!hero) return;
 
   var seasonal = document.createElement('section');
   seasonal.className = 'seasonal-guide';
@@ -567,21 +566,47 @@ document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function (a) {
     return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  function chicagoDate() {
+    var parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Chicago',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).formatToParts(new Date());
+    var values = {};
+    parts.forEach(function (part) { values[part.type] = part.value; });
+    return values.year + '-' + values.month + '-' + values.day;
+  }
+
   fetch('site-content.json', { cache: 'no-store' })
     .then(function (response) { return response.ok ? response.json() : Promise.reject(new Error('Site content unavailable')); })
     .then(function (content) {
       var banner = content.seasonal_banner || {};
-      if (banner.enabled && banner.headline) {
+      var today = chicagoDate();
+      var isPublished = !banner.publish_date || banner.publish_date <= today;
+      var isCurrent = !banner.expiration_date || banner.expiration_date >= today;
+      if (banner.enabled && banner.headline && isPublished && isCurrent) {
         var inner = '<div class="seasonal-guide-inner">' +
-          (banner.image_url ? '<div class="seasonal-guide-media"><img src="' + safe(banner.image_url) + '" alt="' + safe(banner.image_alt) + '" width="800" height="520" /></div>' : '') +
           '<div class="seasonal-guide-copy"><p class="seasonal-label">' + safe(banner.label) + '</p>' +
           '<h2 id="seasonal-guide-title">' + safe(banner.headline) + '</h2>' +
-          (banner.description ? '<p>' + safe(banner.description) + '</p>' : '') + '</div></div>';
-        seasonal.innerHTML = banner.href ? '<a href="' + safe(banner.href) + '">' + inner + '</a>' : inner;
+          (banner.description ? '<p class="seasonal-description">' + safe(banner.description) + '</p>' : '') +
+          (banner.href ? '<a class="seasonal-cta" href="' + safe(banner.href) + '">' + safe(banner.cta_label || 'Explore the Guide') + ' <span aria-hidden="true">&rarr;</span></a>' : '') +
+          '</div></div>';
+        seasonal.innerHTML = inner;
         seasonal.hidden = false;
       }
     })
     .catch(function () { seasonal.remove(); });
+})();
+
+/* homepage weekly roundup: independent from Featured Reads and resolved by the newsletter backend */
+(function renderHomepageWeeklyRoundup() {
+  var featuredReads = document.querySelector('.featured-reads');
+  if (!featuredReads) return;
+
+  function safe(value) {
+    return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
 
   var newsletterApi = window.CHEVERE_NEWSLETTER_API_URL || 'https://newsletter.itschevere.com';
   fetch(newsletterApi + '/api/roundup', { cache: 'no-store' })
